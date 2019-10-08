@@ -8,6 +8,7 @@ import Login from './pages/Auth/Login/Login'
 import Signup from './pages/Auth/Signup/Signup'
 import Error404 from './pages/errors/Error404/Error404'
 import Profile from './pages/private/Profile/Profile'
+import Games from './pages/private/Games/Games'
 
 // Components
 import Navbar from './components/Navbar/Navbar'
@@ -36,6 +37,7 @@ export default class App extends Component {
           {this.state.loggedInUser
             ?
             <>
+                <Route exact path="/games" component={() => <Games loggedInUser={this.state.loggedInUser} />} />
                 <Route exact path="/profile" component={() => <Profile loggedInUser={this.state.loggedInUser} />} />
               </>
             :
