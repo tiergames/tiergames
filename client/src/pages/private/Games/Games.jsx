@@ -43,18 +43,16 @@ export default class Games extends Component {
     )
   }
 
-  componentDidMount() {
-    axios.get(`http://localhost:3001/api/games?offset=${this.state.pagination.offset}&limit=${this.state.pagination.limit}`)
-      .then(allGames => {
-        this.setState({
-          ...this.state,
-          games: allGames.data,
-          isLoadingGames: false
-        })
-      })
+  async componentDidMount() {
+    let allGames = await axios.get(`http://localhost:3001/api/games?offset=${this.state.pagination.offset}&limit=${this.state.pagination.limit}`)
+    this.setState({
+      ...this.state,
+      games: allGames.data,
+      isLoadingGames: false
+    })
   }
 
-  loadNextGames() {
+  async loadNextGames() {
     this.setState({
       ...this.state,
       isLoadingGames: true
@@ -63,20 +61,18 @@ export default class Games extends Component {
     let nextPage = this.state.pagination.currentPage + 1
     let nextOffset = this.state.pagination.limit * nextPage
 
-    axios.get(`http://localhost:3001/api/games?offset=${nextOffset}&limit=${this.state.pagination.limit}`)
-      .then(nextNewGames => {
-        let newGames = [...this.state.games]
-        let newPagination = {...this.state.pagination}
-        newPagination.offset = nextOffset
-        newPagination.currentPage = nextPage
-        newGames.push(...nextNewGames.data)
-        this.setState({
-          ...this.state,
-          pagination: newPagination,
-          games: newGames,
-          isLoadingGames: false
-        })
-      })
+    let nextNewGames = await axios.get(`http://localhost:3001/api/games?offset=${nextOffset}&limit=${this.state.pagination.limit}`)
+    let newGames = [...this.state.games]
+    let newPagination = {...this.state.pagination}
+    newPagination.offset = nextOffset
+    newPagination.currentPage = nextPage
+    newGames.push(...nextNewGames.data)
+    this.setState({
+      ...this.state,
+      pagination: newPagination,
+      games: newGames,
+      isLoadingGames: false
+    })
   }
 
   renderGames() {
