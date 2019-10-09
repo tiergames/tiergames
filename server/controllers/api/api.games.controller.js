@@ -12,7 +12,7 @@ controller.games = (req, res, next) => {
       'Accept': 'application/json',
       'user-key': process.env.IGDB_API_KEY
     },
-    data: `fields name; limit ${req.query.limit}; offset ${req.query.offset};`
+    data: `fields name, cover; limit ${req.query.limit}; offset ${req.query.offset};`
   })
     .then(response => {
       res.status(200).json(response.data)
