@@ -11,7 +11,7 @@ export default class Games extends Component {
         offset: 0,
         currentPage: 0,
       },
-      isLoadingGames: false,
+      isLoadingGames: true,
       games: [],
       gamesFiltered: []
     }
@@ -48,7 +48,8 @@ export default class Games extends Component {
       .then(allGames => {
         this.setState({
           ...this.state,
-          games: allGames.data
+          games: allGames.data,
+          isLoadingGames: false
         })
       })
   }
