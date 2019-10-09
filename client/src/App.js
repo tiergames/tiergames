@@ -9,12 +9,13 @@ import Signup from './pages/Auth/Signup/Signup'
 import Error404 from './pages/errors/Error404/Error404'
 import Profile from './pages/private/Profile/Profile'
 import Games from './pages/private/Games/Games'
+import Genres from './pages/private/Genres/Genres'
 
 // Components
 import Navbar from './components/Navbar/Navbar'
 
 // Styles
-import "./scss/main.scss"
+// import "./scss/main.scss"
 
 export default class App extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export default class App extends Component {
             ?
             <>
                 <Route exact path="/games" component={() => <Games loggedInUser={this.state.loggedInUser} />} />
+                <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} />
                 <Route exact path="/profile" component={() => <Profile loggedInUser={this.state.loggedInUser} />} />
               </>
             :
