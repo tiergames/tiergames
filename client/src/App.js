@@ -39,7 +39,7 @@ export default class App extends Component {
             ?
             <>
                 <Route exact path="/games" component={() => <Games loggedInUser={this.state.loggedInUser} />} />
-                <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} />
+                {/* <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} /> */}
                 <Route exact path="/profile" component={() => <Profile loggedInUser={this.state.loggedInUser} />} />
               </>
             :
