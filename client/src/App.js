@@ -14,6 +14,7 @@ import Platforms from './pages/private/Platforms/Platforms'
 
 // Components
 import Navbar from './components/Navbar/Navbar'
+import BestRated from './pages/private/BestRated/BestRated'
 
 // Styles
 // import "./scss/main.scss"
@@ -40,9 +41,10 @@ export default class App extends Component {
             ?
             <>
                 <Route exact path="/games" component={() => <Games loggedInUser={this.state.loggedInUser} />} />
-                {/* <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} /> */}
                 <Route exact path="/profile" component={() => <Profile loggedInUser={this.state.loggedInUser} />} />
-                <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} />
+                {/* <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} /> */}
+                {/* <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} /> */}
+                {/* <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} /> */}
               </>
             :
             <>

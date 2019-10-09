@@ -1,17 +1,19 @@
 const controller = {};
 
-const platformsURL = "https://api-v3.igdb.com/platforms";
+const ratingURL = "https://api-v3.igdb.com/games";
 const axios = require("axios");
 
-controller.platforms = (req, res, next) => {
+controller.bestRated = (req, res, next) => {
   axios({
-    url: platformsURL,
+    url: ratingURL,
     method: "POST",
     headers: {
       Accept: "application/json",
       "user-key": process.env.IGDB_API_KEY
     },
-    data: "fields name,platform_logo; limit 50;"
+    data: `fields name, rating;
+    where rating != null;
+    sort rating desc;`
   })
     .then(response => {
       res.status(200).json(response.data);

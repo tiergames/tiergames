@@ -24,10 +24,11 @@ export default class Navbar extends Component {
             :
               <>
                 <li className="menu-item"><Link className="menu-link" to={"/games"}>Games</Link></li>
-                {/* <li className="menu-item"><Link className="menu-link" to={"/genres"}>Genres</Link></li> */}
                 <li className="menu-item"><Link className="menu-link" to={"/profile"}>Profile</Link></li>
-                <li className="menu-item"><Link className="menu-link" to={"/platforms"}>Platforms</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/logout"} onClick={this.handleLogout}>Logout</Link></li>
+                {/* <li className="menu-item"><Link className="menu-link" to={"/games/best-rated"}>Best rated</Link></li> */}
+                {/* <li className="menu-item"><Link className="menu-link" to={"/genres"}>Genres</Link></li> */}
+                {/* <li className="menu-item"><Link className="menu-link" to={"/platforms"}>Platforms</Link></li> */}
               </>
           }
         </ul>
