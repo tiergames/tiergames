@@ -10,6 +10,7 @@ import Error404 from './pages/errors/Error404/Error404'
 import Profile from './pages/private/Profile/Profile'
 import Games from './pages/private/Games/Games'
 import Genres from './pages/private/Genres/Genres'
+import Platforms from './pages/private/Platforms/Platforms'
 
 // Components
 import Navbar from './components/Navbar/Navbar'
@@ -41,6 +42,7 @@ export default class App extends Component {
                 <Route exact path="/games" component={() => <Games loggedInUser={this.state.loggedInUser} />} />
                 {/* <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} /> */}
                 <Route exact path="/profile" component={() => <Profile loggedInUser={this.state.loggedInUser} />} />
+                <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} />
               </>
             :
             <>
