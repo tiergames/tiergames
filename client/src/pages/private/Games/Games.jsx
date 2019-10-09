@@ -23,13 +23,15 @@ export default class Games extends Component {
     return (
       <div>
         <h1>Games</h1>
-        {this.state.games.length > 0
-          ? 
-            this.state.games.map(game => {
-              return <li key={game.id}>{game.name}</li>
-            })
-          : null
-        }
+        <ul className="games-list">
+          {this.state.games.length > 0
+            ? 
+              this.state.games.map(game => {
+                return <li key={game.id}>{game.name}</li>
+              })
+            : null
+          }
+        </ul>
 
         {this.state.isLoadingGames
           ?
