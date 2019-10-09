@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
+import GameService from './../../../services/games.service'
 
 export default class Games extends Component {
   constructor(props) {
     super()
+    this.service = new GameService()
     this.state = {
       pagination: {
         limit: 10,
@@ -44,7 +46,7 @@ export default class Games extends Component {
   }
 
   async componentDidMount() {
-    let allGames = await axios.get(`http://localhost:3001/api/games?offset=${this.state.pagination.offset}&limit=${this.state.pagination.limit}`)
+    let allGames = await this.service.getGamesWithPagination(this.state.pagination.limit, this.state.pagination.offset)
     this.setState({
       ...this.state,
       games: allGames.data,
@@ -60,8 +62,8 @@ export default class Games extends Component {
     
     let nextPage = this.state.pagination.currentPage + 1
     let nextOffset = this.state.pagination.limit * nextPage
-
-    let nextNewGames = await axios.get(`http://localhost:3001/api/games?offset=${nextOffset}&limit=${this.state.pagination.limit}`)
+    
+    let nextNewGames = await this.service.getGamesWithPagination(this.state.pagination.limit, nextOffset)
     let newGames = [...this.state.games]
     let newPagination = {...this.state.pagination}
     newPagination.offset = nextOffset
