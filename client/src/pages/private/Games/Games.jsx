@@ -3,12 +3,14 @@ import {Link} from 'react-router-dom'
 import axios from 'axios'
 import GameService from './../../../services/games.service'
 import GenresService from './../../../services/genres.service'
+import PlatformsService from './../../../services/platforms.service'
 
 export default class Games extends Component {
   constructor(props) {
     super()
     this.gamesService = new GameService()
     this.genresService = new GenresService()
+    this.platformsService = new PlatformsService()
     this.state = {
       pagination: {
         limit: 10,
@@ -18,8 +20,10 @@ export default class Games extends Component {
       games: [],
       gamesFiltered: [],
       isLoadingGames: true,
+      genres: [],
       isLoadingGenres: true,
-      genres: []
+      platforms: [],
+      isLoadingPlatforms: true,
     }
   }
   
@@ -27,9 +31,16 @@ export default class Games extends Component {
     return (
       <>
         {this.renderGenres()}
+        {this.renderPlatforms()}
         {this.renderGames()}
       </>
     )
+  }
+
+  componentDidMount() {
+    this.loadGames()
+    this.loadPlatforms()
+    this.loadGenres()
   }
 
   async loadGames() {
@@ -50,9 +61,14 @@ export default class Games extends Component {
     })
   }
 
-  componentDidMount() {
-    this.loadGames()
-    this.loadGenres()
+  async loadPlatforms() {
+    let allPlatforms = await this.platformsService.platforms()
+    console.log("PLATFORMS", allPlatforms)
+    this.setState({
+      ...this.state,
+      isLoadingPlatforms: false,
+      platforms: allPlatforms
+    })
   }
 
   async loadNextGames() {
@@ -91,7 +107,7 @@ export default class Games extends Component {
                 return (
                   <div className="field field-checkbox" key={genre.id}>
                     <input type="checkbox" name="genre" id={genre.id}/>
-                    <label htmlFor={genre.id}>{genre.name}</label>
+                    <label htmlFor={genre.id} className="checkbox-label">{genre.name}</label>
                   </div>
                 )
               })}
@@ -100,6 +116,29 @@ export default class Games extends Component {
               </div>
             </form>
         }
+      </section>
+    )
+  }
+
+  renderPlatforms() {
+    return (
+      <section>
+        <h2>Platforms</h2>
+          {this.state.isLoadingPlatforms
+            ?
+              <p>Loading platforms...</p>
+            :
+              <form className="filter filter-platforms">
+                {this.state.platforms.map(platform => {
+                  return (
+                    <div className="field field-checkbox" key={platform.id}>
+                      <input type="checkbox" name="platform" id={platform.id}/>
+                      <label htmlFor={platform.id} className="checkbox-label">{platform.name}</label>
+                    </div>
+                  )
+                })}
+            </form>
+          }
       </section>
     )
   }
