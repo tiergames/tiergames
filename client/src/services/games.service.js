@@ -7,7 +7,7 @@ export default class GamesService {
     })
   }
 
-  getGamesWithPagination = async (limit, offset) => {
+  getGames = async (limit, offset) => {
     let allGames = await this.service.get(`?offset=${offset}&limit=${limit}`)
     return allGames
   }

@@ -5,4 +5,8 @@ router.get("/", (req, res, next) => {
   controller.games(req, res, next);
 });
 
-module.exports = router;
+router.get("/:gameID", (req, res, next) => {
+  controller.gameInfo(req, res, next)
+})
+
+module.exports = router
