@@ -8,7 +8,7 @@ export default class PlatformsService {
   }
 
   platforms = async () => {
-    let platforms = await this.service.get('/')
+    const platforms = await this.service.get('/')
     return platforms.data
   }
 }

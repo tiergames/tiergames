@@ -1,7 +1,7 @@
-const controller = {};
-
-const platformsURL = "https://api-v3.igdb.com/platforms";
 const axios = require("axios");
+
+const controller = {};
+const platformsURL = "https://api-v3.igdb.com/platforms";
 
 controller.platforms = (req, res, next) => {
   axios({
@@ -11,7 +11,7 @@ controller.platforms = (req, res, next) => {
       Accept: "application/json",
       "user-key": process.env.IGDB_API_KEY
     },
-    data: "fields name,platform_logo; limit 50;"
+    data: "fields name, platform_logo; limit 50;"
   })
     .then(response => {
       res.status(200).json(response.data);
