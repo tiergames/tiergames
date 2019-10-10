@@ -48,7 +48,7 @@ export default class Games extends Component {
   }
 
   async componentDidMount() {
-    let allGames = await this.service.getGamesWithPagination(this.state.pagination.limit, this.state.pagination.offset)
+    let allGames = await this.service.getGames(this.state.pagination.limit, this.state.pagination.offset)
     this.setState({
       ...this.state,
       games: allGames.data,
@@ -65,7 +65,7 @@ export default class Games extends Component {
     let nextPage = this.state.pagination.currentPage + 1
     let nextOffset = this.state.pagination.limit * nextPage
     
-    let nextNewGames = await this.service.getGamesWithPagination(this.state.pagination.limit, nextOffset)
+    let nextNewGames = await this.service.getGames(this.state.pagination.limit, nextOffset)
     let newGames = [...this.state.games]
     let newPagination = {...this.state.pagination}
     newPagination.offset = nextOffset
