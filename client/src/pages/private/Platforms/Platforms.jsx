@@ -35,7 +35,7 @@ export default class Platform extends Component {
     let allPlatforms = await this.service.platforms()
     this.setState({
       ...this.state,
-      platforms: allPlatforms,
+      platforms: allPlatforms
     })
   }
 }
