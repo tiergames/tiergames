@@ -89,7 +89,7 @@ export default class Games extends Component {
             <form className="filter games-filter">
               {this.state.genres.map(genre => {
                 return (
-                  <div className="field field-checkbox">
+                  <div className="field field-checkbox" key={genre.id}>
                     <input type="checkbox" name="genre" id={genre.id}/>
                     <label htmlFor={genre.id}>{genre.name}</label>
                   </div>
