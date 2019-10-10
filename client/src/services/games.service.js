@@ -12,14 +12,25 @@ export default class GamesService {
     return allGames;
   };
 
-  in7days = async (limit, offset) => {
-    const in7Days = new Date().setDate(from.getDate() + 7);
-    const from = Math.round(new Date().getTime() / 1000);
-    const to = in7Days / 1000;
+  getReleases = async (limit, offset, period, order) => {
+    let from, to;
+    let fromDays, toDays;
 
-    let gamesIn7Days = await this.service.get(
-      `?offset=${offset}&limit=${limit}&from=${from}&to=${to}&sorting=first_release_date&order=asc`
+    switch (period) {
+      case 1: fromDays = -7;  toDays = 0;   break; // a week ago
+      case 2: fromDays = 0;   toDays = 7;   break; // next week
+      case 3: fromDays = 7;   toDays = 14;  break; // next 2 weeks
+      case 4: fromDays = 14;  toDays = 30;  break; // next 30 days (month)
+      case 5: fromDays = 30;  toDays = 180; break; // next 6 months
+      case 6: fromDays = 180; toDays = 365; break; // next 1 year
+    }
+
+    from = Math.round(new Date().setDate(new Date().getDate() + fromDays) / 1000);
+    to = Math.round(new Date().setDate(new Date().getDate() + toDays) / 1000);
+
+    let allReleases = await this.service.get(
+      `?offset=${offset}&limit=${limit}&from=${from}&to=${to}&sorting=first_release_date&order=${order}`
     );
-    return gamesIn7Days;
+    return allReleases;
   };
 }
