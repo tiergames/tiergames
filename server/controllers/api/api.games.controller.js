@@ -10,8 +10,9 @@ controller.games = async (req, res, next) => {
 
   req.query.genres ? totalFilter.push(`genres=[${req.query.genres}]`) : null
   req.query.platforms ? totalFilter.push(`platforms=[${req.query.platforms}]`) : null
-  if (sorting !== null) {
-    
+  
+  if (sorting !== null && sorting === "first_release_date") {
+    totalFilter.push(`first_release_date >= ${req.query.from} & first_release_date <= ${req.query.to}`)
   }
 
   try {
@@ -23,7 +24,7 @@ controller.games = async (req, res, next) => {
         'user-key': process.env.IGDB_API_KEY
       },
       data: `
-        fields name, cover, genres, popularity;
+        fields name, cover, genres, popularity, first_release_date;
         limit ${req.query.limit};
         offset ${req.query.offset};
         ${totalFilter.length > 0 ? `where ${totalFilter.join(" & ")};` : ''}
@@ -50,8 +51,8 @@ controller.gameInfo = async (req, res, next) => {
         fields alternative_names, category, collection,
           cover, dlcs, first_release_date, name, game_modes,
           genres, hypes, involved_companies, parent_game,
-          platforms, release_dates, status, storyline, summary,
-          url, version_title, videos, websites, total_rating, total_rating_count;
+          platforms, release_dates, status, storyline, summary, rating,
+          url, version_title, videos, websites, total_rating, total_rating_count, similar_games;
         where id = ${req.params.gameID};
       `
     })
