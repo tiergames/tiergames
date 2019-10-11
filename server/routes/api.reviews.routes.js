@@ -5,6 +5,10 @@ router.get("/", (req, res, next) => {
   controller.loadReviews(req, res, next)
 })
 
+router.get("/:reviewID", (req, res, next) => {
+  controller.loadReview(req, res, next)
+})
+
 router.post("/add", (req, res, next) => {
   controller.addReview(req, res, next)
 })

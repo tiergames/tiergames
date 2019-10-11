@@ -16,6 +16,17 @@ controller.loadReviews = async (req, res, next) => {
   }
 }
 
+controller.loadReview = async (req, res, next) => {
+  try {
+    let review = await Reviews.findById(req.params.reviewID)
+      .populate("author")
+    
+    res.status(200).json(review)
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
 controller.addReview = async (req, res, next) => {
   const {
     title, platform, review,
