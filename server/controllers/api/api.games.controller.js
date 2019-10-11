@@ -15,6 +15,10 @@ controller.games = async (req, res, next) => {
     totalFilter.push(`first_release_date >= ${req.query.from} & first_release_date <= ${req.query.to}`)
   }
 
+  if (sorting !== null && sorting === "rating") {
+    totalFilter.push(`rating != null`)
+  }
+
   try {
     let games = await axios({
       url: gamesURL,
@@ -24,7 +28,7 @@ controller.games = async (req, res, next) => {
         'user-key': process.env.IGDB_API_KEY
       },
       data: `
-        fields name, cover, genres, popularity, first_release_date;
+        fields name, cover, genres, popularity, first_release_date, rating;
         limit ${req.query.limit};
         offset ${req.query.offset};
         ${totalFilter.length > 0 ? `where ${totalFilter.join(" & ")};` : ''}

@@ -53,8 +53,8 @@ export default class App extends Component {
                   <Profile loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              {/* <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} /> */}
-              {/* <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} /> */}
+              <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} />
               <Route
                 exact
                 path="/games/coming-soon"
@@ -62,7 +62,7 @@ export default class App extends Component {
                   <ComingSoon loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              {/* <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} /> */}
+              <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
             <>

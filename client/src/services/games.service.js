@@ -12,6 +12,11 @@ export default class GamesService {
     return allGames;
   };
 
+  getBestRated = async (limit, offset, order) => {
+    let bestRatedGames = await this.service.get(`?offset=${offset}&limit=${limit}&sorting=rating&order=${order}`);
+    return bestRatedGames;
+  }
+
   getReleases = async (limit, offset, period, order) => {
     let from, to;
     let fromDays, toDays;

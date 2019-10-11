@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import BestRatedService from "./../../../services/best-rated.service";
+import GamesService from "./../../../services/games.service";
 
 export default class BestRated extends Component {
   constructor() {
     super();
-    this.service = new BestRatedService();
+    this.service = new GamesService();
 
     this.state = {
       bestRated: []
@@ -14,8 +14,8 @@ export default class BestRated extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Best-Rated Games</h1>
+      <section>
+        <h1>Best rated Games</h1>
         <ul className="best-rated-list">
           {this.state.bestRated.length > 0
             ? this.state.bestRated.map(game => {
@@ -25,17 +25,22 @@ export default class BestRated extends Component {
                   </li>
                 );
               })
-            : null}
+            : <p>Loading...</p>
+            }
         </ul>
-      </div>
+      </section>
     );
   }
 
+  async loadBestRatedGames(order = "desc") {
+    let bestRatedGames = await this.service.getBestRated(20, 0, order);
+
+    let newState = { ...this.state };
+    newState.bestRated = bestRatedGames.data;
+    this.setState(newState);
+  }
+
   async componentDidMount() {
-    let bestRatedGames = await this.service.bestRated();
-    this.setState({
-      ...this.state,
-      bestRated: bestRatedGames
-    });
+    this.loadBestRatedGames();
   }
 }
