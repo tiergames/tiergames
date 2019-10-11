@@ -31,6 +31,21 @@ controller.loadReview = async (req, res, next) => {
   }
 }
 
+controller.loadUserReviews = async (req, res, next) => {
+  try {
+    let userReviews = await Reviews.find({author: req.params.userID})
+      .populate("author")
+      .populate("platform")
+      .select({title: 1, platform: 1, author: 1, totalRating: 1, gameID: 1})
+      .skip(+req.query.offset)
+      .limit(+req.query.limit)
+      
+    res.status(200).json(userReviews)
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
 controller.loadGameReviews = async (req, res, next) => {
   try {
     let gameReviews = await Reviews
