@@ -9,6 +9,10 @@ router.get("/:reviewID", (req, res, next) => {
   controller.loadReview(req, res, next)
 })
 
+router.get("/relationated/:gameID/:currentReviewID", (req, res, next) => {
+  controller.loadRelationatedReviews(req, res, next)
+})
+
 router.post("/add", (req, res, next) => {
   controller.addReview(req, res, next)
 })

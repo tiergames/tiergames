@@ -27,6 +27,19 @@ controller.loadReview = async (req, res, next) => {
   }
 }
 
+controller.loadRelationatedReviews = async (req, res, next) => {
+  try {
+    let relationatedReviews = await Reviews.find({gameID: req.params.gameID, _id: {$ne: req.params.currentReviewID}})
+      .populate("author")
+      .skip(+req.query.offset)
+      .limit(+req.query.limit)
+    
+    res.status(200).json(relationatedReviews)
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
 controller.addReview = async (req, res, next) => {
   const {
     title, platform, review,
