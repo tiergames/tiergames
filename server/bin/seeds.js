@@ -7,6 +7,7 @@ require("dotenv").config()
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const platformsSeed = require("./seeds/platforms.seed")
 
 const bcryptSalt = 10;
 
@@ -19,30 +20,39 @@ mongoose
     console.error('Error connecting to mongo', err)
   });
 
-let users = [
-  {
-    username: "alice",
-    password: bcrypt.hashSync("alice", bcrypt.genSaltSync(bcryptSalt)),
-  },
-  {
-    username: "bob",
-    password: bcrypt.hashSync("bob", bcrypt.genSaltSync(bcryptSalt)),
-  }
-]
+// let users = [
+//   {
+//     username: "alice",
+//     password: bcrypt.hashSync("alice", bcrypt.genSaltSync(bcryptSalt)),
+//   },
+//   {
+//     username: "bob",
+//     password: bcrypt.hashSync("bob", bcrypt.genSaltSync(bcryptSalt)),
+//   }
+// ]
 
-User.deleteMany()
-.then(() => {
-  return User.create(users)
-})
-.then(usersCreated => {
-  console.log(`${usersCreated.length} users created with the following id:`);
-  console.log(usersCreated.map(u => u._id));
-})
-.then(() => {
-  // Close properly the connection to Mongoose
-  mongoose.disconnect()
-})
-.catch(err => {
-  mongoose.disconnect()
-  throw err
+// User.deleteMany()
+// .then(() => {
+//   return User.create(users)
+// })
+// .then(usersCreated => {
+//   console.log(`${usersCreated.length} users created with the following id:`);
+//   console.log(usersCreated.map(u => u._id));
+// })
+// .then(() => {
+//   // Close properly the connection to Mongoose
+//   mongoose.disconnect()
+// })
+// .catch(err => {
+//   mongoose.disconnect()
+//   throw err
+// })
+
+const executeSeeds = async () => {
+  await platformsSeed()
+}
+
+executeSeeds().then(() => {
+  console.log("All seeds executed")
+  process.exit(0)
 })

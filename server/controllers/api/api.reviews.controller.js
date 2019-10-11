@@ -1,5 +1,6 @@
 const controller = {}
 const Reviews = require("../../models/Reviews.model")
+const Platforms = require("./../../models/Platforms.model")
 
 controller.loadReviews = async (req, res, next) => {
   try {
@@ -19,10 +20,12 @@ controller.loadReviews = async (req, res, next) => {
 controller.loadReview = async (req, res, next) => {
   try {
     let review = await Reviews.findById(req.params.reviewID)
+      .populate("platform")
       .populate("author")
     
     res.status(200).json(review)
   } catch (error) {
+    console.log(error)
     res.status(500).json({err: error.message})
   }
 }
@@ -31,6 +34,23 @@ controller.deleteReview = async (req, res, next) => {
   try {
     let deletedReview = await Reviews.findByIdAndDelete(req.params.reviewID)
     res.status(200).json({message: "Review deleted successfully"})
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
+controller.reviewsByPlatform = async (req, res, next) => {
+  try {
+    let reviewsByPlatform = await Reviews
+      .find()
+      .populate("platform")
+      // .populate("author")
+      .skip(req.query.offset)
+      .limit(req.query.limit)
+    
+    reviewsByPlatform = reviewsByPlatform.filter(review => review.platform.id === +req.params.platformID)
+      
+    res.status(200).json(reviewsByPlatform)
   } catch (error) {
     res.status(500).json({err: error.message})
   }

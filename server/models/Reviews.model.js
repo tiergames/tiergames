@@ -3,8 +3,9 @@ const Schema = mongoose.Schema
 
 const reviewsSchema = new Schema({
   title: String,
-  platform: String,
+  platform: { type: mongoose.Schema.Types.ObjectId, ref: 'Platforms' },
   review: String,
+  likes: {type: Number, default: 0},
   history: { content: String, rating: Number },
   graphics: { content: String, rating: Number },
   sound: { content: String, rating: Number },
