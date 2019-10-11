@@ -7,6 +7,7 @@ controller.loadReviews = async (req, res, next) => {
     let reviews = await Reviews
       .find()
       .populate("author")
+      .populate("platform")
       .select({title: 1, platform: 1, author: 1, totalRating: 1, gameID: 1})
       .skip(+req.query.offset)
       .limit(+req.query.limit)
@@ -60,8 +61,11 @@ controller.loadRelationatedReviews = async (req, res, next) => {
   try {
     let relationatedReviews = await Reviews.find({gameID: req.params.gameID, _id: {$ne: req.params.currentReviewID}})
       .populate("author")
+      .populate("platform")
       .skip(+req.query.offset)
       .limit(+req.query.limit)
+
+    // relationatedReviews = relationatedReviews.filter(review => review.platform.id)
     
     res.status(200).json(relationatedReviews)
   } catch (error) {
