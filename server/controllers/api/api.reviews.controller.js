@@ -12,7 +12,7 @@ controller.loadReviews = async (req, res, next) => {
       .skip(+req.query.offset)
       .limit(+req.query.limit)
 
-      res.status(200).json({reviews})
+      res.status(200).json(reviews)
   } catch (err) {
     res.status(500).json({err: err.message})
   }
