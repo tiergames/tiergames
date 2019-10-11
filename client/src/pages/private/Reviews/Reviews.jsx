@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReviewsService from './../../../services/reviews.service'
+import ReviewTile from '../../../components/ReviewTile/ReviewTile'
 
 export default class Reviews extends Component {
   constructor(props) {
@@ -42,15 +43,7 @@ export default class Reviews extends Component {
           {this.state.reviews.length > 0
             ?
               this.state.reviews.map(review => {
-                return (
-                  <li key={review._id}>
-                    {review.totalRating} - 
-                    {review.gameID} - 
-                    {review.title} - 
-                    {review.author.username} - 
-                    {review.platform.name}
-                  </li>
-                )
+                return <ReviewTile key={review._id} gameTile={review} />
               })
             : null
           }

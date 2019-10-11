@@ -3,6 +3,7 @@ const axios = require("axios")
 
 const controller = {}
 const gamesURL = 'https://api-v3.igdb.com/games'
+const coversURL = 'https://api-v3.igdb.com/covers'
 
 controller.games = async (req, res, next) => {
   let totalFilter = []
@@ -52,6 +53,51 @@ controller.gameInfo = async (req, res, next) => {
     res.status(200).json(gameInfo.data)
   } catch (err) {
     res.status(500).json({err: err.message})
+  }
+}
+
+controller.getGameName = async (req, res, next) => {
+  try {
+    let gameName = await axios({
+      url: gamesURL,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'user-key': process.env.IGDB_API_KEY
+      },
+      data: `
+        fields name;
+        where id = ${req.params.gameID};
+      `
+    })
+    
+    res.status(200).json(gameName.data[0])
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
+controller.getGameCover = async (req, res, next) => {
+  console.log("EL GAMEID", req.params.gameID)
+  try {
+    let gameCoverUrl = await axios({
+      url: coversURL,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'user-key': process.env.IGDB_API_KEY
+      },
+      data: `
+        fields url;
+        where game = ${req.params.gameID};
+      `
+    })
+
+    console.log("THE GAME COVER URL", gameCoverUrl.data[0].url)
+
+    res.status(200).json(gameCoverUrl.data[0].url)
+  } catch (error) {
+    res.status(500).json({err: error.message})
   }
 }
 
