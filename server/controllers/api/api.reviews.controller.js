@@ -31,6 +31,22 @@ controller.loadReview = async (req, res, next) => {
   }
 }
 
+controller.loadGameReviews = async (req, res, next) => {
+  try {
+    let gameReviews = await Reviews
+      .find({gameID: req.params.gameID})
+      .populate("author")
+      .populate("platform")
+      .select({title: 1, platform: 1, author: 1, totalRating: 1, gameID: 1})
+      .skip(+req.query.offset)
+      .limit(+req.query.limit)
+      
+    res.status(200).json(gameReviews)
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
 controller.deleteReview = async (req, res, next) => {
   try {
     let deletedReview = await Reviews.findByIdAndDelete(req.params.reviewID)
