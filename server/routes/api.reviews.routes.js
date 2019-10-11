@@ -1,8 +1,11 @@
 const router = require("express").Router()
 const controller = require("./../controllers/api/api.reviews.controller")
 
+router.get("/", (req, res, next) => {
+  controller.loadReviews(req, res, next)
+})
+
 router.post("/add", (req, res, next) => {
-  // res.status(200).json({response: 'conected', body: req.body})
   controller.addReview(req, res, next)
 })
 

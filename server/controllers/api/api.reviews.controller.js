@@ -1,6 +1,21 @@
 const controller = {}
 const Reviews = require("../../models/Reviews.model")
 
+controller.loadReviews = async (req, res, next) => {
+  try {
+    let reviews = await Reviews
+      .find()
+      .populate("author")
+      .select({title: 1, platform: 1, author: 1, totalRating: 1, gameID: 1})
+      .skip(+req.query.offset)
+      .limit(+req.query.limit)
+
+      res.status(200).json({reviews})
+  } catch (err) {
+    res.status(500).json({err: err.message})
+  }
+}
+
 controller.addReview = async (req, res, next) => {
   const {
     title, platform, review,

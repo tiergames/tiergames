@@ -10,7 +10,7 @@ const reviewsSchema = new Schema({
   sound: { content: String, rating: Number },
   gameplay: { content: String, rating: Number },
   totalRating: Number,
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   pros: String,
   cons: String,
   gameID: Number,
