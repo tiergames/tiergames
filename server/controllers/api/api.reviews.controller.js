@@ -27,6 +27,15 @@ controller.loadReview = async (req, res, next) => {
   }
 }
 
+controller.deleteReview = async (req, res, next) => {
+  try {
+    let deletedReview = await Reviews.findByIdAndDelete(req.params.reviewID)
+    res.status(200).json({message: "Review deleted successfully"})
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
+}
+
 controller.loadRelationatedReviews = async (req, res, next) => {
   try {
     let relationatedReviews = await Reviews.find({gameID: req.params.gameID, _id: {$ne: req.params.currentReviewID}})
