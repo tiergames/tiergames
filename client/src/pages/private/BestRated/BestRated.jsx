@@ -21,7 +21,7 @@ export default class BestRated extends Component {
             ? this.state.bestRated.map(game => {
                 return (
                   <li key={game.id}>
-                    {game.name} ({game.rating})
+                    {game.name} ({((game.rating * 5) / 100).toFixed(1)})
                   </li>
                 );
               })
