@@ -2,23 +2,53 @@ const mongoose = require('mongoose');
 const Schema   = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: String,
-  password: String,
-  campus: {
+  username: {
     type: String,
-    enum: ["Madrid", "Barcelona", "Miami", "Paris", "Berlin", "Amsterdam", "México", "Sao Paulo", "Lisbon"]
+    unique: true,
+    required: true
   },
-  couse: {
+  email: {
+    type: String, 
+    required: true
+  },
+  password: {
+    type: String, 
+    required: true
+  },
+  status: {
     type: String,
-    enum: ["WebDev", "UX/UI", "Data Analytics"]
+    enum: ["Active", "Pending"],
+    default: "Pending"
   },
-  image: String
-}, {
-  timestamps: {
-    createdAt: 'created_at',
-    updatedAt: 'updated_at'
+  passportProvider: {
+    type: String,
+    enum: ["Google", "Facebook", "Twitch", "Steam", "Local"],
+    default: "Local"
+  },
+  googleID: String,
+  facebookID: String,
+  twitchID: String,
+  steamID: String,
+  confirmationToken: String,
+  resetPasswordToken: {
+    type: String,
+    default: null
+  },
+  resetPasswordExpires: {
+    type: String,
+    default: null
   }
+}, {
+  timestamps: true
 });
+
+// TODO: Another option
+// userSchema.statics.findUserByResetPasswordToken = function(resetPasswordToken) {
+//   return this.findOne({
+//     resetPasswordToken: resetPasswordToken,
+//     resetPasswordExpires: { $gt: Date.now() }
+//   });
+// };
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

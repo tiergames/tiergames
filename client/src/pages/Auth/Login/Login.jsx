@@ -33,6 +33,8 @@ class Login extends Component {
             <input type="submit" value="Login"/>
           </div>
         </form>
+
+        <h4>{this.state.error ? 'Error' : ''}</h4>
       </section>
     )
   }

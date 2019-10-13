@@ -6,6 +6,9 @@ import AuthService from "./services/auth.service";
 import Home from "./pages/Public/Home/Home";
 import Login from "./pages/Auth/Login/Login";
 import Signup from "./pages/Auth/Signup/Signup";
+import AccountConfirm from "./pages/Auth/AccountConfirm/AccountConfirm"
+import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword/ResetPassword";
 import Error404 from "./pages/errors/Error404/Error404";
 import Profile from "./pages/private/Profile/Profile";
 import Games from "./pages/private/Games/Games";
@@ -24,6 +27,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.authService = new AuthService();
+
     this.state = {
       loggedInUser: null
     };
@@ -75,6 +79,26 @@ export default class App extends Component {
                 exact
                 path="/signup"
                 component={() => <Signup setUser={this.setUser} />}
+              />
+              <Route
+                exact
+                path="/forgot-password"
+                component={ForgotPassword}
+              />
+              <Route
+                exact
+                path="/reset-password/:resetPasswordToken"
+                component={ResetPassword}
+              />
+              <Route
+                exact
+                path="/update-password/:resetPasswordToken"
+                component={ResetPassword}
+              />
+              <Route
+                exact
+                path="/confirm/:confirmationToken"
+                component={AccountConfirm}
               />
             </>
           )}
