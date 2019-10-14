@@ -26,6 +26,7 @@ export default class GamesService {
     let gameCoverUrl = await this.service.get(`/game-cover/${gameID}`)
     return gameCoverUrl.data
   }
+
   getReleases = async (limit, offset, period, order) => {
     let from, to;
     let fromDays, toDays;
@@ -47,4 +48,9 @@ export default class GamesService {
     );
     return allReleases;
   };
+
+  getGameData = async (gameID) => {
+    let gameData = await this.service.get(`/${gameID}`)
+    return gameData.data
+  }
 }
