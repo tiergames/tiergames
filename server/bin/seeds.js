@@ -8,11 +8,12 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const platformsSeed = require("./seeds/platforms.seed")
+const genresSeed = require("./seeds/genres.seed")
 
 const bcryptSalt = 10;
 
 mongoose
-  .connect(`mongodb://localhost/${process.env.DB}`, {useNewUrlParser: true})
+  .connect(`mongodb://localhost/tiergames`, {useNewUrlParser: true})
   .then(x => {
     console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
   })
@@ -50,6 +51,7 @@ mongoose
 
 const executeSeeds = async () => {
   await platformsSeed()
+  await genresSeed()
 }
 
 executeSeeds().then(() => {

@@ -24,7 +24,6 @@ export default class GamesService {
 
   getGameCover = async (gameID) => {
     let gameCoverUrl = await this.service.get(`/game-cover/${gameID}`)
-    console.log("SERVICE URL", gameCoverUrl)
     return gameCoverUrl.data
   }
   getReleases = async (limit, offset, period, order) => {

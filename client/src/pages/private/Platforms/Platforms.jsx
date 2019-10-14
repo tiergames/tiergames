@@ -3,12 +3,16 @@ import {Link} from 'react-router-dom'
 import PlatformsService from './../../../services/platforms.service'
 
 export default class Platform extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.service = new PlatformsService()
+    this._isMounted = false
     
     this.state = {
-      platforms: []
+      platforms: props.platforms.platforms,
+      platformsFiltered: props.platforms.platforms,
+      isLoadingPlatforms: props.platforms.isLoadingPlatforms,
+      currentPlatform: props.platforms.currentPlatform
     }
   }
 
@@ -18,10 +22,10 @@ export default class Platform extends Component {
         <h1>Platforms</h1>
         <ul className="platforms-list">
         {
-          (this.state.platforms.length > 0)
+          (this.state.platformsFiltered.length > 0)
           ? (
-            this.state.platforms.map(platform => {
-              return <li key={platform.id}>{platform.name}</li>
+            this.state.platformsFiltered.map(platform => {
+              return <li key={platform._id}>{platform.name}</li>
             })
           )
           : null
@@ -33,9 +37,11 @@ export default class Platform extends Component {
 
   async componentDidMount() {
     let allPlatforms = await this.service.platforms()
-    this.setState({
-      ...this.state,
-      platforms: allPlatforms
-    })
+    if (this._isMounted) {
+      this.setState({
+        ...this.state,
+        platforms: allPlatforms
+      })
+    }
   }
 }

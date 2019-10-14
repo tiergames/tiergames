@@ -7,23 +7,24 @@ import PlatformsService from './../../../services/platforms.service'
 
 export default class Games extends Component {
   constructor(props) {
-    super()
+    super(props)
+
     this.gamesService = new GameService()
     this.genresService = new GenresService()
     this.platformsService = new PlatformsService()
+
     this.state = {
       pagination: {
         limit: 10,
         offset: 0,
         currentPage: 0,
       },
+      genres: props.genres,
+      platforms: props.platforms,
       games: [],
       gamesFiltered: [],
       isLoadingGames: true,
-      genres: [],
       isLoadingGenres: true,
-      platforms: [],
-      isLoadingPlatforms: true,
     }
   }
   
@@ -39,8 +40,6 @@ export default class Games extends Component {
 
   componentDidMount() {
     this.loadGames()
-    this.loadPlatforms()
-    this.loadGenres()
   }
 
   async loadGames() {
@@ -49,24 +48,6 @@ export default class Games extends Component {
       ...this.state,
       games: allGames.data,
       isLoadingGames: false
-    })
-  }
-
-  async loadGenres() {
-    let allGenres = await this.genresService.getAllGenres()
-    this.setState({
-      ...this.state,
-      genres: allGenres.data,
-      isLoadingGenres: false
-    })
-  }
-
-  async loadPlatforms() {
-    let allPlatforms = await this.platformsService.platforms()
-    this.setState({
-      ...this.state,
-      isLoadingPlatforms: false,
-      platforms: allPlatforms
     })
   }
 
@@ -97,12 +78,12 @@ export default class Games extends Component {
     return (
       <section>
         <h2>Genres</h2>
-        {this.state.isLoadingGenres
+        {this.state.genres.isLoadingGenres
           ?
             <p>Loading genres...</p>
           :
             <form className="filter games-filter">
-              {this.state.genres.map(genre => {
+              {this.state.genres.genresFiltered.map(genre => {
                 return (
                   <div className="field field-checkbox" key={genre.id}>
                     <input type="checkbox" name="genre" id={genre.id}/>
@@ -123,16 +104,16 @@ export default class Games extends Component {
     return (
       <section>
         <h2>Platforms</h2>
-          {this.state.isLoadingPlatforms
+          {this.state.platforms.isLoadingPlatforms
             ?
               <p>Loading platforms...</p>
             :
               <form className="filter filter-platforms">
-                {this.state.platforms.map(platform => {
+                {this.state.platforms.platformsFiltered.map(platform => {
                   return (
-                    <div className="field field-checkbox" key={platform.id}>
-                      <input type="checkbox" name="platform" id={platform.id}/>
-                      <label htmlFor={platform.id} className="checkbox-label">{platform.name}</label>
+                    <div className="field field-checkbox" key={platform._id}>
+                      <input type="checkbox" name="platform" id={platform._id}/>
+                      <label htmlFor={platform._id} className="checkbox-label">{platform.name}</label>
                     </div>
                   )
                 })}
