@@ -3,7 +3,7 @@ import axios from "axios"
 export default class PlatformsService {
   constructor() {
     this.service = axios.create({
-      baseURL: "http://localhost:3001/api/platforms"
+      baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}/api/platforms`
     })
   }
 

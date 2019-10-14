@@ -14,24 +14,6 @@ export default class PlatformTag extends Component {
   render() {
     return (
       <>
-
-<ul className="platforms-list">
-  {
-    this.state.platforms.map(platform => {
-      return <li key={platform._id}>{platform.name}</li>
-    })
-  }
-        {/* {
-          (this.state.platformsFiltered.length > 0)
-          ? (
-            this.state.platformsFiltered.map(platform => {
-              return <li key={platform._id}>{platform.name}</li>
-            })
-          )
-          : null
-        } */}
-        </ul>
-
         <div className="field">
               <input
                 type={this.props.type}

@@ -58,6 +58,8 @@ typings/
 .env
 .env.prod
 .env.dev
+client/.env.prod
+client/.env.dev
 
 # next.js build output
 .next
