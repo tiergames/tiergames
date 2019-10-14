@@ -1,28 +1,27 @@
 import React, { Component } from 'react'
 import ReviewsService from './../../../services/reviews.service'
 import ReviewTile from '../../../components/ReviewTile/ReviewTile'
+import { Link } from 'react-router-dom'
 
 export default class Reviews extends Component {
   constructor(props) {
-    super()
+    super(props)
     this.reviewsService = new ReviewsService()
     this.state = {
-      reviews: [],
-      isLoadingReviews: true,
+      reviews: props.reviews
     }
   }
   
   render() {
     return (
       <div>
-        {console.log("Rendering", this.state.reviews)}
         {this.renderReviews()}
       </div>
     )
   }
 
   componentDidMount() {
-    this.loadReviews(0, 10)
+    // this.loadReviews(0, 10)
   }
 
   async loadReviews(offset, limit) {
@@ -36,23 +35,24 @@ export default class Reviews extends Component {
   }
 
   renderReviews() {
+    console.log("THE REVIEWS", this.state)
     return (
       <section>
         <h2>Reviews</h2>
         <ul>
-          {this.state.reviews.length > 0
+          {this.state.reviews.reviewsFiltered.length > 0
             ?
-              this.state.reviews.map(review => {
+              this.state.reviews.reviewsFiltered.map(review => {
                 return <ReviewTile key={review._id} gameTile={review} />
               })
             : null
           }
         </ul>
-        {this.state.isLoadingReviews
+        {this.state.reviews.isLoadingReviews
           ?
             <p>Loading...</p>
           :
-            <p>Load more</p>
+            <Link to={"#"} onClick={this.props.handleLoadMore}>Load more</Link>
         }
       </section>
     )

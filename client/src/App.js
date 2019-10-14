@@ -53,6 +53,17 @@ export default class App extends Component {
         genres: [],
         genresFiltered: [],
         currentGenre: null
+      },
+      reviews: {
+        isLoadingReviews: true,
+        reviews: [],
+        reviewsFiltered: [],
+        currentReviewFilter: null,
+        pagination: {
+          currentPage: 0,
+          offset: 0,
+          limit: 1
+        }
       }
     };
     this.fetchUser();
@@ -90,7 +101,7 @@ export default class App extends Component {
                   <ComingSoon loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              <Route exact path="/reviews" component={() => <Reviews platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
@@ -136,6 +147,7 @@ export default class App extends Component {
   componentDidMount() {
     this.loadPlatforms()
     this.loadGenres()
+    this.loadReviews()
   }
 
   async loadPlatforms() {
@@ -160,6 +172,20 @@ export default class App extends Component {
     this.setState({
       ...this.state,
       genres: newGenres
+    })
+  }
+
+  async loadReviews() {
+    let reviews = await this.reviewsService.getReviews(this.state.reviews.pagination.offset, this.state.reviews.pagination.limit)
+    let newReviews = {...this.state.reviews}
+    newReviews.isLoadingReviews = false
+    newReviews.reviews = newReviews.reviews.concat(reviews)
+    newReviews.reviewsFiltered = newReviews.reviewsFiltered.concat(reviews)
+    newReviews.pagination.currentPage += 1
+    newReviews.pagination.offset = newReviews.pagination.limit * this.state.reviews.pagination.currentPage
+    this.setState({
+      ...this.state,
+      reviews: newReviews
     })
   }
 
