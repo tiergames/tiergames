@@ -21,10 +21,7 @@ export default class Games extends Component {
       },
       genres: props.genres,
       platforms: props.platforms,
-      games: [],
-      gamesFiltered: [],
-      isLoadingGames: true,
-      isLoadingGenres: true,
+      games: props.games
     }
   }
   
@@ -38,18 +35,7 @@ export default class Games extends Component {
     )
   }
 
-  componentDidMount() {
-    this.loadGames()
-  }
-
-  async loadGames() {
-    let allGames = await this.gamesService.getGames(this.state.pagination.limit, this.state.pagination.offset)
-    this.setState({
-      ...this.state,
-      games: allGames.data,
-      isLoadingGames: false
-    })
-  }
+  componentDidMount() {}
 
   async loadNextGames() {
     this.setState({
@@ -75,6 +61,9 @@ export default class Games extends Component {
   }
 
   renderGenres() {
+
+    console.log("STATE DEL GAMES.JSX", this.state);
+    
     return (
       <section>
         <h2>Genres</h2>
@@ -128,15 +117,15 @@ export default class Games extends Component {
       <section>
         <h2>Games</h2>
         <ul className="games-list">
-          {this.state.games.length > 0
+          {this.state.games.games.length > 0
             ? 
-              this.state.games.map(game => {
+              this.state.games.games.map(game => {
                 return <li key={game.id}>{game.name}</li>
               })
             : null
           }
         </ul>
-        {this.state.isLoadingGames
+        {this.state.games.isLoadingGames
           ?
             <Link to={"#"}>
               Loading...

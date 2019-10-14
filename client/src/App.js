@@ -26,6 +26,7 @@ import Reviews from "./pages/private/Reviews/Reviews";
 import ReviewsService from "./services/reviews.service";
 import PlatformsService from "./services/platforms.service";
 import GenresService from "./services/genres.service";
+import GamesService from "./services/games.service";
 
 
 // Styles
@@ -39,6 +40,7 @@ export default class App extends Component {
     this.reviewsService = new ReviewsService()
     this.platformsService = new PlatformsService()
     this.genresService = new GenresService()
+    this.gamesService = new GamesService()
 
     this.state = {
       loggedInUser: null,
@@ -53,6 +55,12 @@ export default class App extends Component {
         genres: [],
         genresFiltered: [],
         currentGenre: null
+      },
+      games: {
+        isLoadingGames: true,
+        games: [],
+        gamesFiltered: [],
+        currentGame: null
       },
       reviews: {
         isLoadingReviews: true,
@@ -82,7 +90,7 @@ export default class App extends Component {
                 exact
                 path="/games"
                 component={() => (
-                  <Games genres={this.state.genres} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />
+                  <Games genres={this.state.genres} platforms={this.state.platforms} games={this.state.games} loggedInUser={this.state.loggedInUser} />
                 )}
               />
               <Route
@@ -148,6 +156,7 @@ export default class App extends Component {
     this.loadPlatforms()
     this.loadGenres()
     this.loadReviews()
+    this.loadGames()
   }
 
   async loadPlatforms() {
@@ -186,6 +195,20 @@ export default class App extends Component {
     this.setState({
       ...this.state,
       reviews: newReviews
+    })
+  }
+
+  async loadGames() {
+    const games = await this.gamesService.getGames(10, 0)
+
+    let newGames = {...this.state}
+    newGames.isLoadingGames = false
+    newGames.games = games.data
+    newGames.gamesFiltered = games.data
+
+    this.setState({
+      ...this.state,
+      games: newGames
     })
   }
 
