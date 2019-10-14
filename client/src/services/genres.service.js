@@ -3,7 +3,7 @@ import axios from 'axios'
 export default class GenresService {
   constructor() {
     this.service = axios.create({
-      baseURL: "http://localhost:3001/api/genres"
+      baseURL: `${process.env.REACT_APP_SERVER_BASE_URL}/api/genres`
     })
   }
 
