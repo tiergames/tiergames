@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const passport = require("passport");
 const router = express.Router();
@@ -35,6 +36,9 @@ router.post("/login", (req, res, next) => {
 });
 
 router.post("/signup", (req, res, next) => {
+  // TODO: Create username based on email + random bytes
+  // TODO: Add a name field to Model so we can store it in case we need it
+  // TODO: Email needs to be unique (if not forgot password and other may not work well)
   const { username, email, password } = req.body;
 
   if (!username || !password || !email) {
@@ -87,7 +91,7 @@ router.get("/currentuser", (req, res, next) => {
   if (req.user) {
     res.status(200).json(req.user);
   } else {
-    res.status(404).json({message: "User not found / logged in"});
+    res.status(404).json({ message: "User not found / logged in" });
   }
 });
 
@@ -128,7 +132,7 @@ router.post("/forgot-password", (req, res, next) => {
           message: "Something went wrong"
         });
       }
-
+      // TODO: Allow to reset password if provider is different than LOCAL
       if (user.passportProvider !== "Local") {
         res.status(404).json({
           status: "FORGOT-PASSWORD_STRATEGY_IS_NOT_LOCAL",
@@ -171,12 +175,12 @@ router.post("/forgot-password", (req, res, next) => {
     });
 });
 
-const findUserByResetPasswordToken = (resetPasswordToken) => {
+const findUserByResetPasswordToken = resetPasswordToken => {
   return User.findOne({
     resetPasswordToken: resetPasswordToken,
     resetPasswordExpires: { $gt: Date.now() }
-  })
-}
+  });
+};
 
 router.post("/reset-password/:resetPasswordToken", (req, res, next) => {
   const { resetPasswordToken } = req.params;
@@ -229,7 +233,7 @@ router.post("/update-password/:resetPasswordToken", (req, res, next) => {
       user.password = hashedPassword;
       user.resetPasswordToken = null;
       user.resetPasswordExpires = null;
-      user.save()
+      user.save();
 
       res.status(200).json({
         status: "UPDATE-PASSWORD_SUCCEDED",
@@ -248,5 +252,41 @@ router.get("/logout", (req, res) => {
   req.logout();
   res.status(200).json({ message: "logged out" });
 });
+
+// Social
+
+router.get(
+  "/facebook",
+  passport.authenticate("facebook", {
+    scope: ["email"]
+  })
+);
+
+router.get(
+  "/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: `${process.env.HOST_LOCAL}`,
+    failureRedirect: `${process.env.HOST_LOCAL}/login`
+  })
+);
+
+// TODO: Google creates a new user account everytime the user logs in
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  })
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: `${process.env.HOST_LOCAL}`,
+    failureRedirect: `${process.env.HOST_LOCAL}/login`
+  })
+);
 
 module.exports = router;
