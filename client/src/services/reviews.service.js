@@ -17,6 +17,11 @@ export default class ReviewsService {
     return reviewsPerPlatform
   }
 
+  getReviewsPerGame = async () => {
+    let reviewsPerGame = await this.service.get(`/game/${gameID}`)
+    return reviewsPerGame.data
+  }
+
   createReview = async (reviewData, userID) => {
     console.log("REVIEW DATA", reviewData)
     console.log("AUTHOR", userID)
