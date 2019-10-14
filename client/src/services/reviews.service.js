@@ -16,4 +16,9 @@ export default class ReviewsService {
     let reviewsPerPlatform = await this.service.get(`/${platformID}`)
     return reviewsPerPlatform
   }
+
+  createReview = async (reviewData, userID) => {
+    console.log("REVIEW DATA", reviewData)
+    console.log("AUTHOR", userID)
+  }
 }

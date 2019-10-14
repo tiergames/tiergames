@@ -16,6 +16,7 @@ export default class Reviews extends Component {
   render() {
     return (
       <div>
+        {this.renderNewReviewLink()}
         {this.renderReviews()}
       </div>
     );
@@ -33,6 +34,10 @@ export default class Reviews extends Component {
       reviews: reviews,
       isLoadingReviews: false
     });
+  }
+
+  renderNewReviewLink() {
+    return <Link to={"/reviews/create"}>Create review</Link>
   }
 
   renderReviews() {

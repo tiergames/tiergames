@@ -15,6 +15,7 @@ import Profile from "./pages/private/Profile/Profile";
 import Games from "./pages/private/Games/Games";
 import Genres from "./pages/private/Genres/Genres";
 import Platforms from "./pages/private/Platforms/Platforms";
+import CreateReview from "./pages/private/Reviews/CreateReview/CreateReview";
 
 // Components
 import Navbar from "./components/Navbar/Navbar";
@@ -102,6 +103,7 @@ export default class App extends Component {
                 )}
               />
               <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/reviews/create" component={() => <CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
