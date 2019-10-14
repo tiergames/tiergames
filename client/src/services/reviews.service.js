@@ -7,6 +7,11 @@ export default class ReviewsService {
     })
   }
 
+  getReviewData = async (reviewID) => {
+    let reviewData = await this.service.get(`/${reviewID}`)
+    return reviewData.data
+  }
+
   getReviews = async (offset, limit) => {
     let reviews = await this.service.get(`?limit=${limit}&offset=${offset}`)
     return reviews.data
