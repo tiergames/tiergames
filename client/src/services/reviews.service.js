@@ -17,6 +17,11 @@ export default class ReviewsService {
     return reviews.data
   }
 
+  getReviewsPerUser = async (userID) => {
+    let reviewsPerUser = await this.service.get(`/user/${userID}`)
+    return reviewsPerUser.data
+  }
+
   getReviewsPerPlatform = async (offset, limit, platformID) => {
     let reviewsPerPlatform = await this.service.get(`/${platformID}`)
     return reviewsPerPlatform
