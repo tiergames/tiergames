@@ -27,6 +27,11 @@ export default class ReviewsService {
     return deletedReview.data
   }
 
+  getRelationatedReviews = async (gameID, currentReviewID) => {
+    let relationatedReviews = await this.service.get(`/relationated/${gameID}/${currentReviewID}`)
+    return relationatedReviews.data
+  }
+
   createReview = async (reviewData, userID) => {
     console.log("REVIEW DATA", reviewData)
     console.log("AUTHOR", userID)
