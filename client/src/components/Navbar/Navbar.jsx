@@ -14,15 +14,15 @@ export default class Navbar extends Component {
     return (
       <nav className="navbar">
         <ul className="menu">
-          <li className="menu-item"><Link className="menu-link" to={"/"}>Home</Link></li>
           {!this.state.loggedInUser
             ? 
-              <>
+            <>
                 <li className="menu-item"><Link className="menu-link" to={"/login"}>Login</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/signup"}>Signup</Link></li>
               </>
             :
-              <>
+            <>
+                <li className="menu-item"><Link className="menu-link" to={"/"}>Home</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/games"}>Games</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/reviews"}>Reviews</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/profile"}>Profile</Link></li>

@@ -21,8 +21,8 @@ class Login extends Component {
           <p>Don't you have an account? <Link to={"/signup"}>Join us</Link></p>
 
           {/* TODO: Check routes */}
-          <a href={`http://localhost:3001/api/auth/facebook`}>Login with Facebook</a>
-          <a href={`http://localhost:3001/api/auth/google`}>Login With Google</a>
+          <a href={`${process.env.REACT_APP_SERVER_BASE_URL}/api/auth/facebook`}>Login with Facebook</a>
+          <a href={`${process.env.REACT_APP_SERVER_BASE_URL}/api/auth/google`}>Login With Google</a>
 
         </div>
         <form onSubmit={e => this.handleFormSubmit(e)}>

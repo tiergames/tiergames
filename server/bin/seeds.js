@@ -3,22 +3,30 @@
 // To execute this seed, run from the root of the project
 // $ node bin/seeds.js
 
-require("dotenv").config()
+require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const platformsSeed = require("./seeds/platforms.seed")
-const genresSeed = require("./seeds/genres.seed")
+const platformsSeed = require("./seeds/platforms.seed");
+const genresSeed = require("./seeds/genres.seed");
 
 const bcryptSalt = 10;
 
+console.log(process.env.DB);
+
 mongoose
-  .connect(`mongodb://localhost/tiergames`, {useNewUrlParser: true})
+  // .connect(`mongodb://localhost/tiergames`, {useNewUrlParser: true})
+  .connect(`${process.env.DB}`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
   .then(x => {
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
+    console.log(
+      `Connected to Mongo! Database name: "${x.connections[0].name}"`
+    );
   })
   .catch(err => {
-    console.error('Error connecting to mongo', err)
+    console.error("Error connecting to mongo", err);
   });
 
 // let users = [
@@ -50,11 +58,11 @@ mongoose
 // })
 
 const executeSeeds = async () => {
-  await platformsSeed()
-  await genresSeed()
-}
+  await platformsSeed();
+  await genresSeed();
+};
 
 executeSeeds().then(() => {
-  console.log("All seeds executed")
-  process.exit(0)
-})
+  console.log("All seeds executed");
+  process.exit(0);
+});
