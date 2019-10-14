@@ -76,11 +76,14 @@ controller.reviewsByPlatform = async (req, res, next) => {
     let reviewsByPlatform = await Reviews
       .find()
       .populate("platform")
-      // .populate("author")
-      .skip(req.query.offset)
-      .limit(req.query.limit)
-    
-    reviewsByPlatform = reviewsByPlatform.filter(review => review.platform.id === +req.params.platformID)
+      .find({
+        platform: {
+          _id: req.params.platformID
+        }
+      })
+      .populate("author")
+      .skip(+req.query.offset)
+      .limit(+req.query.limit)
       
     res.status(200).json(reviewsByPlatform)
   } catch (error) {
