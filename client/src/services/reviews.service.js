@@ -17,9 +17,14 @@ export default class ReviewsService {
     return reviewsPerPlatform
   }
 
-  getReviewsPerGame = async () => {
+  getReviewsPerGame = async (gameID) => {
     let reviewsPerGame = await this.service.get(`/game/${gameID}`)
     return reviewsPerGame.data
+  }
+
+  deleteReview = async (reviewID) => {
+    let deletedReview = await this.service.delete(`/delete/${reviewID}`)
+    return deletedReview.data
   }
 
   createReview = async (reviewData, userID) => {
