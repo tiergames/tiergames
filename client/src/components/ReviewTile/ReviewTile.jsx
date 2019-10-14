@@ -15,7 +15,6 @@ export default class ReviewTile extends Component {
     return (
       <article className="review-title" style={{"backgroundImage": `url(http:${this.state.gameTile.coverUrl})`}}>
         <div>
-          {console.log("THE GOOD STATE", this.state)}
           <p>{this.state.gameTile.totalRating}</p>
           <h2>{this.state.gameTile.title}</h2>
           {this.state.isLoadingGameTitle
@@ -24,7 +23,6 @@ export default class ReviewTile extends Component {
             :
               <p>{this.state.gameTile.name}</p>
           }
-          <p>{this.state.gameTile.platform.name}</p>
           <p>{this.state.gameTile.author.username}</p>
         </div>
       </article>
@@ -50,7 +48,6 @@ export default class ReviewTile extends Component {
   async loadGameCover () {
     let gameCoverUrl = await this.gamesService.getGameCover(this.state.gameTile.gameID)
     gameCoverUrl = gameCoverUrl.replace('thumb', 'screenshot_med')
-    console.log("Reemplazado", gameCoverUrl)
     let newGameTile = {...this.state.gameTile}
     newGameTile.coverUrl = gameCoverUrl
     this.setState({

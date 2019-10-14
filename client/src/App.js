@@ -22,16 +22,38 @@ import BestRated from "./pages/private/BestRated/BestRated";
 import ComingSoon from "./pages/private/ComingSoon/ComingSoon";
 import Reviews from "./pages/private/Reviews/Reviews";
 
+// Services
+import ReviewsService from "./services/reviews.service";
+import PlatformsService from "./services/platforms.service";
+import GenresService from "./services/genres.service";
+
+
 // Styles
 // import "./scss/main.scss"
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+
     this.authService = new AuthService();
+    this.reviewsService = new ReviewsService()
+    this.platformsService = new PlatformsService()
+    this.genresService = new GenresService()
 
     this.state = {
-      loggedInUser: null
+      loggedInUser: null,
+      platforms: {
+        isLoadingPlatforms: true,
+        platforms: [],
+        platformsFiltered: [],
+        currentPlatform: null
+      },
+      genres: {
+        isLoadingGenres: true,
+        genres: [],
+        genresFiltered: [],
+        currentGenre: null
+      }
     };
     this.fetchUser();
   }
@@ -49,7 +71,7 @@ export default class App extends Component {
                 exact
                 path="/games"
                 component={() => (
-                  <Games loggedInUser={this.state.loggedInUser} />
+                  <Games genres={this.state.genres} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />
                 )}
               />
               <Route
@@ -59,7 +81,7 @@ export default class App extends Component {
                   <Profile loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/genres" component={() => <Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} />
               <Route
                 exact
@@ -68,8 +90,8 @@ export default class App extends Component {
                   <ComingSoon loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              <Route exact path="/reviews" component={() => <Reviews loggedInUser={this.state.loggedInUser} />} />
-              <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/reviews" component={() => <Reviews platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
             <>
@@ -109,6 +131,36 @@ export default class App extends Component {
         </Switch>
       </div>
     );
+  }
+
+  componentDidMount() {
+    this.loadPlatforms()
+    this.loadGenres()
+  }
+
+  async loadPlatforms() {
+    let platforms = await this.platformsService.platforms()
+    let newPlatforms = {...this.state.platforms}
+    newPlatforms.isLoadingPlatforms = false
+    newPlatforms.platforms = platforms
+    newPlatforms.platformsFiltered = platforms
+    console.log("Platforms loaded", newPlatforms)
+    this.setState({
+      ...this.state,
+      platforms: newPlatforms
+    })
+  }
+
+  async loadGenres() {
+    let genres = await this.genresService.getAllGenres()
+    let newGenres = {...this.state.genres}
+    newGenres.isLoadingGenres = false
+    newGenres.genres = genres.data
+    newGenres.genresFiltered = genres.data
+    this.setState({
+      ...this.state,
+      genres: newGenres
+    })
   }
 
   fetchUser() {

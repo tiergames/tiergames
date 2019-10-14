@@ -14,14 +14,7 @@ const flash      = require("connect-flash");
 const cors = require("cors")
     
 
-mongoose
-  .connect(`mongodb://localhost/${process.env.DB}`, {useNewUrlParser: true})
-  .then(x => {
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
-  })
-  .catch(err => {
-    console.error('Error connecting to mongo', err)
-  });
+require("./configs/db.config")
 
 const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);

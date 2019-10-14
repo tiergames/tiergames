@@ -1,26 +1,21 @@
 const axios = require("axios");
+const mongoose = require("mongoose")
+const Platforms = require("./../../models/Platforms.model")
 
 const controller = {};
 const platformsURL = "https://api-v3.igdb.com/platforms";
 
-controller.platforms = (req, res, next) => {
-  axios({
-    url: platformsURL,
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "user-key": process.env.IGDB_API_KEY
-    },
-    data: "fields name, platform_logo; limit 50;"
-  })
-    .then(response => {
-      res.status(200).json(response.data);
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err.message
-      });
-    });
+require("./../../configs/db.config")
+
+controller.platforms = async (req, res, next) => {
+  try {
+    let platforms = await Platforms
+    .find()
+    .select({name: 1, platform_logo: 1})
+    res.status(200).json(platforms)
+  } catch (error) {
+    res.status(500).json({err: error.message})
+  }
 };
 
 module.exports = controller;

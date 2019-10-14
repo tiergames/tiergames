@@ -4,8 +4,9 @@ const platformsData = require("./data/platforms.data.json")
 
 const platformsSeed = async () => {
   try {
+    await Platforms.deleteMany()
+    console.log("All platforms deleted...")
     let platforms = await Platforms.create(platformsData)
-    console.log("Platforms: ", platforms)
     console.log("Platforms seed executed")
     return platforms
   } catch (error) {
