@@ -60,10 +60,7 @@ export default class Games extends Component {
     })
   }
 
-  renderGenres() {
-
-    console.log("STATE DEL GAMES.JSX", this.state);
-    
+  renderGenres() {    
     return (
       <section>
         <h2>Genres</h2>
