@@ -19,6 +19,11 @@ class Login extends Component {
         <h2>Login</h2>
         <div className="account-question">
           <p>Don't you have an account? <Link to={"/signup"}>Join us</Link></p>
+
+          {/* TODO: Check routes */}
+          <a href={`http://localhost:3001/api/auth/facebook`}>Login with Facebook</a>
+          <a href={`http://localhost:3001/api/auth/google`}>Login With Google</a>
+
         </div>
         <form onSubmit={e => this.handleFormSubmit(e)}>
           <div className="field">
@@ -33,6 +38,8 @@ class Login extends Component {
             <input type="submit" value="Login"/>
           </div>
         </form>
+
+        <h4>{this.state.error ? 'Error' : ''}</h4>
       </section>
     )
   }

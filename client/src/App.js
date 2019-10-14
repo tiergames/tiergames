@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
+import {Link} from 'react-router-dom'
 import AuthService from "./services/auth.service";
 
 // Pages
 import Home from "./pages/Public/Home/Home";
 import Login from "./pages/Auth/Login/Login";
 import Signup from "./pages/Auth/Signup/Signup";
+import AccountConfirm from "./pages/Auth/AccountConfirm/AccountConfirm"
+import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword/ResetPassword";
 import Error404 from "./pages/errors/Error404/Error404";
 import Profile from "./pages/private/Profile/Profile";
 import Games from "./pages/private/Games/Games";
@@ -25,6 +29,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.authService = new AuthService();
+
     this.state = {
       loggedInUser: null
     };
@@ -40,18 +45,64 @@ export default class App extends Component {
           <Route exact path="/" component={Home} />
           {this.state.loggedInUser ? (
             <>
-              <Route exact path="/games" component={() => <Games loggedInUser={this.state.loggedInUser} />} />
-              <Route exact path="/profile" component={() => <Profile loggedInUser={this.state.loggedInUser} />} />
-              {/* <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} /> */}
-              {/* <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} /> */}
-              <Route exact path="/games/coming-soon" component={() => <ComingSoon loggedInUser={this.state.loggedInUser} />} />
+              <Route
+                exact
+                path="/games"
+                component={() => (
+                  <Games loggedInUser={this.state.loggedInUser} />
+                )}
+              />
+              <Route
+                exact
+                path="/profile"
+                component={() => (
+                  <Profile loggedInUser={this.state.loggedInUser} />
+                )}
+              />
+              <Route exact path="/genres" component={() => <Genres loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} />
+              <Route
+                exact
+                path="/games/coming-soon"
+                component={() => (
+                  <ComingSoon loggedInUser={this.state.loggedInUser} />
+                )}
+              />
               <Route exact path="/reviews" component={() => <Reviews loggedInUser={this.state.loggedInUser} />} />
-              {/* <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} /> */}
+              <Route exact path="/platforms" component={() => <Platforms loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
             <>
-              <Route exact path="/login" component={() => <Login setUser={this.setUser} />} />
-              <Route exact path="/signup" component={() => <Signup setUser={this.setUser} />} />
+              <Route
+                exact
+                path="/login"
+                component={() => <Login setUser={this.setUser} />}
+              />
+              <Route
+                exact
+                path="/signup"
+                component={() => <Signup setUser={this.setUser} />}
+              />
+              <Route
+                exact
+                path="/forgot-password"
+                component={ForgotPassword}
+              />
+              <Route
+                exact
+                path="/reset-password/:resetPasswordToken"
+                component={ResetPassword}
+              />
+              <Route
+                exact
+                path="/update-password/:resetPasswordToken"
+                component={ResetPassword}
+              />
+              <Route
+                exact
+                path="/confirm/:confirmationToken"
+                component={AccountConfirm}
+              />
             </>
           )}
           <Route exact component={Error404} />

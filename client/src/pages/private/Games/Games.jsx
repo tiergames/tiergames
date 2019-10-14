@@ -63,7 +63,6 @@ export default class Games extends Component {
 
   async loadPlatforms() {
     let allPlatforms = await this.platformsService.platforms()
-    console.log("PLATFORMS", allPlatforms)
     this.setState({
       ...this.state,
       isLoadingPlatforms: false,

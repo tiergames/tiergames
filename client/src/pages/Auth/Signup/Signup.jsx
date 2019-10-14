@@ -10,8 +10,7 @@ class Signup extends Component {
     this.state = {
       username: '',
       email: '',
-      password: '',
-      confirmPassword: ''
+      password: ''
     }
   }
   
@@ -35,14 +34,12 @@ class Signup extends Component {
             <input type="password" name="password" id="password" onChange={e => this.handleChange(e)} className="input"/>
             <label htmlFor="password" className="label">Password</label>
           </div>
-          <div className="field">
-            <input type="password" name="confirmPassword" id="confirm-password" onChange={e => this.handleChange(e)} className="input"/>
-            <label htmlFor="confirm-password" className="label">Confirm password</label>
-          </div>
           <div className="form-actions">
             <input type="submit" value="Singup"/>
           </div>
         </form>
+        
+        <h4>{this.state.error ? 'Error' : ''}</h4>
       </section>
     )
   }
@@ -55,15 +52,27 @@ class Signup extends Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault()
-    const {username, password, confirmPassword, email} = this.state
-    this.service.signup(username, email, password, confirmPassword)
+    const {username, password, email} = this.state
+    this.service.signup(username, email, password)
       .then(response => {
         this.setState({
+          ...this.state,
           username: "",
-          password: ""
+          password: "",
+          email: "",
+          error: false
         })
         this.props.setUser(response)
         this.props.history.push("/")
+      })
+      .catch(error => {
+        this.setState({
+          ...this.state,
+          username: username,
+          password: "",
+          email: "",
+          error: true
+        })
       })
   }
 }
