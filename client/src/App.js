@@ -62,6 +62,32 @@ export default class App extends Component {
         gamesFiltered: [],
         currentGame: null
       },
+      releases: {
+        releases7DaysAgo: {
+          isLoading7DaysAgo: true,
+          releases7DaysAgo: [],
+        },
+        releases7Days: {
+          isLoading7Days: true,
+          releases7Days: []
+        },
+        releases14Days: {
+          isLoading14Days: true,
+          releases14Days: []
+        },
+        releases1Month: {
+          isLoading1Month: true,
+          releases1Month: []
+        },
+        releases6Months: {
+          isLoading6Months: true,
+          releases6Months: []
+        },
+        releases1Year: {
+          isLoading1Year: true,
+          releases1Year: []
+        }
+      },
       reviews: {
         isLoadingReviews: true,
         reviews: [],
@@ -106,10 +132,10 @@ export default class App extends Component {
                 exact
                 path="/games/coming-soon"
                 component={() => (
-                  <ComingSoon loggedInUser={this.state.loggedInUser} />
+                  <ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} platforms={this.state.platforms} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} platforms={this.state.platforms} handleLoadMore={() => this.loadReviews()} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
@@ -157,6 +183,12 @@ export default class App extends Component {
     this.loadGenres()
     this.loadReviews()
     this.loadGames()
+    this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo")
+    this.loadReleases(2, "releases7Days", "asc", "isLoading7Days")
+    this.loadReleases(3, "releases14Days", "asc", "isLoading14Days")
+    this.loadReleases(4, "releases1Month", "asc", "isLoading1Month")
+    this.loadReleases(5, "releases6Months", "asc", "isLoading6Months")
+    this.loadReleases(6, "releases1Year", "asc", "isLoading1Year")
   }
 
   async loadPlatforms() {
@@ -165,7 +197,7 @@ export default class App extends Component {
     newPlatforms.isLoadingPlatforms = false
     newPlatforms.platforms = platforms
     newPlatforms.platformsFiltered = platforms
-    
+
     this.setState({
       ...this.state,
       platforms: newPlatforms
@@ -210,6 +242,15 @@ export default class App extends Component {
       ...this.state,
       games: newGames
     })
+  }
+
+  async loadReleases(period, statePeriod, order = "asc", isLoadingKey) {
+    let released = await this.gamesService.getReleases(20, 0, period, order)
+    
+    let newState = {...this.state.releases}
+    newState[statePeriod][statePeriod] = released.data
+    newState[statePeriod][isLoadingKey] = false
+    this.setState(newState)
   }
 
   fetchUser() {

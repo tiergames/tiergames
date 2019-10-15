@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import ReviewsService from './../../../services/reviews.service'
 import ReviewTile from '../../../components/ReviewTile/ReviewTile'
-import { Link } from 'react-router-dom'
 import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
 
 export default class Reviews extends Component {
