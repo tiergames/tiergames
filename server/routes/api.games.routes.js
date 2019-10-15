@@ -8,5 +8,8 @@ router.get("/game-cover/:gameID", (req, res, next) => { controller.getGameCover(
 router.get("/related/:relatedGames", (req, res, next) => { controller.getRelatedGames(req, res, next) })
 router.get("/alternative-names/:gameID", (req, res, next) => { controller.getAlternativeNames(req, res, next) })
 router.get("/related-content/:collectionID", (req, res, next) => { controller.getRelationedContent(req, res, next) })
+router.get("/involved-companies/:companies", (req, res, next) => { controller.getInvolvedCompanies(req, res, next) })
+router.get("/release-dates/:releaseID", (req, res, next) => { controller.getReleaseDates(req, res, next) })
+router.get("/websites/:websitesID", (req, res, next) => { controller.getWebsites(req, res, next) })
 
 module.exports = router

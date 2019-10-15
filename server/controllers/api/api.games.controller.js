@@ -6,6 +6,10 @@ const gamesURL = 'https://api-v3.igdb.com/games'
 const coversURL = 'https://api-v3.igdb.com/covers'
 const alternativeNamesURL = 'https://api-v3.igdb.com/alternative_names'
 const collectionsURL = "https://api-v3.igdb.com/collections"
+const companiesURL = "https://api-v3.igdb.com/companies"
+const releasesURL = "https://api-v3.igdb.com/release_dates"
+const websitesURL = "https://api-v3.igdb.com/websites"
+const videosURL = "https://api-v3.igdb.com/game_videos"
 
 controller.games = async (req, res, next) => {
   let totalFilter = []
@@ -203,91 +207,93 @@ controller.getRelationedContent = async (req, res, next) => { // Collection
 }
 
 controller.getInvolvedCompanies = async (req, res, next) => {
-  // try {
-  //   let alternativeNames = await axios({
-  //     url: alternativeNamesURL,
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'user-key': process.env.IGDB_API_KEY
-  //     },
-  //     data: `
-  //       fields name, comment;
-  //       where game = ${req.params.gameID};
-  //     `
-  //   })
+  let companiesArray = req.params.companies.replace("[", "(").replace("]", ")").replace("%20", "")
+  console.log("COMPANIES ARRAY", companiesArray)
+  try {
+    let involvedCompanies = await axios({
+      url: companiesURL,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'user-key': process.env.IGDB_API_KEY
+      },
+      data: `
+        fields name;
+        where id = ${companiesArray};
+      `
+    })
   
-  //   res.status(200).json(alternativeNames.data)
-  // } catch (err) {
-  //   console.log("Alternative names error", err.message)
-  //   res.status(500).json({err: err.message})
-  // }
+    res.status(200).json(involvedCompanies.data)
+  } catch (err) {
+    res.status(500).json({err: err.message})
+  }
 }
 
 controller.getReleaseDates = async (req, res, next) => {
-  // try {
-  //   let alternativeNames = await axios({
-  //     url: alternativeNamesURL,
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'user-key': process.env.IGDB_API_KEY
-  //     },
-  //     data: `
-  //       fields name, comment;
-  //       where game = ${req.params.gameID};
-  //     `
-  //   })
+  try {
+    let releaseDateArray = req.params.releaseID.replace("[", "(").replace("]", ")")
+    let releaseDates = await axios({
+      url: releasesURL,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'user-key': process.env.IGDB_API_KEY
+      },
+      data: `
+        fields date;
+        where id = ${releaseDateArray};
+      `
+    })
   
-  //   res.status(200).json(alternativeNames.data)
-  // } catch (err) {
-  //   console.log("Alternative names error", err.message)
-  //   res.status(500).json({err: err.message})
-  // }
+    res.status(200).json(releaseDates.data)
+  } catch (err) {
+    res.status(500).json({err: err.message})
+  }
 }
 
 controller.getWebsites = async (req, res, next) => {
-  // try {
-  //   let alternativeNames = await axios({
-  //     url: alternativeNamesURL,
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'user-key': process.env.IGDB_API_KEY
-  //     },
-  //     data: `
-  //       fields name, comment;
-  //       where game = ${req.params.gameID};
-  //     `
-  //   })
+  try {
+    let websitesArray = req.params.websitesID.replace("[", "(").replace("]", ")").replace("%20", "")
+    let websites = await axios({
+      url: websitesURL,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'user-key': process.env.IGDB_API_KEY
+      },
+      data: `
+        fields url;
+        where id = ${websitesArray};
+      `
+    })
   
-  //   res.status(200).json(alternativeNames.data)
-  // } catch (err) {
-  //   console.log("Alternative names error", err.message)
-  //   res.status(500).json({err: err.message})
-  // }
+    res.status(200).json(websites.data)
+  } catch (err) {s
+    res.status(500).json({err: err.message})
+  }
 }
 
 controller.getVideos = async (req, res, next) => {
-  // try {
-  //   let alternativeNames = await axios({
-  //     url: alternativeNamesURL,
-  //     method: 'POST',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'user-key': process.env.IGDB_API_KEY
-  //     },
-  //     data: `
-  //       fields name, comment;
-  //       where game = ${req.params.gameID};
-  //     `
-  //   })
+  try {
+    let videosIDs = req.params.videosID.replace("[", "(").replace("]", ")").replace("%20", "")
+    let videos = await axios({
+      url: videosURL,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'user-key': process.env.IGDB_API_KEY
+      },
+      data: `
+        fields name, video_id;
+        where game = ${videosIDs};
+      `
+    })
   
-  //   res.status(200).json(alternativeNames.data)
-  // } catch (err) {
-  //   console.log("Alternative names error", err.message)
-  //   res.status(500).json({err: err.message})
-  // }
+    res.status(200).json(videos.data)
+  } catch (err) {
+    console.log("Alternative names error", err.message)
+    res.status(500).json({err: err.message})
+  }
 }
 
 module.exports = controller

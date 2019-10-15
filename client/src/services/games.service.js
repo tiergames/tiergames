@@ -63,4 +63,29 @@ export default class GamesService {
     let relatedGames = await this.service.get(`/related/${relatedGamesArray}`)
     return relatedGames.data
   }
+
+  getAlternativeNames = async (gameID) => {
+    let alternativeNames = await this.service.get(`/alternative-names/${gameID}`)
+    return alternativeNames.data
+  }
+
+  getRelationedContent = async (collectionID) => {
+    let relationedContent = await this.service.get(`/related-content/${collectionID}`)
+    return relationedContent.data
+  }
+
+  getInvolvedCompanies = async (companies) => {
+    let involvedCompanies = await this.service.get(`/involved-companies/${companies}`)
+    return involvedCompanies.data
+  }
+
+  getReleaseDates = async (releaseID) => {
+    let releaseDates = await this.service.get(`/release-dates/${releaseID}`)
+    return releaseDates.data
+  }
+
+  getWebsites = async (websitesID) => {
+    let websites = await this.service.get(`/websites/${websitesID}`)
+    return websites.data
+  }
 }
