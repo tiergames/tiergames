@@ -27,6 +27,8 @@ import Reviews from "./pages/private/Reviews/Reviews";
 import ReviewsService from "./services/reviews.service";
 import PlatformsService from "./services/platforms.service";
 import GenresService from "./services/genres.service";
+import SearchBar from "./components/SearchBar/SearchBar";
+import SearchService from "./services/search.service";
 
 
 // Styles
@@ -40,6 +42,7 @@ export default class App extends Component {
     this.reviewsService = new ReviewsService()
     this.platformsService = new PlatformsService()
     this.genresService = new GenresService()
+    this.searchService = new SearchService()
 
     this.state = {
       loggedInUser: null,
@@ -65,6 +68,14 @@ export default class App extends Component {
           offset: 0,
           limit: 1
         }
+      },
+      search: {
+        searchResults: [],
+        gamesResults: [],
+        reviewsResults: [],
+        usersResults: [],
+        searchText: '',
+        isSearching: false
       }
     };
     this.fetchUser();
@@ -75,6 +86,14 @@ export default class App extends Component {
       <div>
         <Switch></Switch>
         <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
+        <SearchBar
+          makeSearch={() => this.makeSearch()}
+          gamesResults={this.state.search.gamesResults}
+          reviewsResults={this.state.search.reviewsResults}
+          usersResults={this.state.search.usersResults}
+          updateSearchText={(text) => this.updateSearchText(text)}
+          isSearching={this.state.search.isSearching}
+        />
         <Switch>
           <Route exact path="/" component={Home} />
           {this.state.loggedInUser ? (
@@ -158,7 +177,6 @@ export default class App extends Component {
     newPlatforms.isLoadingPlatforms = false
     newPlatforms.platforms = platforms
     newPlatforms.platformsFiltered = platforms
-    console.log("Platforms loaded", newPlatforms)
     this.setState({
       ...this.state,
       platforms: newPlatforms
@@ -189,6 +207,51 @@ export default class App extends Component {
       ...this.state,
       reviews: newReviews
     })
+  }
+
+  updateSearchText(text) {
+    let newSearch = {...this.state.search}
+    newSearch.searchText = text
+    this.setState({
+      ...this.state,
+      search: newSearch
+    })
+  }
+
+  async makeGamesSearch() {
+    let gamesResults = await this.searchService.makeGamesSearch(this.state.search.searchText)
+    let newSearch = {...this.state.search}
+    newSearch.gamesResults = gamesResults
+    this.setState({
+      ...this.state,
+      search: newSearch
+    })
+  }
+
+  async makeReviewsSearch() {
+    let reviewsResults = await this.searchService.makeReviewsSearch(this.state.search.searchText)
+    let newSearch = {...this.state.search}
+    newSearch.reviewsResults = reviewsResults
+    this.setState({
+      ...this.state,
+      search: newSearch
+    })
+  }
+
+  async makeUsersSearch() {
+    let usersResults = await this.searchService.makeUsersSearch(this.state.search.searchText)
+    let newSearch = {...this.state.search}
+    newSearch.usersResults = usersResults
+    this.setState({
+      ...this.state,
+      search: newSearch
+    })
+  }
+
+  async makeSearch() {
+    this.makeGamesSearch()
+    this.makeReviewsSearch()
+    this.makeUsersSearch()
   }
 
   fetchUser() {
