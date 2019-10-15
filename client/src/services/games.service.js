@@ -58,4 +58,9 @@ export default class GamesService {
     let gamesPerPlatform = await this.service.get(`/?platforms=${platforms}`)
     return gamesPerPlatform.data
   }
+
+  gateRelatedGames = async (relatedGamesArray) => {
+    let relatedGames = await this.service.get(`/related/${relatedGamesArray}`)
+    return relatedGames.data
+  }
 }
