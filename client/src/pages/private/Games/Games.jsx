@@ -4,6 +4,7 @@ import axios from 'axios'
 import GameService from './../../../services/games.service'
 import GenresService from './../../../services/genres.service'
 import PlatformsService from './../../../services/platforms.service'
+import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
 
 export default class Games extends Component {
   constructor(props) {
@@ -21,10 +22,7 @@ export default class Games extends Component {
       },
       genres: props.genres,
       platforms: props.platforms,
-      games: [],
-      gamesFiltered: [],
-      isLoadingGames: true,
-      isLoadingGenres: true,
+      games: props.games
     }
   }
   
@@ -38,18 +36,7 @@ export default class Games extends Component {
     )
   }
 
-  componentDidMount() {
-    this.loadGames()
-  }
-
-  async loadGames() {
-    let allGames = await this.gamesService.getGames(this.state.pagination.limit, this.state.pagination.offset)
-    this.setState({
-      ...this.state,
-      games: allGames.data,
-      isLoadingGames: false
-    })
-  }
+  componentDidMount() {}
 
   async loadNextGames() {
     this.setState({
@@ -74,7 +61,7 @@ export default class Games extends Component {
     })
   }
 
-  renderGenres() {
+  renderGenres() {    
     return (
       <section>
         <h2>Genres</h2>
@@ -101,6 +88,28 @@ export default class Games extends Component {
   }
 
   renderPlatforms() {
+    // TODO: Ver si lo quitamos (lo que esta comentado)
+    // return (
+      // <section>
+      //   <h2>Platforms</h2>
+      //     {this.state.platforms.isLoadingPlatforms
+      //       ?
+      //         <p>Loading platforms...</p>
+      //       :
+      //         <form className="filter filter-platforms">
+      //           {this.state.platforms.platformsFiltered.map(platform => {
+      //             return (
+      //               <div className="field field-checkbox" key={platform._id}>
+      //                 <input type="checkbox" name="platform" id={platform._id}/>
+      //                 <label htmlFor={platform._id} className="checkbox-label">{platform.name}</label>
+      //               </div>
+      //             )
+      //           })}
+      //       </form>
+      //     }
+      // </section>
+    // )
+
     return (
       <section>
         <h2>Platforms</h2>
@@ -108,16 +117,7 @@ export default class Games extends Component {
             ?
               <p>Loading platforms...</p>
             :
-              <form className="filter filter-platforms">
-                {this.state.platforms.platformsFiltered.map(platform => {
-                  return (
-                    <div className="field field-checkbox" key={platform._id}>
-                      <input type="checkbox" name="platform" id={platform._id}/>
-                      <label htmlFor={platform._id} className="checkbox-label">{platform.name}</label>
-                    </div>
-                  )
-                })}
-            </form>
+            <PlatformsTags platforms={this.state.platforms.platforms} type="checkbox" />
           }
       </section>
     )
@@ -128,15 +128,15 @@ export default class Games extends Component {
       <section>
         <h2>Games</h2>
         <ul className="games-list">
-          {this.state.games.length > 0
+          {this.state.games.games.length > 0
             ? 
-              this.state.games.map(game => {
+              this.state.games.games.map(game => {
                 return <li key={game.id}>{game.name}</li>
               })
             : null
           }
         </ul>
-        {this.state.isLoadingGames
+        {this.state.games.isLoadingGames
           ?
             <Link to={"#"}>
               Loading...

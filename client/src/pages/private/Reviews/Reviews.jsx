@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import ReviewsService from './../../../services/reviews.service'
 import ReviewTile from '../../../components/ReviewTile/ReviewTile'
-import { Link } from 'react-router-dom'
 import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
 
 export default class Reviews extends Component {
@@ -9,7 +9,8 @@ export default class Reviews extends Component {
     super(props)
     this.reviewsService = new ReviewsService()
     this.state = {
-      reviews: props.reviews
+      reviews: props.reviews,
+      platforms: props.platforms
     }
   }
 
@@ -24,7 +25,7 @@ export default class Reviews extends Component {
 
   componentDidMount() {
     // this.loadReviews(0, 10)
-  }
+  }  
 
   async loadReviews(offset, limit) {
     let reviews = await this.reviewsService.getReviews(offset, limit);
@@ -41,12 +42,15 @@ export default class Reviews extends Component {
   }
 
   renderReviews() {
-    console.log("THE REVIEWS", this.state)
+
+    const { platforms: {platforms} } = this.state;
+
     return (
       <section>
         <h2>Reviews</h2>
 
-        {/* <PlatformsTags /> */}
+        <PlatformsTags platforms={platforms} type="radio" />
+
         <ul>
           {this.state.reviews.reviewsFiltered.length > 0
             ?
