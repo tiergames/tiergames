@@ -109,7 +109,7 @@ export default class App extends Component {
                   <ComingSoon loggedInUser={this.state.loggedInUser} />
                 )}
               />
-              <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
+              <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} platforms={this.state.platforms} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
@@ -165,7 +165,7 @@ export default class App extends Component {
     newPlatforms.isLoadingPlatforms = false
     newPlatforms.platforms = platforms
     newPlatforms.platformsFiltered = platforms
-    console.log("Platforms loaded", newPlatforms)
+    
     this.setState({
       ...this.state,
       platforms: newPlatforms

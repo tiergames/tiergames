@@ -11,7 +11,7 @@ controller.platforms = async (req, res, next) => {
   try {
     let platforms = await Platforms
     .find()
-    .select({name: 1, platform_logo: 1})
+    .select({name: 1, id: 1, platform_logo: 1})
     res.status(200).json(platforms)
   } catch (error) {
     res.status(500).json({err: error.message})

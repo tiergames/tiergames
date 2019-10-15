@@ -1,60 +1,49 @@
 import React, { Component } from "react";
+import PlatformTag from './../../components/PlatformTag/PlatformTag'
 
 export default class PlatformsTags extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      // isChecked: "",
-      platforms: props.platforms
+      platforms: props.platforms,
+      platformsFiltered: [],
+      platformSelected: undefined
     };
   }
 
   handleChange(e) {
-    const { name } = e.target;
-    const value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
+    let platformSelected;
+    let newPlatforms = [...this.state.platformsFiltered]
+
+    e.target.type === "checkbox" && e.target.checked 
+      ? newPlatforms.push(+e.target.value) 
+      : newPlatforms.pop()
+    
+    if (e.target.type === "radio") {
+      platformSelected = +e.target.value
+    }
 
     this.setState({
-      [name]: value
+      platformSelected: platformSelected,
+      platformsFiltered: newPlatforms
     });
   }
 
-  render() {
-    console.log("the state is", this.state);
-
-    {console.log("PLATFORMS FROM PLATTAGSS", this.state)}
-
+  render() {    
+    const { platforms } = this.state;
+    const { type } = this.props;
+    
     return (
       <div className="platforms padding-v-8">
         <form>
-          <ul className="platforms-list">
-            {this.state.platforms.map(platform => {
-              return <li key={platform._id}>{platform.name}</li>;
-            })}
-          </ul>
-
-          {/* <div className="field">
-              <input
-                type={this.props.type}
-                name="xbox"
-                className="input"
-                onChange={e => this.handleChange(e)}
-              />
-              <label htmlFor="xbox">Xbox</label>
-            </div>
-
-            <div className="field">
-              <input
-                type="checkbox"
-                name="ps4"
-                className="input"
-                onChange={e => this.handleChange(e)}
-              />
-              <label htmlFor="ps4">Ps4</label>
-            </div> */}
-
-          {this.props.children}
+          {platforms.map(platform => 
+            <PlatformTag 
+              key={platform.id} 
+              type={type}
+              platform={platform} 
+              onChange={e => this.handleChange(e)} />
+          )}
         </form>
       </div>
     );
