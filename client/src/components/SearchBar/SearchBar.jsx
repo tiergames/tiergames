@@ -57,12 +57,13 @@ export default class SearchBar extends Component {
       <section className="results">
         <h3>Games</h3>
         {
-          this.props.gamesResults.length > 0
-            ?
-              this.props.gamesResults.map((gameResult, idx) => {
-                return <p key={idx}>{gameResult.name}</p>
-              })
-            : <p>No reviews found</p>
+          this.props.games.isSearchingGames
+            ? <p>Searching games...</p>
+            : this.props.games.gamesResults.length > 0
+              ? this.props.games.gamesResults.map((gameResult, idx) => {
+                  return <p key={idx}>{gameResult.name}</p>
+                })
+              : <p>No games</p>
         }
       </section>
     )
@@ -73,12 +74,13 @@ export default class SearchBar extends Component {
       <section className="results">
         <h3>Reviews</h3>
         {
-          this.props.reviewsResults.length > 0
-            ?
-              this.props.reviewsResults.map((reviewResult, idx) => {
+          this.props.reviews.isSearchingReviews
+            ? <p>Searching reviews...</p>
+            : this.props.reviews.reviewsResults.length > 0
+              ? this.props.reviews.reviewsResults.map((reviewResult, idx) => {
                 return <p key={idx}>{reviewResult.title}</p>
-              })
-            : <p>No games found</p>
+                })
+              : <p>No reviews</p>
         }
       </section>
     )
@@ -89,12 +91,13 @@ export default class SearchBar extends Component {
       <section className="results">
         <h3>Users</h3>
         {
-          this.props.usersResults.length > 0
-            ?
-              this.props.usersResults.map((userResult, idx) => {
-                return <p key={idx}>{userResult.username}</p>
-              })
-            : <p>No users found</p>
+          this.props.users.isSearchingUsers
+            ? <p>Searching users...</p>
+            : this.props.users.usersResults.length > 0
+              ? this.props.users.usersResults.map((userResult, idx) => {
+                  return <p key={idx}>{userResult.username}</p>
+                })
+              : <p>No users</p>
         }
       </section>
     )

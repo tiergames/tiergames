@@ -63,17 +63,12 @@ export default class App extends Component {
         reviews: [],
         reviewsFiltered: [],
         currentReviewFilter: null,
-        pagination: {
-          currentPage: 0,
-          offset: 0,
-          limit: 1
-        }
+        pagination: { currentPage: 0, offset: 0, limit: 1 }
       },
       search: {
-        searchResults: [],
-        gamesResults: [],
-        reviewsResults: [],
-        usersResults: [],
+        games: { gamesResults: [], isSearchingGames: false },
+        reviews: { reviewsResults: [], isSearchingReviews: false },
+        users: { usersResults: [], isSearchingUsers: false },
         searchText: '',
         isSearching: false
       }
@@ -88,9 +83,9 @@ export default class App extends Component {
         <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
         <SearchBar
           makeSearch={() => this.makeSearch()}
-          gamesResults={this.state.search.gamesResults}
-          reviewsResults={this.state.search.reviewsResults}
-          usersResults={this.state.search.usersResults}
+          games={this.state.search.games}
+          reviews={this.state.search.reviews}
+          users={this.state.search.users}
           updateSearchText={(text) => this.updateSearchText(text)}
           isSearching={this.state.search.isSearching}
         />
@@ -127,36 +122,12 @@ export default class App extends Component {
             </>
           ) : (
             <>
-              <Route
-                exact
-                path="/login"
-                component={() => <Login setUser={this.setUser} />}
-              />
-              <Route
-                exact
-                path="/signup"
-                component={() => <Signup setUser={this.setUser} />}
-              />
-              <Route
-                exact
-                path="/forgot-password"
-                component={ForgotPassword}
-              />
-              <Route
-                exact
-                path="/reset-password/:resetPasswordToken"
-                component={ResetPassword}
-              />
-              <Route
-                exact
-                path="/update-password/:resetPasswordToken"
-                component={ResetPassword}
-              />
-              <Route
-                exact
-                path="/confirm/:confirmationToken"
-                component={AccountConfirm}
-              />
+              <Route exact path="/login" component={() => <Login setUser={this.setUser} />} />
+              <Route exact path="/signup" component={() => <Signup setUser={this.setUser} />} />
+              <Route exact path="/forgot-password" component={ForgotPassword} />
+              <Route exact path="/reset-password/:resetPasswordToken" component={ResetPassword} />
+              <Route exact path="/update-password/:resetPasswordToken" component={ResetPassword} />
+              <Route exact path="/confirm/:confirmationToken" component={AccountConfirm} />
             </>
           )}
           <Route exact component={Error404} />
@@ -219,33 +190,36 @@ export default class App extends Component {
   }
 
   async makeGamesSearch() {
-    let gamesResults = await this.searchService.makeGamesSearch(this.state.search.searchText)
     let newSearch = {...this.state.search}
-    newSearch.gamesResults = gamesResults
-    this.setState({
-      ...this.state,
-      search: newSearch
-    })
+    newSearch.games.isSearchingGames = true
+    this.setState({ ...this.state, search: newSearch })
+
+    let gamesResults = await this.searchService.makeGamesSearch(this.state.search.searchText)
+    newSearch.games.gamesResults = gamesResults
+    newSearch.games.isSearchingGames = false
+    this.setState({ ...this.state, search: newSearch })
   }
 
   async makeReviewsSearch() {
-    let reviewsResults = await this.searchService.makeReviewsSearch(this.state.search.searchText)
     let newSearch = {...this.state.search}
-    newSearch.reviewsResults = reviewsResults
-    this.setState({
-      ...this.state,
-      search: newSearch
-    })
+    newSearch.reviews.isSearchingReviews = true
+    this.setState({ ...this.state, search: newSearch })
+
+    let reviewsResults = await this.searchService.makeReviewsSearch(this.state.search.searchText)
+    newSearch.reviews.reviewsResults = reviewsResults
+    newSearch.reviews.isSearchingReviews = false
+    this.setState({ ...this.state, search: newSearch })
   }
 
   async makeUsersSearch() {
-    let usersResults = await this.searchService.makeUsersSearch(this.state.search.searchText)
     let newSearch = {...this.state.search}
-    newSearch.usersResults = usersResults
-    this.setState({
-      ...this.state,
-      search: newSearch
-    })
+    newSearch.users.isSearchingUsers = true
+    this.setState({ ...this.state, search: newSearch })
+
+    let usersResults = await this.searchService.makeUsersSearch(this.state.search.searchText)
+    newSearch.users.usersResults = usersResults
+    newSearch.users.isSearchingUsers = false
+    this.setState({ ...this.state, search: newSearch })
   }
 
   async makeSearch() {
