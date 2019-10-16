@@ -6,5 +6,6 @@ router.use("/reviews", require("./api.reviews.routes"))
 router.use("/genres", require("./api.genres.routes"))
 router.use("/platforms", require("./api.platforms.routes"))
 router.use("/search", require("./api.search.routes"))
+router.use("/reviewComments", require("./api.reviewComments.routes"))
 
 module.exports = router

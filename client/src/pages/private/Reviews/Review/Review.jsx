@@ -1,14 +1,23 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import ReviewsService from '../../../../services/reviews.service'
+import ReviewCommentsService from './../../../../services/reviewComments.service'
 
 export default class Review extends Component {
   constructor(props) {
     super(props)
-    console.log("THE PROPS", props)
+
     this.reviewsService = new ReviewsService()
+    this.reviewCommentsService = new ReviewCommentsService()
+
     this.state = {
       review: null,
-      isLoadingReview: []
+      isLoadingReview: [],
+      comment: { content: '', authorID: this.props.loggedInUserID, reviewID: this.props.match.params.reviewID },
+      comments: {
+        comments: [], isLoadingComments: true,
+        pagination: { currentPage: 0, offset: 0, limit: 10 }
+      },
     }
   }
   
@@ -26,12 +35,27 @@ export default class Review extends Component {
 
   componentDidMount() {
     this.loadReviewData()
+    this.loadComments()
   }
 
   async loadReviewData() {
     let reviewData = await this.reviewsService.getReviewData(this.props.match.params.reviewID)
     console.log("REVIEW DATA", reviewData)
     this.setState({ ...this.state, review: reviewData, isLoadingReview: false })
+  }
+
+  async loadComments() {
+    let newComments = {...this.state.comments}
+    newComments.isLoadingComments = true
+    
+    let comments = await this.reviewCommentsService.loadComments(this.state.comments.pagination.offset, this.state.comments.pagination.limit)
+
+    newComments.pagination.pagcurrentPage += 1;
+    newComments.pagination.offset = newComments.pagination.currentPage * newComments.pagination.limit
+    newComments.comments = comments.comments
+    newComments.isLoadingComments = false
+
+    this.setState({ ...this.state, comments: newComments })
   }
 
   renderReview() {
@@ -84,11 +108,7 @@ export default class Review extends Component {
         </section>
         <section className="comments">
           <h2>Comments</h2>
-          {
-            this.state.isLoadingComments
-              ? <p>Loading comments...</p>
-              : this.renderComments()
-          }
+          {this.renderComments()}
         </section>
       </>
     )
@@ -97,23 +117,59 @@ export default class Review extends Component {
   renderComments() {
     return (
       <>
-        {
-          this.state.review.comments.length > 0
-            ? this.state.review.comments.map((comment) => {
-                return (
-                  <div className="comment">
-                    <div className="comment-user">
-                      
+        <form className="comment-form" onSubmit={e => this.handleFormSubmit(e)}>
+          <div className="field">
+            <textarea onChange={(e) => this.handleCommentChange(e)} type="text" name="content" placeholder="Write a comment" value={this.state.comment.content} id="comment-text"></textarea>
+            <label htmlFor="comment-text" className="label">Comment</label>
+          </div>
+          <div className="form-actions">
+            <input type="submit" value="Send"/>
+          </div>
+        </form>
+        <div className="user-comments">
+          {
+            this.state.comments.comments.length > 0
+              ? this.state.comments.comments.map((comment) => {
+                  return (
+                    <div className="comment" key={comment._id}>
+                      <div className="comment-user">
+                        <p><strong>User: </strong>{comment.authorID.username}</p>
+                      </div>
+                      <div className="comment-content">
+                        {comment.content}
+                      </div>
                     </div>
-                    <div className="comment-content">
-                      {comment.content}
-                    </div>
-                  </div>
-                )
-              })
-            : <p>There are no comments yet.</p>
-        }
+                  )
+                })
+              : <p>There are no comments yet.</p>
+          }
+        </div>
+        <div className="comments-load-more">
+          {
+            this.state.comments.isLoadingComments
+              ? <Link to={""}>Loading...</Link>
+              : <Link onClick={() => this.loadComments()} to={"#"}>Load more</Link>
+          }
+        </div>
       </>
     )
+  }
+
+  handleCommentChange(e) {
+    let newComment = {...this.state.comment}
+    newComment[e.target.name] = e.target.value
+    this.setState({ ...this.state, comment: newComment })
+  }
+
+  async handleFormSubmit(e) {
+    e.preventDefault()
+    let commentAdded = await this.reviewCommentsService.addComment(this.state.comment)
+    
+    if (commentAdded.commentCreated) {
+      console.log(commentAdded)
+      let newComments = {...this.state.comments}
+      newComments.comments.unshift(commentAdded.commentCreated)
+      this.setState({ ...this.state, comments: newComments })
+    }
   }
 }
