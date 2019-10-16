@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import ReviewsService from '../../../../services/reviews.service'
 import queryString from 'query-string'
+import GamesService from '../../../../services/games.service'
 
 export default class CreateReview extends Component {
   constructor(props) {
     super(props)
 
     this.reviewsService = new ReviewsService()
+    this.gamesService = new GamesService()
 
     const queryParams = queryString.parse(window.location.search);
     
@@ -21,6 +23,8 @@ export default class CreateReview extends Component {
       author: props.loggedInUser._id,
       pros: '',
       cons: '',
+      game: '',
+      isLoadingGameName: true,
       gameID: queryParams.game ? queryParams.game : ''
     }
   }
@@ -32,7 +36,7 @@ export default class CreateReview extends Component {
         <form onSubmit={(e) => this.handleCreateReviewFormSubmit(e)}>
           <input type="hidden" name="gameID" value={this.state.gameID}/>
           <div className="field">
-            <input type="search" name="game" id="game" placeholder={"The game for the review"}/>
+            <input type="text" disabled name="game" id="game" value={this.state.isLoadingGameName ? 'Loading name...' : this.state.game} placeholder={"The game for the review"}/>
             <label htmlFor="game" className="label">Game</label>
           </div>
           <div className="field">
@@ -50,8 +54,6 @@ export default class CreateReview extends Component {
                 )
               })}
             </div>
-            <select name="platform" onChange={e => this.handleSelectInputChange(e)} value={this.state.platform} id="platform">
-            </select>
             <label htmlFor="platform" className="label">Platform</label>
           </div>
           <div className="field">
@@ -163,6 +165,22 @@ export default class CreateReview extends Component {
         </form>
       </section>
     )
+  }
+
+  componentDidMount() {
+    this.loadGameName()
+  }
+
+  async loadGameName() {
+    if (this.state.gameID !== '') {
+      // let gameName = await 
+      let gameName = await this.gamesService.getGameName(this.state.gameID)
+      this.setState({
+        ...this.state,
+        game: gameName.name,
+        isLoadingGameName: false
+      })
+    }
   }
 
   async handleCreateReviewFormSubmit(e) {
