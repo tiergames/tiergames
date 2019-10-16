@@ -59,11 +59,11 @@ controller.gameInfo = async (req, res, next) => {
         'user-key': process.env.IGDB_API_KEY
       },
       data: `
-        fields alternative_names, category, collection,
-          cover, dlcs, first_release_date, name, game_modes,
-          genres, hypes, involved_companies, parent_game,
-          platforms, release_dates, status, storyline, summary, rating,
-          url, version_title, videos, websites, total_rating, total_rating_count, similar_games;
+        fields alternative_names.name, category, collection.games.name,
+          cover.url, dlcs, first_release_date, name, game_modes.name, screenshots.url,
+          genres.name, hypes, involved_companies.company.name, parent_game,
+          platforms.name, release_dates.date, status, storyline, summary, rating,
+          url, version_title, videos.*, websites.*, total_rating, total_rating_count, similar_games.cover.url, similar_games.name;
         where id = ${req.params.gameID};
       `
     })

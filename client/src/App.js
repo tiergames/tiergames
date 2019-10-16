@@ -16,6 +16,7 @@ import Games from "./pages/private/Games/Games";
 import Genres from "./pages/private/Genres/Genres";
 import Platforms from "./pages/private/Platforms/Platforms";
 import CreateReview from "./pages/private/Reviews/CreateReview/CreateReview";
+import Game from "./pages/private/Game/Game";
 
 // Components
 import Navbar from "./components/Navbar/Navbar";
@@ -127,29 +128,12 @@ export default class App extends Component {
           <Route exact path="/" component={Home} />
           {this.state.loggedInUser ? (
             <>
-              <Route
-                exact
-                path="/games"
-                component={() => (
-                  <Games genres={this.state.genres} platforms={this.state.platforms} games={this.state.games} loggedInUser={this.state.loggedInUser} />
-                )}
-              />
-              <Route
-                exact
-                path="/profile"
-                component={() => (
-                  <Profile loggedInUser={this.state.loggedInUser} />
-                )}
-              />
+              <Route exact path="/games" component={() => ( <Games genres={this.state.genres} platforms={this.state.platforms} games={this.state.games} loggedInUser={this.state.loggedInUser} /> )} />
+              <Route exact path="/profile" component={() => ( <Profile loggedInUser={this.state.loggedInUser} /> )} />
               <Route exact path="/genres" component={() => <Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} />
-              <Route
-                exact
-                path="/games/coming-soon"
-                component={() => (
-                  <ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser} />
-                )}
-              />
+              <Route exact path="/games/:gameID" component={Game} />
+              <Route exact path="/games/coming-soon" component={() => ( <ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser} /> )} />
               <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/reviews/create" component={() => <CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
