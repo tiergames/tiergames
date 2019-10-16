@@ -23,7 +23,7 @@ export default class CreateReview extends Component {
       author: props.loggedInUser._id,
       pros: '',
       cons: '',
-      game: '',
+      gameName: '',
       isLoadingGameName: true,
       gameID: queryParams.game ? queryParams.game : ''
     }
@@ -35,8 +35,9 @@ export default class CreateReview extends Component {
         <h2>New review</h2>
         <form onSubmit={(e) => this.handleCreateReviewFormSubmit(e)}>
           <input type="hidden" name="gameID" value={this.state.gameID}/>
+          <input type="hidden" name="gameName" value={this.state.gameName}/>
           <div className="field">
-            <input type="text" disabled name="game" id="game" value={this.state.isLoadingGameName ? 'Loading name...' : this.state.game} placeholder={"The game for the review"}/>
+            <input type="text" disabled name="game" id="game" value={this.state.isLoadingGameName ? 'Loading name...' : this.state.gameName} placeholder={"The game for the review"}/>
             <label htmlFor="game" className="label">Game</label>
           </div>
           <div className="field">
@@ -177,7 +178,7 @@ export default class CreateReview extends Component {
       let gameName = await this.gamesService.getGameName(this.state.gameID)
       this.setState({
         ...this.state,
-        game: gameName.name,
+        gameName: gameName.name,
         isLoadingGameName: false
       })
     }

@@ -110,7 +110,7 @@ controller.addReview = async (req, res, next) => {
   const {
     title, platform, review,
     history, graphics, sound, gameplay,
-    author, pros, cons, gameID
+    author, pros, cons, gameID, gameName
   } = req.body
 
   if (!title || !platform || !review
@@ -129,7 +129,7 @@ controller.addReview = async (req, res, next) => {
       sound,
       gameplay,
       author, pros, cons,
-      totalRating, gameID
+      totalRating, gameID, gameName
     })
 
     res.status(200).json({created: true, reviewCreated})

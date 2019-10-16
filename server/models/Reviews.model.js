@@ -15,6 +15,7 @@ const reviewsSchema = new Schema({
   pros: String,
   cons: String,
   gameID: Number,
+  gameName: String,
   followers: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
   comments: [ { type: mongoose.Schema.Types.ObjectId, ref: 'ReviewComments' } ]
 }, {
