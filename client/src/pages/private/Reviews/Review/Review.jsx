@@ -49,7 +49,7 @@ export default class Review extends Component {
         </header>
         <section className="review-stats">
           <div>
-            <p><span>{this.state.review.followers.length}</span> users follow this review</p>
+            <p><strong><span>{this.state.review.followers.length}</span></strong> users follow this review</p>
           </div>
           <div className="following-and-rating">
             <button>Follow</button>
@@ -62,20 +62,24 @@ export default class Review extends Component {
           <h2>{this.state.review.title}</h2>
           <p>{this.state.review.review}</p>
           <section>
-            <h3>History ({this.state.review.history.rating})</h3>
+            <h3>History</h3>
             <p>{this.state.review.history.content}</p>
+            <span className="category-rating">{this.state.review.history.rating}</span>
           </section>
           <section>
-            <h3>Gameplay ({this.state.review.gameplay.rating})</h3>
+            <h3>Gameplay</h3>
             <p>{this.state.review.gameplay.content}</p>
+            <span className="category-rating">{this.state.review.gameplay.rating}</span>
           </section>
           <section>
-            <h3>Graphics ({this.state.review.graphics.rating})</h3>
+            <h3>Graphics</h3>
             <p>{this.state.review.graphics.content}</p>
+            <span className="category-rating">{this.state.review.graphics.rating}</span>
           </section>
           <section>
-            <h3>Sound ({this.state.review.sound.rating})</h3>
+            <h3>Sound</h3>
             <p>{this.state.review.sound.content}</p>
+            <span className="category-rating">{this.state.review.sound.rating}</span>
           </section>
         </section>
         <section className="comments">
