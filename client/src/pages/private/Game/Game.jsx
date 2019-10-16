@@ -8,6 +8,7 @@ class Game extends Component {
   constructor(props) {
     super(props)
     this.gamesService = new GamesService()
+    
     this.state = {
       gameID: props.match.params.gameID,
       game: {},
@@ -15,7 +16,7 @@ class Game extends Component {
     }
   }
   
-  render() {
+  render() {    
     return (
       <section className="game">
         {
@@ -32,7 +33,7 @@ class Game extends Component {
   }
 
   componentWillReceiveProps(nextProps, state) {
-    if (nextProps.match.params.gameID !== state.gameID) {
+    if (nextProps.match.params.gameID !== state.gameID) {      
       this.loadGame(nextProps.match.params.gameID, true)
       // scroll.scrollToTop({
       //   duration: 750
@@ -83,6 +84,8 @@ class Game extends Component {
   }
 
   renderIAmFollowing() {
+    // TODO: Chek that there are games that doesnt have total_rating
+    
     return (
       <div className="game-i-am-following">
         <span className="game-i-am-following-status">Following</span>
