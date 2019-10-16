@@ -42,8 +42,8 @@ export default class ReviewsService {
     return relationatedReviews.data
   }
 
-  createReview = async (reviewData, userID) => {
-    console.log("REVIEW DATA", reviewData)
-    console.log("AUTHOR", userID)
+  createReview = async (reviewData) => {
+    let reviewCreated = await this.service.post('/add', reviewData)
+    return reviewCreated.data
   }
 }

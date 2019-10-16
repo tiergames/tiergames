@@ -8,7 +8,7 @@ controller.loadReviews = async (req, res, next) => {
       .find()
       .populate("author")
       .populate("platform")
-      .select({title: 1, platform: 1, author: 1, totalRating: 1, gameID: 1})
+      .select({title: 1, platform: 1, author: 1, totalRating: 1, gameID: 1, })
       .skip(+req.query.offset)
       .limit(+req.query.limit)
 
@@ -26,7 +26,6 @@ controller.loadReview = async (req, res, next) => {
     
     res.status(200).json(review)
   } catch (error) {
-    console.log(error)
     res.status(500).json({err: error.message})
   }
 }
@@ -110,35 +109,32 @@ controller.loadRelationatedReviews = async (req, res, next) => {
 controller.addReview = async (req, res, next) => {
   const {
     title, platform, review,
-    historyContent, historyRating,
-    graphicsContent, graphicsRating,
-    soundContent, soundRating,
-    gameplayContent, gameplayRating,
+    history, graphics, sound, gameplay,
     author, pros, cons, gameID
   } = req.body
 
   if (!title || !platform || !review
-    || !historyRating || !graphicsRating || !soundRating
-    || !gameplayRating
+    || !history.rating || !graphics.rating || !sound.rating
+    || !gameplay.rating
   ) {
     res.status(500).json({err: 'Please, fill all the required fields'})
   }
 
   try {
-    let totalRating = ((+historyRating + +graphicsRating + +soundRating + +gameplayRating) / 4).toFixed(1)
+    let totalRating = ((+history.rating + +graphics.rating + +sound.rating + +gameplay.rating) / 4).toFixed(1)
     let reviewCreated = await Reviews.create({
       title, platform, review,
-      history: { content: historyContent, rating: historyRating },
-      graphics: { content: graphicsContent, rating: graphicsRating },
-      sound: { content: soundContent, rating: soundRating },
-      gameplay: { content: gameplayContent, rating: gameplayRating },
+      history,
+      graphics,
+      sound,
+      gameplay,
       author, pros, cons,
       totalRating, gameID
     })
 
-    res.status(200).json({message: 'Review added successfully', reviewCreated})
+    res.status(200).json({created: true, reviewCreated})
   } catch (err) {
-    res.status(500).json({err: err.message})
+    res.status(500).json({created: false, err: err.message})
   }
 }
 
