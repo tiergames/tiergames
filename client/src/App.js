@@ -156,13 +156,13 @@ export default class App extends Component {
     this.loadPlatforms()
     this.loadGenres()
     this.loadReviews()
-    this.loadGames()
-    this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo")
-    this.loadReleases(2, "releases7Days", "asc", "isLoading7Days")
-    this.loadReleases(3, "releases14Days", "asc", "isLoading14Days")
-    this.loadReleases(4, "releases1Month", "asc", "isLoading1Month")
-    this.loadReleases(5, "releases6Months", "asc", "isLoading6Months")
-    this.loadReleases(6, "releases1Year", "asc", "isLoading1Year")
+    // this.loadGames()
+    // this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo")
+    // this.loadReleases(2, "releases7Days", "asc", "isLoading7Days")
+    // this.loadReleases(3, "releases14Days", "asc", "isLoading14Days")
+    // this.loadReleases(4, "releases1Month", "asc", "isLoading1Month")
+    // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months")
+    // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year")
   }
 
   async loadPlatforms() {

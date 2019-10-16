@@ -46,7 +46,7 @@ class Game extends Component {
 
   renderGame() {
     return (
-      <>
+      <section className="game-enter">
         {this.renderHeader()}
         {this.renderIAmFollowing()}
         {this.state.game.summary ? this.renderSummary() : null}
@@ -58,7 +58,7 @@ class Game extends Component {
         {this.state.game.release_dates ? this.renderReleaseDates() : null}
         {this.state.game.websites ? this.renderWebsites() : null}
         {this.state.game.similar_games ? this.renderSimilarGames() : null}
-      </>
+      </section>
     )
   }
 

@@ -1,10 +1,23 @@
 /* autoprefixer grid: on */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  // margin: 0;
+  // padding: 0;
+  // box-sizing: border-box;
   background-color: #F8F8F8;
+}
+
+.game-enter {
+  transition: opacity 1s;
+  animation: gameEnter 1s forwards;
+}
+
+@keyframes gameEnter {
+  from {
+    opacity: 0;
+  } to {
+    opacity: 1;
+  }
 }
 
 body {
