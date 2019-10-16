@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/Auth/ForgotPassword/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword/ResetPassword";
 import Error404 from "./pages/errors/Error404/Error404";
 import Profile from "./pages/private/Profile/Profile";
+import LoggedInUserProfile from "./pages/private/LoggedInUserProfile/LoggedInUserProfile";
 import Games from "./pages/private/Games/Games";
 import Genres from "./pages/private/Genres/Genres";
 import Platforms from "./pages/private/Platforms/Platforms";
@@ -89,7 +90,8 @@ export default class App extends Component {
           {this.state.loggedInUser ? (
             <>
               <Route exact path="/games" component={() => ( <Games genres={this.state.genres} platforms={this.state.platforms} games={this.state.games} loggedInUser={this.state.loggedInUser} /> )} />
-              <Route exact path="/profile" component={() => ( <Profile loggedInUser={this.state.loggedInUser} /> )} />
+              <Route exact path="/profile" component={() => ( <LoggedInUserProfile loggedInUser={this.state.loggedInUser} /> )} />
+              <Route exact path="/profile/:username" render={(props) => ( <Profile {...props} loggedInUser={this.state.loggedInUser} /> )} />
               <Route exact path="/genres" component={() => <Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/games/coming-soon" component={() => ( <ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser} /> )} />
@@ -126,6 +128,10 @@ export default class App extends Component {
     // this.loadReleases(4, "releases1Month", "asc", "isLoading1Month")
     // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months")
     // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year")
+  }
+
+  handleFollowUser(userToFollow) {
+    
   }
 
   async loadPlatforms() {
