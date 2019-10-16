@@ -55,7 +55,11 @@ export default class Reviews extends Component {
           {this.state.reviews.reviewsFiltered.length > 0
             ?
               this.state.reviews.reviewsFiltered.map(review => {
-                return <ReviewTile key={review._id} gameTile={review} />
+                return (
+                  <Link to={`/reviews/${review._id}`}>
+                    <ReviewTile key={review._id} gameTile={review} />
+                  </Link>
+                )
               })
             : null}
         </ul>

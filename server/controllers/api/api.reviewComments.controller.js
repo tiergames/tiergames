@@ -4,7 +4,7 @@ const controller = {}
 controller.loadAll = async (req, res, next) => {
   try {
     let comments = await ReviewComments
-      .find()
+      .find({reviewID: req.query.reviewID})
       .populate('authorID')
       .skip(req.query.offset)
       .limit(req.query.limit)
@@ -16,10 +16,10 @@ controller.loadAll = async (req, res, next) => {
 }
 
 controller.addComment = async (req, res, next) => {
-  console.log("THE REQ:BODY", req.body)
   try {
     let commentCreated = await ReviewComments.create(req.body)
-    console.log("COMMENT ADDED?", commentCreated)
+    commentCreated = await commentCreated.populate('authorID').execPopulate()
+
     res.status(200).json({ commentAdded: true, commentCreated })
   } catch (error) {
     res.status(500).json({ commentCreated: false, err: error.message })

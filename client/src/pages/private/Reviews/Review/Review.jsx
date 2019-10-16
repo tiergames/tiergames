@@ -48,7 +48,7 @@ export default class Review extends Component {
     let newComments = {...this.state.comments}
     newComments.isLoadingComments = true
     
-    let comments = await this.reviewCommentsService.loadComments(this.state.comments.pagination.offset, this.state.comments.pagination.limit)
+    let comments = await this.reviewCommentsService.loadComments(this.state.comments.pagination.offset, this.state.comments.pagination.limit, this.state.comment.reviewID)
 
     newComments.pagination.pagcurrentPage += 1;
     newComments.pagination.offset = newComments.pagination.currentPage * newComments.pagination.limit
