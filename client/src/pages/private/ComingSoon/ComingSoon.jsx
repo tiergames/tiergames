@@ -13,6 +13,8 @@ export default class ComingSoon extends Component {
   }
 
   render() {
+    console.log('coming soon');
+    
     return (
       <>
         <h1>Releases</h1>

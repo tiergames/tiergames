@@ -50,6 +50,8 @@ export default class GamesService {
   };
 
   getGameData = async (gameID) => {
+    // console.log(gameID);
+    
     let gameData = await this.service.get(`/${gameID}`)
     return gameData.data
   }
