@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
-import {Link} from 'react-router-dom'
 import AuthService from "./services/auth.service";
 
 // Pages
@@ -114,7 +113,6 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Switch></Switch>
         <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
         <SearchBar
           makeSearch={() => this.makeSearch()}
@@ -132,8 +130,8 @@ export default class App extends Component {
               <Route exact path="/profile" component={() => ( <Profile loggedInUser={this.state.loggedInUser} /> )} />
               <Route exact path="/genres" component={() => <Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/games/best-rated" component={() => <BestRated loggedInUser={this.state.loggedInUser} />} />
-              <Route exact path="/games/:gameID" component={Game} />
               <Route exact path="/games/coming-soon" component={() => ( <ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser} /> )} />
+              <Route exact path="/games/:gameID" component={Game} />
               <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/reviews/create" component={() => <CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />

@@ -36,7 +36,9 @@ export default class Games extends Component {
     )
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log("RENDERING...", this.state)
+  }
 
   async loadNextGames() {
     this.setState({
@@ -131,7 +133,9 @@ export default class Games extends Component {
           {this.state.games.games.length > 0
             ? 
               this.state.games.games.map(game => {
-                return <li key={game.id}>{game.name}</li>
+                return <Link key={game.id} to={`/games/${game.id}`}>
+                  <li>{game.name}</li>
+                </Link>
               })
             : null
           }

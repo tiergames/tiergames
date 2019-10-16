@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import Moment from 'react-moment'
 import GamesService from './../../../services/games.service'
+import {animateScroll as scroll} from 'react-scroll'
 
-export default class Game extends Component {
+class Game extends Component {
   constructor(props) {
     super(props)
     this.gamesService = new GamesService()
-    this.gameID = props.match.params.gameID
     this.state = {
+      gameID: props.match.params.gameID,
       game: {},
       isLoadingGame: true
     }
@@ -27,7 +28,16 @@ export default class Game extends Component {
   }
 
   componentDidMount() {
-    this.loadGame(this.gameID)
+    this.loadGame(this.state.gameID)
+  }
+
+  componentWillReceiveProps(nextProps, state) {
+    if (nextProps.match.params.gameID !== state.gameID) {
+      this.loadGame(nextProps.match.params.gameID, true)
+      // scroll.scrollToTop({
+      //   duration: 750
+      // })
+    }
   }
 
   renderTemplate() {
@@ -39,15 +49,15 @@ export default class Game extends Component {
       <>
         {this.renderHeader()}
         {this.renderIAmFollowing()}
-        {this.renderSummary()}
-        {this.renderStoryLine()}
-        {this.renderGameModes()}
-        {this.renderGameGenres()}
-        {this.renderScreenshots()}
-        {this.renderVideos()}
-        {this.renderReleaseDates()}
-        {this.renderWebsites()}
-        {this.renderSimilarGames()}
+        {this.state.game.summary ? this.renderSummary() : null}
+        {this.state.game.storyline ? this.renderStoryLine() : null}
+        {this.state.game.game_modes ? this.renderGameModes() : null}
+        {this.state.game.genres ? this.renderGameGenres() : null}
+        {this.state.game.screenshots ? this.renderScreenshots() : null}
+        {this.state.game.videos ? this.renderVideos() : null}
+        {this.state.game.release_dates ? this.renderReleaseDates() : null}
+        {this.state.game.websites ? this.renderWebsites() : null}
+        {this.state.game.similar_games ? this.renderSimilarGames() : null}
       </>
     )
   }
@@ -56,12 +66,16 @@ export default class Game extends Component {
     return (
       <header className="game-header">
         <div className="game-header-image">
-          <img src={`http:${this.state.game.cover.url}`} alt={this.state.game.name}/>
+          {
+            this.state.game.cover
+              ? <img src={`http:${this.state.game.cover.url.replace('t_thumb', 't_cover_small_2x')}`} alt={this.state.game.name}/>
+              : null
+          }
         </div>
         <div className="game-header-info">
           <h2 className="game-title">{this.state.game.name}</h2>
           <div className="game-platforms">
-            {this.renderPlatforms()}
+            {this.state.game.platforms ? this.renderPlatforms() : null}
           </div>
         </div>
       </header>
@@ -243,10 +257,16 @@ export default class Game extends Component {
         <div className="game-section-content">
           {this.state.game.similar_games.map(similarGame => {
             return (
-              <li key={similarGame.id}>
-                <img src={`http:${similarGame.cover.url.replace('t_thumb', 't_cover_small_2x')}`} alt={`${similarGame.name}`}/>
-                <p>{similarGame.name}</p>
-              </li>
+              <Link to={`/games/${similarGame.id}`} key={similarGame.id}>
+                <li>
+                  {
+                    similarGame.cover
+                      ? <img src={`http:${similarGame.cover.url.replace('t_thumb', 't_cover_small_2x')}`} alt={`${similarGame.name}`}/>
+                      : null
+                  }
+                  <p>{similarGame.name}</p>
+                </li>
+              </Link>
             )
           })}
         </div>
@@ -254,12 +274,21 @@ export default class Game extends Component {
     )
   }
 
-  async loadGame() {
-    let game = await this.gamesService.getGameData(this.gameID)
-    this.setState({ isLoadingGame: false, game: game[0] })
+  async loadGame(gameID, reRender) {
+    this.setState({ ...this.state, isLoadingGame: true })
+    let game = await this.gamesService.getGameData(gameID)
+    if (reRender) {
+      setTimeout(() => {
+        this.setState({ isLoadingGame: false, game: game[0] })
+      }, 500)
+    } else {
+      this.setState({ isLoadingGame: false, game: game[0] })
+    }
   }
 
   async loadRelatedGames() {
     
   }
 }
+
+export default withRouter(Game)
