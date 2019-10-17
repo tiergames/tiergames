@@ -147,7 +147,19 @@ controller.follow = async (req, res, next) => {
 
     res.status(200).json({ reviewFollowRequestDone: true, reviewFollow: reviewFollowRequest, follower: followerRequest })
   } catch (error) {
-    res.status(200).json({ reviewFollowRequest: false, err: error.message })
+    res.status(500).json({ reviewFollowRequest: false, err: error.message })
+  }
+}
+
+controller.unfollow = async (req, res, next) => {
+  try {
+    let { reviewID, followerID } = req.body
+    let reviewUnfollowRequest = await Reviews.findByIdAndUpdate(reviewID, { $pull: { followers: followerID } }, { new: true })
+    let followerRequest = await User.findByIdAndUpdate(followerID, { $pull: { savedReviews: reviewID } }, { new: true })
+
+    res.status(200).json({ reviewUnfollowRequestDone: true, review: reviewUnfollowRequest, follower: followerRequest })
+  } catch (error) {
+    res.status(500).json({ reviewUnfollowRequestDone: false, err: error.message })
   }
 }
 

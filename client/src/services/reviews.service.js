@@ -51,4 +51,9 @@ export default class ReviewsService {
     let reviewFollowRequest = await this.service.put("/follow", { reviewID, followerID })
     return reviewFollowRequest.data
   }
+
+  unfollow = async (reviewID, followerID) => {
+    let reviewUnfollowRequest = await this.service.put("/unfollow", { reviewID, followerID })
+    return reviewUnfollowRequest.data
+  }
 }

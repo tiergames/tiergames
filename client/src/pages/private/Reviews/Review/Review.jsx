@@ -168,12 +168,20 @@ export default class Review extends Component {
 
   async handleFollowReview() {
     let reviewFollowRequest = await this.reviewsService.follow(this.state.review._id, this.props.loggedInUser._id)
-    console.log("THE STRANGE REVIEW", reviewFollowRequest)
     if (reviewFollowRequest.reviewFollowRequestDone) {
       let newReview = {...this.state.review}
       newReview.followers = reviewFollowRequest.reviewFollow.followers
       this.setState({ ...this.state, review: newReview })
       console.log("THE NEW REVIEW STATE", this.state)
+    }
+  }
+
+  async handleUnfollowReview() {
+    let reviewUnfollowRequest = await this.reviewsService.unfollow(this.state.review._id, this.props.loggedInUser._id)
+    if (reviewUnfollowRequest.reviewUnfollowRequestDone) {
+      let newReview = {...this.state.review}
+      newReview.followers = reviewUnfollowRequest.review.followers
+      this.setState({ ...this.state, review: newReview })
     }
   }
 
