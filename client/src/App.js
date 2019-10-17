@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import AuthService from "./services/auth.service";
+import io from 'socket.io-client'
 
 // Pages
 import Home from "./pages/Public/Home/Home";
@@ -50,7 +51,7 @@ export default class App extends Component {
     this.gamesService = new GamesService()
     this.profileService = new ProfileService()
 
-    // FIX
+    this.socket = io('http://localhost:3001')
 
     this.state = {
       loggedInUser: null,

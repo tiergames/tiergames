@@ -90,7 +90,6 @@ router.post("/signup", (req, res, next) => {
 router.get("/currentuser", async (req, res, next) => {
   if (req.user) {
     let userPopulated = await User.findById(req.user._id).populate("followers").populate("following")
-    console.log("RETURNING USER", userPopulated)
     res.status(200).json(userPopulated);
   } else {
     res.status(404).json({ message: "User not found / logged in" });

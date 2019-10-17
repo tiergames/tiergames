@@ -12,8 +12,6 @@ const genresSeed = require("./seeds/genres.seed");
 
 const bcryptSalt = 10;
 
-console.log(process.env.DB);
-
 mongoose
   // .connect(`mongodb://localhost/tiergames`, {useNewUrlParser: true})
   .connect(`${process.env.DB}`, {

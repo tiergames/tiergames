@@ -96,7 +96,6 @@ controller.getGameName = async (req, res, next) => {
 }
 
 controller.getGameCover = async (req, res, next) => {
-  console.log("EL GAMEID", req.params.gameID)
   try {
     let gameCoverUrl = await axios({
       url: coversURL,
@@ -110,8 +109,6 @@ controller.getGameCover = async (req, res, next) => {
         where game = ${req.params.gameID};
       `
     })
-
-    console.log("THE GAME COVER URL", gameCoverUrl.data[0].url)
 
     res.status(200).json(gameCoverUrl.data[0].url)
   } catch (error) {
@@ -158,7 +155,6 @@ controller.getAlternativeNames = async (req, res, next) => {
   
     res.status(200).json(alternativeNames.data)
   } catch (err) {
-    console.log("Alternative names error", err.message)
     res.status(500).json({err: err.message})
   }
 }
@@ -208,7 +204,6 @@ controller.getRelationedContent = async (req, res, next) => { // Collection
 
 controller.getInvolvedCompanies = async (req, res, next) => {
   let companiesArray = req.params.companies.replace("[", "(").replace("]", ")").replace("%20", "")
-  console.log("COMPANIES ARRAY", companiesArray)
   try {
     let involvedCompanies = await axios({
       url: companiesURL,
@@ -291,7 +286,6 @@ controller.getVideos = async (req, res, next) => {
   
     res.status(200).json(videos.data)
   } catch (err) {
-    console.log("Alternative names error", err.message)
     res.status(500).json({err: err.message})
   }
 }
