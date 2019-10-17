@@ -50,6 +50,8 @@ export default class App extends Component {
     this.gamesService = new GamesService()
     this.profileService = new ProfileService()
 
+    // FIX
+
     this.state = {
       loggedInUser: null,
       platforms: { isLoadingPlatforms: true, platforms: [], platformsFiltered: [], currentPlatform: null },
