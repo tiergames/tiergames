@@ -48,24 +48,9 @@ export default class App extends Component {
 
     this.state = {
       loggedInUser: null,
-      platforms: {
-        isLoadingPlatforms: true,
-        platforms: [],
-        platformsFiltered: [],
-        currentPlatform: null
-      },
-      genres: {
-        isLoadingGenres: true,
-        genres: [],
-        genresFiltered: [],
-        currentGenre: null
-      },
-      games: {
-        isLoadingGames: true,
-        games: [],
-        gamesFiltered: [],
-        currentGame: null
-      },
+      platforms: { isLoadingPlatforms: true, platforms: [], platformsFiltered: [], currentPlatform: null },
+      genres: { isLoadingGenres: true, genres: [], genresFiltered: [], currentGenre: null },
+      games: { isLoadingGames: true, games: [], gamesFiltered: [], currentGame: null },
       releases: {
         releases7DaysAgo: { isLoading7DaysAgo: true, releases7DaysAgo: [] },
         releases7Days: { isLoading7Days: true, releases7Days: [] },
@@ -74,13 +59,7 @@ export default class App extends Component {
         releases6Months: { isLoading6Months: true, releases6Months: [] },
         releases1Year: { isLoading1Year: true, releases1Year: [] }
       },
-      reviews: {
-        isLoadingReviews: true,
-        reviews: [],
-        reviewsFiltered: [],
-        currentReviewFilter: null,
-        pagination: { currentPage: 0, offset: 0, limit: 1 }
-      },
+      reviews: { isLoadingReviews: true, reviews: [], reviewsFiltered: [], currentReviewFilter: null, pagination: { currentPage: 0, offset: 0, limit: 1 } },
       search: {
         games: { gamesResults: [], isSearchingGames: false },
         reviews: { reviewsResults: [], isSearchingReviews: false },
@@ -93,145 +72,27 @@ export default class App extends Component {
   }
 
   render() {
-    let routes = [
-      {
-        exact: true,
-        path: "/",
-        component: Home
-      }
+    const routes = [
+      { exact: true, path: "/", component: Home },
+      { exact: true, path: "/games", component: () => (<Games genres={this.state.genres} platforms={this.state.platforms} games={this.state.games} loggedInUser={this.state.loggedInUser}/>) },
+      { exact: true, path: "/profile", component: () => <Profile loggedInUser={this.state.loggedInUser} /> },
+      { exact: true, path: "/genres", component: () => (<Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser}/>) },
+      { exact: true, path: "/games/best-rated", component: () => <BestRated loggedInUser={this.state.loggedInUser} /> },
+      { exact: true, path: "/games/coming-soon", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
+      { exact: true, path: "/games/:gameID", component: Game },
+      { exact: true, path: "/reviews", component: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />)},
+      { exact: true, path: "/reviews/create", component: () => (<CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />)},
+      { exact: true, path: "/reviews/:reviewID", component: props => (<Review {...props} loggedInUserID={this.state.loggedInUser._id} />)},
+      { exact: true, path: "/platforms", component: () => (<Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />) },
+      { exact: true, path: "/login", component: () => <Login setUser={this.setUser} /> },
+      { exact: true, path: "/signup", component: () => <Signup setUser={this.setUser} /> },
+      { exact: true, path: "/forgot-password", component: ForgotPassword },
+      { exact: true, path: "/reset-password/:resetPasswordToken", component: ResetPassword },
+      { exact: true, path: "/update-password/:resetPasswordToken", component: ResetPassword },
+      { exact: true, path: "/confirm/:confirmationToken", component: AccountConfirm },
+      { path: '*', component: Error404 }
     ];
-
-    if (this.state.loggedInUser) {
-      routes = routes.concat([
-        {
-          exact: true,
-          path: "/games",
-          component: () => (
-            <Games
-              genres={this.state.genres}
-              platforms={this.state.platforms}
-              games={this.state.games}
-              loggedInUser={this.state.loggedInUser}
-            />
-          )
-        },
-        {
-          exact: true,
-          path: "/profile",
-          component: () => <Profile loggedInUser={this.state.loggedInUser} />
-        },
-        {
-          exact: true,
-          path: "/genres",
-          component: () => (
-            <Genres
-              genres={this.state.genres}
-              loggedInUser={this.state.loggedInUser}
-            />
-          )
-        },
-        {
-          exact: true,
-          path: "/games/best-rated",
-          component: () => <BestRated loggedInUser={this.state.loggedInUser} />
-        },
-        {
-          exact: true,
-          path: "/games/coming-soon",
-          component: () => (
-            <ComingSoon
-              releases={this.state.releases}
-              loggedInUser={this.state.loggedInUser}
-            />
-          )
-        },
-        {
-          exact: true,
-          path: "/games/:gameID",
-          component: Game
-        },
-        {
-          exact: true,
-          path: "/reviews",
-          component: () => (
-            <Reviews
-              reviews={this.state.reviews}
-              handleLoadMore={() => this.loadReviews()}
-              platforms={this.state.platforms}
-              loggedInUser={this.state.loggedInUser}
-            />
-          )
-        },
-        {
-          exact: true,
-          path: "/reviews/create",
-          component: () => (
-            <CreateReview
-              loggedInUser={this.state.loggedInUser}
-              platforms={this.state.platforms.platforms}
-            />
-          )
-        },
-        {
-          exact: true,
-          path: "/reviews/:reviewID",
-          render: props => (
-            <Review {...props} loggedInUserID={this.state.loggedInUser._id} />
-          )
-        },
-        {
-          exact: true,
-          path: "/platforms",
-          component: () => (
-            <Platforms
-              platforms={this.state.platforms}
-              loggedInUser={this.state.loggedInUser}
-            />
-          )
-        }
-      ]);
-    } else {
-      routes = routes.concat([
-        {
-          exact: true,
-          path: "/login",
-          component: () => <Login setUser={this.setUser} />
-        },
-        {
-          exact: true,
-          path: "/signup",
-          component: () => <Signup setUser={this.setUser} />
-        },
-        {
-          exact: true,
-          path: "/forgot-password",
-          component: ForgotPassword
-        },
-        {
-          exact: true,
-          path: "/reset-password/:resetPasswordToken",
-          component: () => ResetPassword
-        },
-        {
-          exact: true,
-          path: "/update-password/:resetPasswordToken",
-          component: () => ResetPassword
-        },
-        {
-          exact: true,
-          path: "/confirm/:confirmationToken",
-          component: () => AccountConfirm
-        }
-      ]);
-    }
-
-    routes = routes.concat([
-      {
-        exact: true,
-        component: Error404
-      }
-    ]);
-
+    
     return (
       <div>
         <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
@@ -256,13 +117,13 @@ export default class App extends Component {
     this.loadPlatforms();
     this.loadGenres();
     this.loadReviews();
-    this.loadGames();
-    this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
-    this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");
-    this.loadReleases(3, "releases14Days", "asc", "isLoading14Days");
-    this.loadReleases(4, "releases1Month", "asc", "isLoading1Month");
-    this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
-    this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
+    // this.loadGames();
+    // this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
+    // this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");
+    // this.loadReleases(3, "releases14Days", "asc", "isLoading14Days");
+    // this.loadReleases(4, "releases1Month", "asc", "isLoading1Month");
+    // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
+    // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
   }
 
   async loadPlatforms() {
