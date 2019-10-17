@@ -3,6 +3,7 @@
 const http = require('http');
 const socketIO = require("socket.io")
 let app = require('../app');
+const { OnlineUsers } = require('./../classes/OnlineUsers')
 
 app.use((req, res, next) => {
   res.status(404).json({error: 'not-found'});
@@ -20,12 +21,21 @@ app.use((err, req, res, next) => {
 let server = http.createServer(app);
 const io = socketIO(server)
 
-io.on('connection', (client) => {
-  console.log('Someone connected to tiergames')
-  console.log("THE CLIENT IS", client.id)
+let onlineUsers = new OnlineUsers()
 
-  client.on('greeting', (data) => {
-    console.log("Someone says:", data)
+io.on('connection', (client) => {
+
+  client.on('user-join-room', (data) => {
+    console.log("User join room:", data)
+
+    client.join(data.room);
+
+    client.on('user-send-message-room', (data) => {
+      console.log('User send message room', data)
+  
+      client.broadcast.to(data.room).emit('user-send-message-room', data)
+      client.emit('user-send-message-room', data)
+    })
   })
 })
 
