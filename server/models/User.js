@@ -37,7 +37,11 @@ const userSchema = new Schema({
   resetPasswordExpires: {
     type: String,
     default: null
-  }
+  },
+  followers: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
+  following: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
+  savedReviews: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Reviews' } ],
+  savedGames: [ Number ]
 }, {
   timestamps: true
 });

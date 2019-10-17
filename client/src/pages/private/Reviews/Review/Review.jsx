@@ -40,7 +40,6 @@ export default class Review extends Component {
 
   async loadReviewData() {
     let reviewData = await this.reviewsService.getReviewData(this.props.match.params.reviewID)
-    console.log("REVIEW DATA", reviewData)
     this.setState({ ...this.state, review: reviewData, isLoadingReview: false })
   }
 
@@ -69,6 +68,11 @@ export default class Review extends Component {
           <div>
             <p>{this.state.review.platform.name}</p>
             <h2>{this.state.review.gameName}</h2>
+            {
+              this.props.loggedInUserName === this.state.review.author.username
+                ? <p>by <Link to={`/profile`}>me</Link></p>
+                : <p>by <Link to={`/profile/${this.state.review.author.username}`}>{this.state.review.author.username}</Link></p>
+            }
           </div>
         </header>
         <section className="review-stats">
@@ -76,7 +80,12 @@ export default class Review extends Component {
             <p><strong><span>{this.state.review.followers.length}</span></strong> users follow this review</p>
           </div>
           <div className="following-and-rating">
-            <button>Follow</button>
+            {
+              // this.props.loggedInUser.savedReviews.indexOf(this.state.review._id) >= 0
+              this.state.review.followers.indexOf(this.props.loggedInUser._id) >= 0
+                ? <button onClick={() => this.handleUnfollowReview()}>Unfollow</button>
+                : <button onClick={() => this.handleFollowReview()}>Follow</button>
+            }
             <div className="rating">
               <span>{this.state.review.totalRating}</span>
             </div>
@@ -155,6 +164,24 @@ export default class Review extends Component {
     )
   }
 
+  async handleFollowReview() {
+    let reviewFollowRequest = await this.reviewsService.follow(this.state.review._id, this.props.loggedInUser._id)
+    if (reviewFollowRequest.reviewFollowRequestDone) {
+      let newReview = {...this.state.review}
+      newReview.followers = reviewFollowRequest.reviewFollow.followers
+      this.setState({ ...this.state, review: newReview })
+    }
+  }
+
+  async handleUnfollowReview() {
+    let reviewUnfollowRequest = await this.reviewsService.unfollow(this.state.review._id, this.props.loggedInUser._id)
+    if (reviewUnfollowRequest.reviewUnfollowRequestDone) {
+      let newReview = {...this.state.review}
+      newReview.followers = reviewUnfollowRequest.review.followers
+      this.setState({ ...this.state, review: newReview })
+    }
+  }
+
   handleCommentChange(e) {
     let newComment = {...this.state.comment}
     newComment[e.target.name] = e.target.value
@@ -166,7 +193,6 @@ export default class Review extends Component {
     let commentAdded = await this.reviewCommentsService.addComment(this.state.comment)
     
     if (commentAdded.commentCreated) {
-      console.log(commentAdded)
       let newComments = {...this.state.comments}
       newComments.comments.unshift(commentAdded.commentCreated)
       this.setState({ ...this.state, comments: newComments })

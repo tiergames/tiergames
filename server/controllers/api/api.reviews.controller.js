@@ -1,6 +1,7 @@
 const controller = {}
 const Reviews = require("../../models/Reviews.model")
 const Platforms = require("./../../models/Platforms.model")
+const User = require("./../../models/User")
 
 controller.loadReviews = async (req, res, next) => {
   try {
@@ -135,6 +136,30 @@ controller.addReview = async (req, res, next) => {
     res.status(200).json({created: true, reviewCreated})
   } catch (err) {
     res.status(500).json({created: false, err: err.message})
+  }
+}
+
+controller.follow = async (req, res, next) => {
+  try {
+    let { reviewID, followerID } = req.body
+    let reviewFollowRequest = await Reviews.findByIdAndUpdate(reviewID, { $push: { followers: followerID } }, { new: true })
+    let followerRequest = await User.findByIdAndUpdate(followerID, { $push: { savedReviews: reviewID } }, { new: true })
+
+    res.status(200).json({ reviewFollowRequestDone: true, reviewFollow: reviewFollowRequest, follower: followerRequest })
+  } catch (error) {
+    res.status(500).json({ reviewFollowRequest: false, err: error.message })
+  }
+}
+
+controller.unfollow = async (req, res, next) => {
+  try {
+    let { reviewID, followerID } = req.body
+    let reviewUnfollowRequest = await Reviews.findByIdAndUpdate(reviewID, { $pull: { followers: followerID } }, { new: true })
+    let followerRequest = await User.findByIdAndUpdate(followerID, { $pull: { savedReviews: reviewID } }, { new: true })
+
+    res.status(200).json({ reviewUnfollowRequestDone: true, review: reviewUnfollowRequest, follower: followerRequest })
+  } catch (error) {
+    res.status(500).json({ reviewUnfollowRequestDone: false, err: error.message })
   }
 }
 
