@@ -80,7 +80,6 @@ export default class App extends Component {
   }
 
   render() {
-    console.log("KJHGVGGHHJHGJVHGKNJHH", this.state)
     let routes = []
     routes = [
       { exact: true, path: "/login", component: () => <Login setUser={this.setUser} /> },

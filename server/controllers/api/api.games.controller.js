@@ -59,7 +59,7 @@ controller.gameInfo = async (req, res, next) => {
         'user-key': process.env.IGDB_API_KEY
       },
       data: `
-        fields alternative_names.name, category, collection.games.name,
+        fields alternative_names.name, category, collection.games.name, slug,
           cover.url, dlcs, first_release_date, name, game_modes.name, screenshots.url,
           genres.name, hypes, involved_companies.company.name, parent_game,
           platforms.name, release_dates.date, status, storyline, summary, rating,
