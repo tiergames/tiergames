@@ -7,7 +7,7 @@ export default class LoggedInUserProfile extends Component {
   }
 
   render() {
-    console.log("FOLLOWERS", this.props.loggedInUser.followers)
+    
     return (
       <div>
         
