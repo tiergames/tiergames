@@ -132,6 +132,12 @@ export default class App extends Component {
     // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year")
   }
 
+  handleFollow(followers) {
+    let newLoggedInUser = {...this.state.loggedInUser}
+    newLoggedInUser.followers = followers
+    this.setState({ ...this.state, loggedInUser: newLoggedInUser })
+  }
+
   async loadPlatforms() {
     let platforms = await this.platformsService.platforms()
     let newPlatforms = {...this.state.platforms}
