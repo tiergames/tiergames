@@ -18,6 +18,7 @@ import Platforms from "./pages/private/Platforms/Platforms";
 import CreateReview from "./pages/private/Reviews/CreateReview/CreateReview";
 import Game from "./pages/private/Game/Game";
 import Review from "./pages/private/Reviews/Review/Review";
+import Saved from "./pages/private/Saved/Saved";
 
 // Components
 import Navbar from "./components/Navbar/Navbar";
@@ -100,6 +101,7 @@ export default class App extends Component {
         { exact: true, path: "/reviews", component: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />)},
         { exact: true, path: "/reviews/create", component: () => (<CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />)},
         { exact: true, path: "/reviews/:reviewID", component: props => (<Review {...props} loggedInUserName={this.state.loggedInUser.username} loggedInUserID={this.state.loggedInUser._id} loggedInUser={this.state.loggedInUser} />)},
+        { exact: true, path: "/saved", component: props => (<Saved loggedInUser={this.state.loggedInUser} />)},
         { exact: true, path: "/platforms", component: () => (<Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />) },
         { path: '*', component: Error404 }
       ];

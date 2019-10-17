@@ -1,13 +1,19 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import ProfileService from '../../../services/profile.service'
+import ReviewsService from '../../../services/reviews.service'
+import ReviewTile from '../../../components/ReviewTile/ReviewTile'
 
 export default class Profile extends Component {
   constructor(props) {
     super(props)
     this.profileService = new ProfileService()
+    this.reviewsService = new ReviewsService()
     this.state = {
       userProfile: {},
-      isLoadingUserProfile: true
+      isLoadingUserProfile: true,
+      userReviews: [],
+      isLoadingUserReviews: true
     }
   }
 
@@ -19,8 +25,14 @@ export default class Profile extends Component {
             ? <p>Loading user profile...</p>
             : this.renderUserProfile()
         }
+        {this.renderUserReviews()}
       </>
     )
+  }
+
+  componentDidMount() {
+    let username = this.props.match.params.username
+    this.loadUserProfile(username)
   }
 
   renderUserProfile() {
@@ -36,9 +48,29 @@ export default class Profile extends Component {
     )
   }
 
-  componentDidMount() {
-    let username = this.props.match.params.username
-    this.loadUserProfile(username)
+  renderUserReviews() {
+    return (
+      <section className="user-reviews">
+        <h2>{this.state.isLoadingUserProfile ? 'user' : this.state.userProfile.username}'s reviews ({!this.state.isLoadingUserReviews ? this.state.userReviews.length : 'loading...'})</h2>
+        {
+          this.state.userReviews.length > 0
+            ?
+              <ul>
+                {this.state.userReviews.map(review => {
+                  return (
+                    <Link to={`/reviews/${review._id}`} key={review._id}>
+                      <ReviewTile gameTile={review} />
+                    </Link>
+                  )
+                })}
+              </ul>
+            :
+              this.state.isLoadingUserReviews
+                ? <p>Loading reviews...</p>
+                : <p>You don't have any saved reviews.</p>
+        }
+      </section>
+    )
   }
 
   async handleFollowUser(followed) {
@@ -68,12 +100,11 @@ export default class Profile extends Component {
       userProfile: userProfile.userProfile,
       isLoadingUserProfile: false
     })
-    console.log("THE PROPS USER", this.props.loggedInUser._id)
-    console.log("THE STATE USER", this.state.userProfile.followers)
-    if (this.state.userProfile.followers.indexOf(this.props.loggedInUser._id) >= 0) {
-      console.log("FOLLOWING: YES!!!!")
-    } else {
-      console.log("NOT FOLLOWING")
-    }
+    this.loadUserReviews()
+  }
+
+  async loadUserReviews() {
+    let userReviews = await this.reviewsService.getReviewsPerUser(this.state.userProfile._id)
+    this.setState({ ...this.state, userReviews: userReviews, isLoadingUserReviews: false })
   }
 }
