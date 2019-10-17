@@ -29,7 +29,6 @@ export default class Reviews extends Component {
 
   async loadReviews(offset, limit) {
     let reviews = await this.reviewsService.getReviews(offset, limit);
-    console.log("Reviews loaded...", reviews);
     this.setState({
       ...this.state,
       reviews: reviews,
@@ -56,8 +55,8 @@ export default class Reviews extends Component {
             ?
               this.state.reviews.reviewsFiltered.map(review => {
                 return (
-                  <Link to={`/reviews/${review._id}`}>
-                    <ReviewTile key={review._id} gameTile={review} />
+                  <Link key={review._id} to={`/reviews/${review._id}`}>
+                    <ReviewTile gameTile={review} />
                   </Link>
                 )
               })

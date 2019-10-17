@@ -40,7 +40,6 @@ export default class Review extends Component {
 
   async loadReviewData() {
     let reviewData = await this.reviewsService.getReviewData(this.props.match.params.reviewID)
-    console.log("REVIEW DATA", reviewData)
     this.setState({ ...this.state, review: reviewData, isLoadingReview: false })
   }
 
@@ -70,7 +69,6 @@ export default class Review extends Component {
             <p>{this.state.review.platform.name}</p>
             <h2>{this.state.review.gameName}</h2>
             {
-              // console.log("THE PROPORPROPROS", this.props)
               this.props.loggedInUserName === this.state.review.author.username
                 ? <p>by <Link to={`/profile`}>me</Link></p>
                 : <p>by <Link to={`/profile/${this.state.review.author.username}`}>{this.state.review.author.username}</Link></p>
@@ -172,7 +170,6 @@ export default class Review extends Component {
       let newReview = {...this.state.review}
       newReview.followers = reviewFollowRequest.reviewFollow.followers
       this.setState({ ...this.state, review: newReview })
-      console.log("THE NEW REVIEW STATE", this.state)
     }
   }
 
@@ -196,7 +193,6 @@ export default class Review extends Component {
     let commentAdded = await this.reviewCommentsService.addComment(this.state.comment)
     
     if (commentAdded.commentCreated) {
-      console.log(commentAdded)
       let newComments = {...this.state.comments}
       newComments.comments.unshift(commentAdded.commentCreated)
       this.setState({ ...this.state, comments: newComments })
