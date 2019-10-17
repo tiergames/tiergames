@@ -10,6 +10,8 @@ router.get("/relationated/:gameID/:currentReviewID", (req, res, next) => { contr
 
 router.post("/add", (req, res, next) => { controller.addReview(req, res, next) })
 
+router.put("/follow", (req, res, next) => { controller.follow(req, res, next) })
+
 router.delete("/delete/:reviewID", (req, res, next) => { controller.deleteReview(req, res, next) })
 
 module.exports = router

@@ -83,7 +83,10 @@ export default class Review extends Component {
           </div>
           <div className="following-and-rating">
             {
-              
+              // this.props.loggedInUser.savedReviews.indexOf(this.state.review._id) >= 0
+              this.state.review.followers.indexOf(this.props.loggedInUser._id) >= 0
+                ? <button onClick={() => this.handleUnfollowReview()}>Unfollow</button>
+                : <button onClick={() => this.handleFollowReview()}>Follow</button>
             }
             <div className="rating">
               <span>{this.state.review.totalRating}</span>
@@ -161,6 +164,17 @@ export default class Review extends Component {
         </div>
       </>
     )
+  }
+
+  async handleFollowReview() {
+    let reviewFollowRequest = await this.reviewsService.follow(this.state.review._id, this.props.loggedInUser._id)
+    console.log("THE STRANGE REVIEW", reviewFollowRequest)
+    if (reviewFollowRequest.reviewFollowRequestDone) {
+      let newReview = {...this.state.review}
+      newReview.followers = reviewFollowRequest.reviewFollow.followers
+      this.setState({ ...this.state, review: newReview })
+      console.log("THE NEW REVIEW STATE", this.state)
+    }
   }
 
   handleCommentChange(e) {
