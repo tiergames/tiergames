@@ -86,7 +86,6 @@ export default class App extends Component {
       { exact: true, path: "/reset-password/:resetPasswordToken", component: ResetPassword },
       { exact: true, path: "/update-password/:resetPasswordToken", component: ResetPassword },
       { exact: true, path: "/confirm/:confirmationToken", component: AccountConfirm },
-      { path: '*', component: Error404 }
     ]
     if (this.state.loggedInUser) {
       routes = [
