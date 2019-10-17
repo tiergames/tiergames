@@ -32,6 +32,7 @@ import GenresService from "./services/genres.service";
 import SearchBar from "./components/SearchBar/SearchBar";
 import SearchService from "./services/search.service";
 import GamesService from "./services/games.service";
+import ProfileService from "./services/profile.service";
 
 
 // Styles
@@ -47,6 +48,7 @@ export default class App extends Component {
     this.genresService = new GenresService()
     this.searchService = new SearchService()
     this.gamesService = new GamesService()
+    this.profileService = new ProfileService()
 
     this.state = {
       loggedInUser: null,
@@ -98,7 +100,7 @@ export default class App extends Component {
               <Route exact path="/games/:gameID" component={Game} />
               <Route exact path="/reviews" component={() => <Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
               <Route exact path="/reviews/create" component={() => <CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />} />
-              <Route exact path="/reviews/:reviewID" render={(props) => <Review {...props} loggedInUserID={this.state.loggedInUser._id} />} />
+              <Route exact path="/reviews/:reviewID" render={(props) => <Review {...props} loggedInUserName={this.state.loggedInUser.username} loggedInUserID={this.state.loggedInUser._id} />} />
               <Route exact path="/platforms" component={() => <Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />} />
             </>
           ) : (
@@ -128,10 +130,6 @@ export default class App extends Component {
     // this.loadReleases(4, "releases1Month", "asc", "isLoading1Month")
     // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months")
     // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year")
-  }
-
-  handleFollowUser(userToFollow) {
-    
   }
 
   async loadPlatforms() {

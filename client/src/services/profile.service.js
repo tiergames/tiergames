@@ -16,4 +16,9 @@ export default class ProfileService {
     let followRequest = await this.service.put("/follow", { followed, follower })
     return followRequest.data
   }
+
+  unfollow = async (followed, follower) => {
+    let unfollowRequest = await this.service.put("/unfollow", { followed, follower })
+    return unfollowRequest.data
+  }
 }

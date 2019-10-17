@@ -69,6 +69,12 @@ export default class Review extends Component {
           <div>
             <p>{this.state.review.platform.name}</p>
             <h2>{this.state.review.gameName}</h2>
+            {
+              // console.log("THE PROPORPROPROS", this.props)
+              this.props.loggedInUserName === this.state.review.author.username
+                ? <p>by <Link to={`/profile`}>me</Link></p>
+                : <p>by <Link to={`/profile/${this.state.review.author.username}`}>{this.state.review.author.username}</Link></p>
+            }
           </div>
         </header>
         <section className="review-stats">
@@ -76,7 +82,9 @@ export default class Review extends Component {
             <p><strong><span>{this.state.review.followers.length}</span></strong> users follow this review</p>
           </div>
           <div className="following-and-rating">
-            <button>Follow</button>
+            {
+              
+            }
             <div className="rating">
               <span>{this.state.review.totalRating}</span>
             </div>

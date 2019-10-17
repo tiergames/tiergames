@@ -17,12 +17,24 @@ controller.getProfile = async (req, res, next) => {
 controller.follow = async (req, res, next) => {
   try {
     let { follower, followed } = req.body
-    let followerProfile = await User.findByIdAndUpdate(follower._id, { $push: { following: follower._id } }, { new: true })
+    let followerProfile = await User.findByIdAndUpdate(follower._id, { $push: { following: followed._id } }, { new: true })
     let followedProfile = await User.findByIdAndUpdate(followed._id, { $push: { followers: follower._id } }, { new: true })
     
     res.status(200).json({ followRequest: true, follower: followerProfile, followed: followedProfile })
   } catch (error) {
-    res.status(500).json({ followRequest: true, err: error.message })
+    res.status(500).json({ followRequest: false, err: error.message })
+  }
+}
+
+controller.unfollow = async (req, res, next) => {
+  try {
+    let { follower, followed } = req.body
+    let futureUnfollowerProfile = await User.findByIdAndUpdate(follower._id, { $pull: { following: followed._id } }, { new: true })
+    let futureUnfollowedProfile = await User.findByIdAndUpdate(followed._id, { $pull: { followers: follower._id } }, { new: true })
+
+    res.status(200).json({ unfollowRequest: true, unfollower: futureUnfollowerProfile, unfollowed: futureUnfollowedProfile })
+  } catch (error) {
+    res.status(200).json({ unfollowRequest: false, err: error.message })
   }
 }
 
