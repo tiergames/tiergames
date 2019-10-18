@@ -4,6 +4,7 @@ const http = require('http');
 const socketIO = require("socket.io")
 let app = require('../app');
 const { OnlineUsers } = require('./../classes/OnlineUsers')
+const { Room } = require("./../classes/Room")
 
 app.use((req, res, next) => {
   res.status(404).json({error: 'not-found'});
@@ -22,13 +23,20 @@ let server = http.createServer(app);
 const io = socketIO(server)
 
 let onlineUsers = new OnlineUsers()
+let room = new Room()
 
 io.on('connection', (client) => {
   
-  client.on('user-join-room', (data) => {
+  client.on('user-join-room', async (data) => {
 
     // Add user to the room
     client.join(data.room);
+
+    
+    // Get the room messages to the client
+    let allMessages = await room.getMessagesPerRoom(data.room)
+    // client.broadcast.to(data.room).emit('get-room-messages', { messages: allMessages })
+    client.emit('get-room-messages', { messages: allMessages })
 
     // Add client to the online users
     onlineUsers.addUser(client.id, data.username, data.room)
@@ -39,6 +47,14 @@ io.on('connection', (client) => {
     
     client.on('user-send-message-room', (data) => {
       console.log('User send message room', data)
+
+      let newMessage = room.saveMessage(
+        data.content,
+        onlineUsers.getUserInfo(client.id).username,
+        data.room,
+      )
+
+      console.log("Message saved")
   
       client.broadcast.to(onlineUsers.getUserInfo(client.id).room).emit('user-send-message-room', data)
       client.emit('user-send-message-room', data)

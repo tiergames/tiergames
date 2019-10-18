@@ -73,7 +73,12 @@ export default class Room extends Component {
 
   componentDidMount() {
     // User connects to a room
-    this.socket.emit('user-join-room', { username: this.props.loggedInUser.username, username: this.props.loggedInUser.username })
+    this.socket.emit('user-join-room', { username: this.props.loggedInUser.username, room: this.queryParams.room })
+
+    // Get the room messages
+    this.socket.on('get-room-messages', (data) => {
+      this.setState({ ...this.state, messages: data.messages })
+    })
 
     // Rest of users recieve that someone connected to their room
     this.socket.on('user-join-room', (data) => {
