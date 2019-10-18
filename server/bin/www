@@ -26,6 +26,10 @@ let onlineUsers = new OnlineUsers()
 let room = new Room()
 
 io.on('connection', (client) => {
+
+  client.on('new-follower', (data) => {
+    client.broadcast.emit('new-follower', data)
+  })
   
   client.on('user-join-room', async (data) => {
 
