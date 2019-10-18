@@ -46,7 +46,7 @@ export default class Reviews extends Component {
 
     return (
       <section>
-        <h2>Reviews</h2>
+        <h2 className="section-title">Reviews</h2>
 
         {/* TODO: In the future */}
         {/* <PlatformsTags platforms={platforms} type="radio" /> */}

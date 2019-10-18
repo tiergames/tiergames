@@ -6,7 +6,7 @@ const GenreTag = props => {
 
   return (
     <>
-      <div className="field">
+      <div className="field field-genre-checkbox">
         <input 
           id={_id} 
           type={type} 

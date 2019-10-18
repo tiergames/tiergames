@@ -6,7 +6,7 @@ const PlatformTag = props => {
 
   return (
     <>
-      <div className="field">
+      <div className="field field-platform-checkbox">
         <input 
           id={_id} 
           type={type} 

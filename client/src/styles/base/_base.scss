@@ -1,0 +1,27 @@
+html {
+  font-size: 16px;
+}
+
+body {
+  min-height: 100vh;
+  padding: 3rem 8px 4rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+input {
+  border: none;
+  border-bottom: 1px solid;
+  padding: $padding-block-vertical-small;
+}
+
+input:focus {
+  outline: none;
+}

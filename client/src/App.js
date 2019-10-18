@@ -39,7 +39,7 @@ import GamesService from "./services/games.service";
 import ProfileService from "./services/profile.service";
 
 // Styles
-// import "./scss/main.scss"
+import './styles/main.scss'
 
 export default class App extends Component {
   constructor(props) {
@@ -111,7 +111,7 @@ export default class App extends Component {
               loggedInUser={this.state.loggedInUser}
             />
           ) },
-        { exact: true, path: "/profile", component: () => <LoggedInUserProfile loggedInUser={this.state.loggedInUser} /> },
+        { exact: true, path: "/profile", component: () => <LoggedInUserProfile loggedInUser={this.state.loggedInUser} logout={this.logout} /> },
         { exact: true, path: "/profile/:username", render: (props) => <Profile {...props} loggedInUser={this.state.loggedInUser} /> },
         { exact: true, path: "/genres", component: () => (<Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser}/>) },
         { exact: true, path: "/games/best-rated", component: () => <BestRated bestRated={this.state.bestRated} loggedInUser={this.state.loggedInUser} /> },
@@ -136,14 +136,17 @@ export default class App extends Component {
             : null
         }
         <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
-        <SearchBar
-          makeSearch={() => this.makeSearch()}
-          games={this.state.search.games}
-          reviews={this.state.search.reviews}
-          users={this.state.search.users}
-          updateSearchText={text => this.updateSearchText(text)}
-          isSearching={this.state.search.isSearching}
-        />
+        {
+          !this.state.loggedInUser ? null
+        : <SearchBar
+        makeSearch={() => this.makeSearch()}
+        games={this.state.search.games}
+        reviews={this.state.search.reviews}
+        users={this.state.search.users}
+        updateSearchText={text => this.updateSearchText(text)}
+        isSearching={this.state.search.isSearching}
+      />
+        }
         <Switch>
           {routes.map(route => (
             <Route key={route.path} {...route} />
@@ -157,7 +160,7 @@ export default class App extends Component {
     this.loadPlatforms();
     this.loadGenres();
     this.loadReviews();
-    this.loadGames();
+    // this.loadGames();
     // this.loadBestRated();
     // this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
     // this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");

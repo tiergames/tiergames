@@ -1,0 +1,47 @@
+.home {
+  
+}
+
+.home-form {
+  padding: 3rem;
+  min-width: 224px;
+}
+
+.home-form .field:not(:last-child) {
+  margin-bottom: 1.5rem;
+}
+
+.home-form input {
+  width: 100%;
+}
+
+.home-form input[type="submit"] {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-image: var(--secondary-background-color);
+  font-size: $font-size-large;
+  font-weight: 700;
+  left: 0;
+  color: var(--primary-text-color);
+  border-bottom: none;
+  background-image: linear-gradient(269deg, rgba(29,30,48,0.99) 2%, #17141D 98%);
+  padding: $margin-block-vertical-large;
+}
+
+.account-question {
+  text-align: center;
+  padding: $margin-block-vertical-large;
+  background-color: var(--primary-background-color);
+
+  p {
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+    color: var(--primary-text-color);
+  }
+}
+
+.social-login {
+  text-align: center;
+  padding: $margin-block-vertical-large;
+}
