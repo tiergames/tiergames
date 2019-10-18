@@ -38,7 +38,7 @@ import GamesService from "./services/games.service";
 import ProfileService from "./services/profile.service";
 
 // Styles
-// import "./scss/main.scss"
+import "./scss/main.scss"
 
 export default class App extends Component {
   constructor(props) {
