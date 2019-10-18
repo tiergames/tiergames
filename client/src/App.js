@@ -59,6 +59,7 @@ export default class App extends Component {
       platforms: { isLoadingPlatforms: true, platforms: [], platformsFiltered: [], currentPlatform: null },
       genres: { isLoadingGenres: true, genres: [], genresFiltered: [], currentGenre: null },
       games: { isLoadingGames: true, games: [], gamesFiltered: [], currentGame: null },
+      bestRated: { isLoadingBestRated: true, bestRated: [] },
       releases: {
         releases7DaysAgo: { isLoading7DaysAgo: true, releases7DaysAgo: [] },
         releases7Days: { isLoading7Days: true, releases7Days: [] },
@@ -88,15 +89,30 @@ export default class App extends Component {
       { exact: true, path: "/reset-password/:resetPasswordToken", component: ResetPassword },
       { exact: true, path: "/update-password/:resetPasswordToken", component: ResetPassword },
       { exact: true, path: "/confirm/:confirmationToken", component: AccountConfirm },
+      // TODO: 404
+      // { path: '*', component: Error404 }
     ]
     if (this.state.loggedInUser) {
       routes = [
         { exact: true, path: "/", component: Home },
-        { exact: true, path: "/games", component: () => (<Games genres={this.state.genres} platforms={this.state.platforms} games={this.state.games} loggedInUser={this.state.loggedInUser}/>) },
+        {
+          exact: true,
+          path: "/games",
+          component: () => (
+            <Games
+              genres={this.state.genres}
+              platforms={this.state.platforms}
+              games={this.state.games}
+              onPlatformFilterChange={(platformsFilter) => this.handlePlatformFilterChange(platformsFilter)}
+              onGenreFilterChange={(genresFilter) => this.handleGenreFilterChange(genresFilter)}
+              onFilterApply={() => this.applyGameFilter()} 
+              loggedInUser={this.state.loggedInUser}
+            />
+          ) },
         { exact: true, path: "/profile", component: () => <LoggedInUserProfile loggedInUser={this.state.loggedInUser} /> },
         { exact: true, path: "/profile/:username", render: (props) => <Profile {...props} loggedInUser={this.state.loggedInUser} /> },
         { exact: true, path: "/genres", component: () => (<Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser}/>) },
-        { exact: true, path: "/games/best-rated", component: () => <BestRated loggedInUser={this.state.loggedInUser} /> },
+        { exact: true, path: "/games/best-rated", component: () => <BestRated bestRated={this.state.bestRated} loggedInUser={this.state.loggedInUser} /> },
         { exact: true, path: "/games/coming-soon", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
         { exact: true, path: "/games/:gameID", render: (props) => (<Game handleUnfollowRequest={(gameID) => this.handleUnfollowRequest(gameID)} handleFollowRequest={(gameID) => this.handleFollowRequest(gameID)} loggedInUser={this.state.loggedInUser} />) },
         { exact: true, path: "/reviews", component: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />)},
@@ -105,7 +121,8 @@ export default class App extends Component {
         { exact: true, path: "/saved", component: props => (<Saved loggedInUser={this.state.loggedInUser} />)},
         { exact: true, path: "/platforms", component: () => (<Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />) },
         { exact: true, path: "/room", render: (props) => (<Room {...props} loggedInUser={this.state.loggedInUser} />) },
-        { path: '*', component: Error404 }
+        // TODO: 404
+        // { path: '*', component: Error404 }
       ];
     }
     
@@ -133,7 +150,8 @@ export default class App extends Component {
     this.loadPlatforms();
     this.loadGenres();
     this.loadReviews();
-    // this.loadGames();
+    this.loadGames();
+    // this.loadBestRated();
     // this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
     // this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");
     // this.loadReleases(3, "releases14Days", "asc", "isLoading14Days");
@@ -142,6 +160,42 @@ export default class App extends Component {
     // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
   }
 
+  handlePlatformFilterChange(platformsFilter) {
+    const { platforms } = this.state
+
+    this.setState({
+      platforms: {
+        ...platforms, 
+        currentPlatform: platformsFilter
+      }
+    });
+  }
+
+  handleGenreFilterChange(genresSelected) {
+    const { genres } = this.state
+    this.setState({
+      genres: {
+        ...genres, 
+        currentGenre: genresSelected
+      }
+    });
+  }
+
+  async applyGameFilter() {
+    const { currentGenre } = this.state.genres;
+    const { currentPlatform } = this.state.platforms;
+    
+    const gamesFiltered = await this.gamesService.getGamesPerPlatformAndGenre(10, 0, currentPlatform, currentGenre)    
+    const { games } = this.state;
+
+    this.setState({ 
+      games: {
+        ...games,
+        games: gamesFiltered,
+      }
+    });
+    
+  }
   async handleFollowRequest(gameID) {
     let followRequest = await this.gamesService.follow(gameID, this.state.loggedInUser._id)
     if (followRequest.gameFollowRequestDone) {
@@ -265,6 +319,14 @@ export default class App extends Component {
     this.setState({ ...this.state, games: newGames });
   }
 
+  async loadBestRated(order = "desc") {
+    const bestRated = await this.gamesService.getBestRated(20, 0, order)
+
+    let newState = { ...this.state };
+    newState.bestRated = bestRated.data;
+    this.setState(newState);
+  }
+
   async loadReleases(period, statePeriod, order = "asc", isLoadingKey) {
     let released = await this.gamesService.getReleases(20, 0, period, order);
 
@@ -298,6 +360,7 @@ export default class App extends Component {
     });
   };
 
+  // TODO: 404 Page not found showed on /logout. Investigate "withRouter"
   logout = () => {
     this.authService.logout().then(() => {
       this.setState({ loggedInUser: null });

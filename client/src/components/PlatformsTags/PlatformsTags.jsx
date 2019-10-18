@@ -7,45 +7,44 @@ export default class PlatformsTags extends Component {
 
     this.state = {
       platforms: props.platforms,
-      platformsFiltered: [],
-      platformSelected: undefined
+      platformsSelected: props.selectedPlatforms || []
     };
   }
 
   handleChange(e) {
-    let platformSelected;
-    let newPlatforms = [...this.state.platformsFiltered]
+    let newPlatformsSelected = [...this.state.platformsSelected]
 
     e.target.type === "checkbox" && e.target.checked 
-      ? newPlatforms.push(+e.target.value) 
-      : newPlatforms.pop()
+      ? newPlatformsSelected.push(+e.target.value) 
+      : newPlatformsSelected.pop()
     
     if (e.target.type === "radio") {
-      platformSelected = +e.target.value
+      newPlatformsSelected = [+e.target.value]
     }
 
     this.setState({
-      platformSelected: platformSelected,
-      platformsFiltered: newPlatforms
+      platformsSelected: newPlatformsSelected,
     });
-  }
 
+    this.props.handlePlatformFilterChange(newPlatformsSelected);
+  }
+  
   render() {    
-    const { platforms } = this.state;
+    const { platforms, platformsSelected } = this.state;
     const { type } = this.props;
     
     return (
-      <div className="platforms padding-v-8">
-        <form>
-          {platforms.map(platform => 
-            <PlatformTag 
-              key={platform.id} 
-              type={type}
-              platform={platform} 
-              onChange={e => this.handleChange(e)} />
-          )}
-        </form>
-      </div>
+      <> 
+        {platforms.map(platform => 
+          <PlatformTag 
+            key={platform.id} 
+            type={type}
+            platform={platform} 
+            onChange={e => this.handleChange(e)}
+            checked={platformsSelected.includes(platform.id)}
+          />
+        )}
+      </>
     );
   }
 }

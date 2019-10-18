@@ -27,11 +27,12 @@ export default class Navbar extends Component {
                 <li className="menu-item"><Link className="menu-link" to={"/reviews"}>Reviews</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/profile"}>Profile</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/games/coming-soon"}>Coming Soon</Link></li>
+                <li className="menu-item"><Link className="menu-link" to={"/games/best-rated"}>Best rated</Link></li>
                 <li className="menu-item"><Link className="menu-link" to={"/saved"}>Saved</Link></li>
-                <li className="menu-item"><Link className="menu-link" to={"/logout"} onClick={this.handleLogout}>Logout</Link></li>
                 {/* <li className="menu-item"><Link className="menu-link" to={"/games/best-rated"}>Best rated</Link></li> */}
                 {/* <li className="menu-item"><Link className="menu-link" to={"/genres"}>Genres</Link></li> */}
                 {/* <li className="menu-item"><Link className="menu-link" to={"/platforms"}>Platforms</Link></li> */}
+                <li className="menu-item"><Link className="menu-link" to={"/logout"} onClick={this.handleLogout}>Logout</Link></li>
               </>
           }
         </ul>
