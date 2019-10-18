@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
 import AuthService from "./services/auth.service";
+import io from 'socket.io-client'
 
 // Pages
 import Home from "./pages/Public/Home/Home";
@@ -18,6 +19,8 @@ import Platforms from "./pages/private/Platforms/Platforms";
 import CreateReview from "./pages/private/Reviews/CreateReview/CreateReview";
 import Game from "./pages/private/Game/Game";
 import Review from "./pages/private/Reviews/Review/Review";
+import Saved from "./pages/private/Saved/Saved";
+import Room from "./pages/private/Room/Room";
 
 // Components
 import Navbar from "./components/Navbar/Navbar";
@@ -49,7 +52,7 @@ export default class App extends Component {
     this.gamesService = new GamesService()
     this.profileService = new ProfileService()
 
-    // FIX
+    this.socket = io(`${process.env.REACT_APP_SERVER_BASE_URL}`)
 
     this.state = {
       loggedInUser: null,
@@ -111,11 +114,13 @@ export default class App extends Component {
         { exact: true, path: "/genres", component: () => (<Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser}/>) },
         { exact: true, path: "/games/best-rated", component: () => <BestRated bestRated={this.state.bestRated} loggedInUser={this.state.loggedInUser} /> },
         { exact: true, path: "/games/coming-soon", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
-        { exact: true, path: "/games/:gameID", component: Game },
+        { exact: true, path: "/games/:gameID", render: (props) => (<Game handleUnfollowRequest={(gameID) => this.handleUnfollowRequest(gameID)} handleFollowRequest={(gameID) => this.handleFollowRequest(gameID)} loggedInUser={this.state.loggedInUser} />) },
         { exact: true, path: "/reviews", component: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />)},
         { exact: true, path: "/reviews/create", component: () => (<CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />)},
         { exact: true, path: "/reviews/:reviewID", component: props => (<Review {...props} loggedInUserName={this.state.loggedInUser.username} loggedInUserID={this.state.loggedInUser._id} loggedInUser={this.state.loggedInUser} />)},
+        { exact: true, path: "/saved", component: props => (<Saved loggedInUser={this.state.loggedInUser} />)},
         { exact: true, path: "/platforms", component: () => (<Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />) },
+        { exact: true, path: "/room", render: (props) => (<Room {...props} loggedInUser={this.state.loggedInUser} />) },
         // TODO: 404
         // { path: '*', component: Error404 }
       ];
@@ -191,6 +196,24 @@ export default class App extends Component {
     });
     
   }
+  async handleFollowRequest(gameID) {
+    let followRequest = await this.gamesService.follow(gameID, this.state.loggedInUser._id)
+    if (followRequest.gameFollowRequestDone) {
+      let updatedLoggedInUser = {...this.state.loggedInUser}
+      updatedLoggedInUser.savedGames = followRequest.follower.savedGames
+      this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })
+    }
+  }
+
+  async handleUnfollowRequest(gameID) {
+    let unfollowRequest = await this.gamesService.unfollow(gameID, this.state.loggedInUser._id)
+    if (unfollowRequest.gameUnfollowRequestDone) {
+      let updatedLoggedInUser = {...this.state.loggedInUser}
+      updatedLoggedInUser.savedGames = unfollowRequest.follower.savedGames
+      this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })
+    }
+  }
+
 
   handleFollow(followers) {
     let newLoggedInUser = {...this.state.loggedInUser}

@@ -20,6 +20,11 @@ class Game extends Component {
     return (
       <section className="game">
         {
+          this.props.loggedInUser.savedGames.indexOf(+this.state.gameID)
+            ? <button onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
+            : <button onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
+        }
+        {
           this.state.isLoadingGame
             ? <p>Loading game info...</p>
             : this.renderGame()
@@ -87,9 +92,14 @@ class Game extends Component {
     // TODO: Chek that there are games that doesnt have total_rating
     
     return (
-      <div className="game-i-am-following">
-        <span className="game-i-am-following-status">Following</span>
-        <span className="game-i-am-following-rating">{(this.state.game.total_rating / 10).toFixed(1)}</span>
+      <div className="game-actions">
+        <div>
+          <span className="game-actions-status">Following</span>
+          <span className="game-actions-rating">{(this.state.game.total_rating / 10).toFixed(1)}</span>
+        </div>
+        <div>
+          <Link to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
+        </div>
       </div>
     )
   }
@@ -278,15 +288,15 @@ class Game extends Component {
   }
 
   async loadGame(gameID, reRender) {
-    this.setState({ ...this.state, isLoadingGame: true })
-    let game = await this.gamesService.getGameData(gameID)
-    if (reRender) {
-      setTimeout(() => {
-        this.setState({ isLoadingGame: false, game: game[0] })
-      }, 500)
-    } else {
-      this.setState({ isLoadingGame: false, game: game[0] })
-    }
+    // this.setState({ ...this.state, isLoadingGame: true })
+    // let game = await this.gamesService.getGameData(gameID)
+    // if (reRender) {
+    //   setTimeout(() => {
+    //     this.setState({ isLoadingGame: false, game: game[0] })
+    //   }, 500)
+    // } else {
+    //   this.setState({ isLoadingGame: false, game: game[0] })
+    // }
   }
 
   async loadRelatedGames() {

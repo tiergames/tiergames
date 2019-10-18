@@ -67,7 +67,7 @@ export default class Review extends Component {
           </div>
           <div>
             <p>{this.state.review.platform.name}</p>
-            <h2>{this.state.review.gameName}</h2>
+            <h2>{this.state.review.gameName} <Link to={`/games/${this.state.review.gameID}`}>View</Link></h2>
             {
               this.props.loggedInUserName === this.state.review.author.username
                 ? <p>by <Link to={`/profile`}>me</Link></p>
