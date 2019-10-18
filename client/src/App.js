@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route } from "react-router-dom";
+import { Link } from 'react-router-dom'
 import AuthService from "./services/auth.service";
 import io from 'socket.io-client'
 
@@ -75,7 +76,8 @@ export default class App extends Component {
         users: { usersResults: [], isSearchingUsers: false },
         searchText: "",
         isSearching: false
-      }
+      },
+      newFollower: null
     };
     this.fetchUser();
   }
@@ -128,6 +130,11 @@ export default class App extends Component {
     
     return (
       <div>
+        {
+          this.state.newFollower !== null
+            ? <p>New follower: <Link to={`/profile/${this.state.newFollower.username}`}>{this.state.newFollower.username}</Link></p>
+            : null
+        }
         <Navbar userInSession={this.state.loggedInUser} logout={this.logout} />
         <SearchBar
           makeSearch={() => this.makeSearch()}
@@ -158,6 +165,15 @@ export default class App extends Component {
     // this.loadReleases(4, "releases1Month", "asc", "isLoading1Month");
     // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
     // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
+
+    this.socket.on('new-follower', (data) => {
+      if (data.followed._id === this.state.loggedInUser._id) {
+        this.setState({ newFollower: data.follower })
+        setTimeout(() => {
+          this.setState({ newFollower: null })
+        }, 5000)
+      }
+    })
   }
 
   handlePlatformFilterChange(platformsFilter) {

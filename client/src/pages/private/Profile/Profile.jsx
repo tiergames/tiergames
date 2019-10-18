@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import io from 'socket.io-client'
 import ProfileService from '../../../services/profile.service'
 import ReviewsService from '../../../services/reviews.service'
 import ReviewTile from '../../../components/ReviewTile/ReviewTile'
@@ -9,6 +10,7 @@ export default class Profile extends Component {
     super(props)
     this.profileService = new ProfileService()
     this.reviewsService = new ReviewsService()
+    this.socket = io(`${process.env.REACT_APP_SERVER_BASE_URL}`)
     this.state = {
       userProfile: {},
       isLoadingUserProfile: true,
@@ -79,6 +81,15 @@ export default class Profile extends Component {
       let newUserProfile = {...this.state.userProfile}
       newUserProfile.followers = followRequest.followed.followers
       this.setState({ ...this.state, userProfile: newUserProfile })
+      this.socket.emit('new-follower', {
+        follower: {
+          _id: this.props.loggedInUser._id,
+          username: this.props.loggedInUser.username
+        },
+        followed: {
+          _id: followed._id
+        }
+      })
     } else {
       alert('Something went wrong')
     }
