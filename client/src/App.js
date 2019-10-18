@@ -145,6 +145,7 @@ export default class App extends Component {
   async handleFollowRequest(gameID) {
     let followRequest = await this.gamesService.follow(gameID, this.state.loggedInUser._id)
     if (followRequest.gameFollowRequestDone) {
+      console.log("CREATEDEDEDE", followRequest)
       let updatedLoggedInUser = {...this.state.loggedInUser}
       updatedLoggedInUser.savedGames = followRequest.follower.savedGames
       this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })
@@ -154,6 +155,7 @@ export default class App extends Component {
   async handleUnfollowRequest(gameID) {
     let unfollowRequest = await this.gamesService.unfollow(gameID, this.state.loggedInUser._id)
     if (unfollowRequest.gameUnfollowRequestDone) {
+      console.log("asdasdasdasd", unfollowRequest.follower)
       let updatedLoggedInUser = {...this.state.loggedInUser}
       updatedLoggedInUser.savedGames = unfollowRequest.follower.savedGames
       this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })

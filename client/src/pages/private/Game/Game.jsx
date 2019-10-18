@@ -14,13 +14,16 @@ class Game extends Component {
       game: {},
       isLoadingGame: true
     }
+
+    console.log("THEH STATETETETETE", this.state)
   }
   
   render() {    
+    console.log("TESTING", this.props.loggedInUser.savedGames.indexOf(+this.state.gameID))
     return (
       <section className="game">
         {
-          this.props.loggedInUser.savedGames.indexOf(+this.state.gameID)
+          this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
             ? <button onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
             : <button onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
         }
