@@ -1,5 +1,6 @@
 require("dotenv").config()
 const axios = require("axios")
+const User = require("./../../models/User")
 
 const controller = {}
 const gamesURL = 'https://api-v3.igdb.com/games'
@@ -287,6 +288,27 @@ controller.getVideos = async (req, res, next) => {
     res.status(200).json(videos.data)
   } catch (err) {
     res.status(500).json({err: err.message})
+  }
+}
+
+controller.follow = async (req, res, next) => {
+  try {
+    let { gameID, followerID } = req.body
+    let followerRequest = await User.findByIdAndUpdate(followerID, { $push: { savedGames: gameID } }, { new: true })
+    res.status(200).json({ gameFollowRequestDone: true, follower: followerRequest })
+  } catch (error) {
+    res.status(500).json({ gameFollowRequestDone: false, err: error.message })
+  }
+}
+
+controller.unfollow = async (req, res, next) => {
+  try {
+    let { gameID, followerID } = req.body
+    let unfollowRequest = await User.findByIdAndUpdate(followerID, { $pull: { savedGames: gameID } }, { new: true })
+
+    res.status(200).json({ gameUnfollowRequestDone: true, follower: unfollowRequest })
+  } catch (error) {
+    res.status(500).json({ gameUnfollowRequestDone: true, follower: unfollowRequest })
   }
 }
 

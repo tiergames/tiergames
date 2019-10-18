@@ -20,6 +20,11 @@ class Game extends Component {
     return (
       <section className="game">
         {
+          this.props.loggedInUser.savedGames.indexOf(+this.state.gameID)
+            ? <button onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
+            : <button onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
+        }
+        {
           this.state.isLoadingGame
             ? <p>Loading game info...</p>
             : this.renderGame()
@@ -93,7 +98,6 @@ class Game extends Component {
           <span className="game-actions-rating">{(this.state.game.total_rating / 10).toFixed(1)}</span>
         </div>
         <div>
-          {console.log("KNOW SLUG", this.state.game)}
           <Link to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
         </div>
       </div>
@@ -284,15 +288,15 @@ class Game extends Component {
   }
 
   async loadGame(gameID, reRender) {
-    this.setState({ ...this.state, isLoadingGame: true })
-    let game = await this.gamesService.getGameData(gameID)
-    if (reRender) {
-      setTimeout(() => {
-        this.setState({ isLoadingGame: false, game: game[0] })
-      }, 500)
-    } else {
-      this.setState({ isLoadingGame: false, game: game[0] })
-    }
+    // this.setState({ ...this.state, isLoadingGame: true })
+    // let game = await this.gamesService.getGameData(gameID)
+    // if (reRender) {
+    //   setTimeout(() => {
+    //     this.setState({ isLoadingGame: false, game: game[0] })
+    //   }, 500)
+    // } else {
+    //   this.setState({ isLoadingGame: false, game: game[0] })
+    // }
   }
 
   async loadRelatedGames() {

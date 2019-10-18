@@ -12,4 +12,7 @@ router.get("/involved-companies/:companies", (req, res, next) => { controller.ge
 router.get("/release-dates/:releaseID", (req, res, next) => { controller.getReleaseDates(req, res, next) })
 router.get("/websites/:websitesID", (req, res, next) => { controller.getWebsites(req, res, next) })
 
+router.put("/follow", (req, res, next) => { controller.follow(req, res, next) })
+router.put("/unfollow", (req, res, next) => { controller.unfollow(req, res, next) })
+
 module.exports = router

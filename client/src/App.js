@@ -98,7 +98,7 @@ export default class App extends Component {
         { exact: true, path: "/genres", component: () => (<Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser}/>) },
         { exact: true, path: "/games/best-rated", component: () => <BestRated loggedInUser={this.state.loggedInUser} /> },
         { exact: true, path: "/games/coming-soon", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
-        { exact: true, path: "/games/:gameID", component: Game },
+        { exact: true, path: "/games/:gameID", render: (props) => (<Game handleUnfollowRequest={(gameID) => this.handleUnfollowRequest(gameID)} handleFollowRequest={(gameID) => this.handleFollowRequest(gameID)} loggedInUser={this.state.loggedInUser} />) },
         { exact: true, path: "/reviews", component: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />)},
         { exact: true, path: "/reviews/create", component: () => (<CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />)},
         { exact: true, path: "/reviews/:reviewID", component: props => (<Review {...props} loggedInUserName={this.state.loggedInUser.username} loggedInUserID={this.state.loggedInUser._id} loggedInUser={this.state.loggedInUser} />)},
@@ -141,6 +141,27 @@ export default class App extends Component {
     // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
     // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
   }
+
+  async handleFollowRequest(gameID) {
+    let followRequest = await this.gamesService.follow(gameID, this.state.loggedInUser._id)
+    console.log("THE FOLLOW REQUEST", followRequest)
+    if (followRequest.gameFollowRequestDone) {
+      console.log("ME LLAMAN")
+      let updatedLoggedInUser = {...this.state.loggedInUser}
+      updatedLoggedInUser.savedGames = followRequest.follower.savedGames
+      this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })
+    }
+  }
+
+  async handleUnfollowRequest(gameID) {
+    let unfollowRequest = await this.gamesService.unfollow(gameID, this.state.loggedInUser._id)
+    if (unfollowRequest.gameUnfollowRequestDone) {
+      let updatedLoggedInUser = {...this.state.loggedInUser}
+      updatedLoggedInUser.savedGames = unfollowRequest.follower.savedGames
+      this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })
+    }
+  }
+
 
   handleFollow(followers) {
     let newLoggedInUser = {...this.state.loggedInUser}

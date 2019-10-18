@@ -12,6 +12,16 @@ export default class GamesService {
     return allGames;
   };
 
+  follow = async (gameID, followerID) => {
+    let followRequest = await this.service.put("/follow", { gameID, followerID })
+    return followRequest.data
+  }
+
+  unfollow = async (gameID, followerID) => {
+    let unfollowRequest = await this.service.put("/unfollow", { gameID, followerID })
+    return unfollowRequest.data
+  }
+
   getBestRated = async (limit, offset, order) => {
     let bestRatedGames = await this.service.get(`?offset=${offset}&limit=${limit}&sorting=rating&order=${order}`);
     return bestRatedGames;
