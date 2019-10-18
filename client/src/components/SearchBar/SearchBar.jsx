@@ -95,7 +95,7 @@ export default class SearchBar extends Component {
             ? <p>Searching users...</p>
             : this.props.users.usersResults.length > 0
               ? this.props.users.usersResults.map((userResult, idx) => {
-                  return <p key={idx}>{userResult.username}</p>
+                  return <Link key={idx} to={`/profile/${userResult.username}`}><p>{userResult.username}</p></Link>
                 })
               : <p>No users</p>
         }

@@ -39,12 +39,12 @@ export default class Profile extends Component {
 
   renderUserProfile() {
     return (
-      <section className="profile">
+      <section className="other-profile">
         <h2>{this.state.userProfile.username}</h2>
         {
           this.state.userProfile.followers.indexOf(this.props.loggedInUser._id) >= 0
-            ? <button onClick={() => this.handleUnfollowUser(this.state.userProfile)}>Unfollow</button>
-            : <button onClick={() => this.handleFollowUser(this.state.userProfile)}>Follow</button>
+            ? <button className="button" onClick={() => this.handleUnfollowUser(this.state.userProfile)}>Unfollow</button>
+            : <button className="button" onClick={() => this.handleFollowUser(this.state.userProfile)}>Follow</button>
         }
       </section>
     )
