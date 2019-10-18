@@ -6,7 +6,7 @@ export default class Room extends Component {
   constructor(props) {
     super(props)
     this.queryParams = queryString.parse(window.location.search)
-    this.socket = io('http://localhost:3001')
+    this.socket = io(`${process.env.REACT_APP_SERVER_BASE_URL}`)
     this.state = {
       message: '',
       currentOnlineUsers: [],
@@ -78,12 +78,10 @@ export default class Room extends Component {
     // Rest of users recieve that someone connected to their room
     this.socket.on('user-join-room', (data) => {
       this.setState({ ...this.state, currentOnlineUsers: data.currentOnlineUsers })
-      console.log("SOMEONE JOINED THE ROOM: NEED TO UPDATE THE CURRENT ONLINE USERS", this.state)
     })
 
     // Other users detect that someone sent a message
     this.socket.on('user-send-message-room', (data) => {
-      console.log("User sent a new message:", data)
       let newMessages = [...this.state.messages]
       newMessages.push({ username: data.username, content: data.content })
       this.setState({ ...this.state, messages: newMessages })
@@ -91,16 +89,12 @@ export default class Room extends Component {
 
     // Other users detect that someone left the room
     this.socket.on('user-left-room', (data) => {
-      console.log("User left the room", data)
       this.setState({ ...this.state, currentOnlineUsers: data.currentOnlineUsers })
-      console.log("USER LEFT THE ROOM", this.state)
     })
 
     // Other users detect that they have to update their current users online list
     this.socket.on('update-online-users', (data) => {
-      console.log("The user forced disconnect", data)
       this.setState({ ...this.state, currentOnlineUsers: data.currentOnlineUsers })
-      console.log("NEED TO UPDATE THE CURRENT USERS ONLINE", this.state)
     })
   }
 

@@ -53,8 +53,6 @@ export default class Saved extends Component {
 
   async loadSavedReviews() {
     let savedReviews = await this.reviewsService.getReviewsPerUser(this.props.loggedInUser._id)
-    console.log("MY SAVED REVIEWS", savedReviews)
     this.setState({ ...this.state, savedReviews: savedReviews, isLoadingSavedReviews: false })
-    console.log("THE STAAAATE", this.state)
   }
 }

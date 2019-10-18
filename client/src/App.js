@@ -52,7 +52,7 @@ export default class App extends Component {
     this.gamesService = new GamesService()
     this.profileService = new ProfileService()
 
-    this.socket = io('http://localhost:3001')
+    this.socket = io(`${process.env.REACT_APP_SERVER_BASE_URL}`)
 
     this.state = {
       loggedInUser: null,
@@ -144,9 +144,7 @@ export default class App extends Component {
 
   async handleFollowRequest(gameID) {
     let followRequest = await this.gamesService.follow(gameID, this.state.loggedInUser._id)
-    console.log("THE FOLLOW REQUEST", followRequest)
     if (followRequest.gameFollowRequestDone) {
-      console.log("ME LLAMAN")
       let updatedLoggedInUser = {...this.state.loggedInUser}
       updatedLoggedInUser.savedGames = followRequest.follower.savedGames
       this.setState({ ...this.state, loggedInUser: updatedLoggedInUser })
