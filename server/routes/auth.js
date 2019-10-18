@@ -271,7 +271,6 @@ router.get(
   })
 );
 
-// TODO: Google creates a new user account everytime the user logs in
 router.get(
   "/google",
   passport.authenticate("google", {

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import ReviewsService from '../../../../services/reviews.service'
 import ReviewCommentsService from './../../../../services/reviewComments.service'
+import GamesService from '../../../../services/games.service'
 
 export default class Review extends Component {
   constructor(props) {
@@ -9,9 +10,12 @@ export default class Review extends Component {
 
     this.reviewsService = new ReviewsService()
     this.reviewCommentsService = new ReviewCommentsService()
+    this.gamesService = new GamesService()
 
     this.state = {
       review: null,
+      gameCoverURL: null,
+      isLoadingCover: true,
       isLoadingReview: [],
       comment: { content: '', authorID: this.props.loggedInUserID, reviewID: this.props.match.params.reviewID },
       comments: {
@@ -38,8 +42,14 @@ export default class Review extends Component {
     this.loadComments()
   }
 
+  async loadGameCover(gameID) {
+    let gameCoverURL = await this.gamesService.getGameCover(gameID)
+    this.setState({ gameCoverURL, isLoadingCover: false })
+  }
+
   async loadReviewData() {
     let reviewData = await this.reviewsService.getReviewData(this.props.match.params.reviewID)
+    this.loadGameCover(reviewData.gameID)
     this.setState({ ...this.state, review: reviewData, isLoadingReview: false })
   }
 
@@ -62,8 +72,11 @@ export default class Review extends Component {
       <>
         <header>
           <div>
-            {/* TODO: load game cover here */}
-            <span>Load game cover here</span>
+            {
+              this.state.isLoadingCover
+                ? <p>Loading cover...</p>
+                : <img src={`http:${this.state.gameCoverURL}`} alt={this.state.review.title} />
+            }
           </div>
           <div>
             <p>{this.state.review.platform.name}</p>

@@ -46,13 +46,5 @@ const userSchema = new Schema({
   timestamps: true
 });
 
-// TODO: Another option
-// userSchema.statics.findUserByResetPasswordToken = function(resetPasswordToken) {
-//   return this.findOne({
-//     resetPasswordToken: resetPasswordToken,
-//     resetPasswordExpires: { $gt: Date.now() }
-//   });
-// };
-
 const User = mongoose.model('User', userSchema);
 module.exports = User;

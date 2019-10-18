@@ -92,13 +92,17 @@ class Game extends Component {
   }
 
   renderIAmFollowing() {
-    // TODO: Chek that there are games that doesnt have total_rating
-    
     return (
       <div className="game-actions">
         <div>
           <span className="game-actions-status">Following</span>
-          <span className="game-actions-rating">{(this.state.game.total_rating / 10).toFixed(1)}</span>
+          <span className="game-actions-rating">
+            {this.state.game.total_rating 
+              ? 
+                (this.state.game.total_rating / 10).toFixed(1)
+              : "-"
+            }
+          </span>
         </div>
         <div>
           <Link to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>

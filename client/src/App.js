@@ -68,7 +68,7 @@ export default class App extends Component {
         releases6Months: { isLoading6Months: true, releases6Months: [] },
         releases1Year: { isLoading1Year: true, releases1Year: [] }
       },
-      reviews: { isLoadingReviews: true, reviews: [], reviewsFiltered: [], currentReviewFilter: null, pagination: { currentPage: 0, offset: 0, limit: 1 } },
+      reviews: { isLoadingReviews: true, reviews: [], reviewsFiltered: [], currentReviewFilter: null, pagination: { currentPage: 0, offset: 0, limit: 10 } },
       search: {
         games: { gamesResults: [], isSearchingGames: false },
         reviews: { reviewsResults: [], isSearchingReviews: false },

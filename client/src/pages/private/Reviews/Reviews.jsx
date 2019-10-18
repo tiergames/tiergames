@@ -17,7 +17,7 @@ export default class Reviews extends Component {
   render() {
     return (
       <div>
-        {this.renderNewReviewLink()}
+        {/* {this.renderNewReviewLink()} */}
         {this.renderReviews()}
       </div>
     );
@@ -48,7 +48,8 @@ export default class Reviews extends Component {
       <section>
         <h2>Reviews</h2>
 
-        <PlatformsTags platforms={platforms} type="radio" />
+        {/* TODO: In the future */}
+        {/* <PlatformsTags platforms={platforms} type="radio" /> */}
 
         <ul>
           {this.state.reviews.reviewsFiltered.length > 0
