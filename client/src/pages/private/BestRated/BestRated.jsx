@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import GamesService from "./../../../services/games.service";
 
 export default class BestRated extends Component {
-  constructor() {
-    super();
-    this.service = new GamesService();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      bestRated: []
+      bestRated: props.bestRated
     };
   }
 
@@ -21,7 +19,7 @@ export default class BestRated extends Component {
             ? this.state.bestRated.map(game => {
                 return (
                   <li key={game.id}>
-                    {game.name} ({((game.rating * 5) / 100).toFixed(1)})
+                    <Link to={`/games/${game.id}`}>{game.name} ({((game.rating * 5) / 100).toFixed(1)})</Link>
                   </li>
                 );
               })
@@ -30,17 +28,5 @@ export default class BestRated extends Component {
         </ul>
       </section>
     );
-  }
-
-  async loadBestRatedGames(order = "desc") {
-    let bestRatedGames = await this.service.getBestRated(20, 0, order);
-
-    let newState = { ...this.state };
-    newState.bestRated = bestRatedGames.data;
-    this.setState(newState);
-  }
-
-  async componentDidMount() {
-    this.loadBestRatedGames();
   }
 }

@@ -1,5 +1,6 @@
 import axios from "axios"
 
+// TODO: Este servicio ya no nos sirve? Ahora las platforms se cargan en APP
 export default class PlatformsService {
   constructor() {
     this.service = axios.create({

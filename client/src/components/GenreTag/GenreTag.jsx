@@ -1,8 +1,8 @@
 import React from 'react';
 
-const PlatformTag = props => {
-  const { platform: { name, id, _id}, type, onChange, checked } = props;
-  const inputNameAttr = type === "checkbox" ? _id : "platform"
+const GenreTag = props => {
+  const { genre: { name, id, _id}, type, onChange, checked } = props;
+  const inputNameAttr = type === "checkbox" ? _id : "genre"
 
   return (
     <>
@@ -12,7 +12,7 @@ const PlatformTag = props => {
           type={type} 
           name={inputNameAttr}
           value={id} 
-          onChange={onChange} 
+          onChange={onChange}
           checked={checked}
         />
         <label htmlFor={_id}>{name}</label>
@@ -21,4 +21,4 @@ const PlatformTag = props => {
   );
 };
 
-export default PlatformTag;
+export default GenreTag;

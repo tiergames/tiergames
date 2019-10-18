@@ -5,6 +5,9 @@ import GameService from './../../../services/games.service'
 import GenresService from './../../../services/genres.service'
 import PlatformsService from './../../../services/platforms.service'
 import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
+import GenresTags from './../../../components/GenresTags/GenresTags'
+import Platform from '../Platforms/Platforms'
+import queryString from 'query-string'
 
 export default class Games extends Component {
   constructor(props) {
@@ -14,14 +17,14 @@ export default class Games extends Component {
     this.genresService = new GenresService()
     this.platformsService = new PlatformsService()
 
+    this.queryParams = queryString.parse(window.location.search)
+
     this.state = {
       pagination: {
         limit: 10,
         offset: 0,
         currentPage: 0,
       },
-      genres: props.genres,
-      platforms: props.platforms,
       games: props.games
     }
   }
@@ -29,20 +32,16 @@ export default class Games extends Component {
   render() {
     return (
       <>
-        {this.renderGenres()}
-        {this.renderPlatforms()}
+        {this.renderFilters()}
         {this.renderGames()}
       </>
     )
   }
 
-  componentDidMount() {
-    console.log("RENDERING...", this.state)
-  }
+  componentDidMount() {}
 
   async loadNextGames() {
     this.setState({
-      ...this.state,
       isLoadingGames: true
     })
     
@@ -54,77 +53,76 @@ export default class Games extends Component {
     let newPagination = {...this.state.pagination}
     newPagination.offset = nextOffset
     newPagination.currentPage = nextPage
-    newGames.push(...nextNewGames.data)
+    newGames.push(...nextNewGames.data);
+
     this.setState({
-      ...this.state,
       pagination: newPagination,
       games: newGames,
       isLoadingGames: false
     })
   }
 
-  renderGenres() {    
+  renderFilters() {    
     return (
       <section>
-        <h2>Genres</h2>
-        {this.state.genres.isLoadingGenres
-          ?
-            <p>Loading genres...</p>
-          :
-            <form className="filter games-filter">
-              {this.state.genres.genresFiltered.map(genre => {
-                return (
-                  <div className="field field-checkbox" key={genre.id}>
-                    <input type="checkbox" name="genre" id={genre.id}/>
-                    <label htmlFor={genre.id} className="checkbox-label">{genre.name}</label>
-                  </div>
-                )
-              })}
-              <div className="form-actions">
-                <button type="submit">Apply filter</button>
-              </div>
-            </form>
-        }
+        <form className="form" onSubmit={e => this.handleFormSubmit(e)}>
+
+          <section className="form-section">
+            <h3>Genres</h3>
+            <div className="form-section-content">
+              {this.props.genres.isLoadingGenres
+                ?
+                  <p>Loading genres...</p>
+                :
+                <GenresTags 
+                  handleGenreFilterChange={this.handleGenreFilterChange}
+                  selectedGenres={this.props.genres.currentGenre}
+                  genres={this.props.genres.genres} 
+                  type="checkbox" 
+                />
+              }
+            </div>
+          </section>
+
+          <section className="form-section">
+            <h3>Platforms</h3>
+            <div className="form-section-content">
+              {this.props.platforms.isLoadingPlatforms
+                ?
+                  <p>Loading platforms...</p>
+                :
+                <PlatformsTags 
+                  handlePlatformFilterChange={this.handlePlatformFilterChange} 
+                  platforms={this.props.platforms.platforms}
+                  selectedPlatforms={this.props.platforms.currentPlatform}
+                  type="checkbox" 
+                />
+              }
+            </div>
+          </section>
+
+          <div className="form-actions">
+            <button type="submit">Apply filter</button>
+          </div>
+        </form>
       </section>
     )
   }
-
-  renderPlatforms() {
-    // TODO: Ver si lo quitamos (lo que esta comentado)
-    // return (
-      // <section>
-      //   <h2>Platforms</h2>
-      //     {this.state.platforms.isLoadingPlatforms
-      //       ?
-      //         <p>Loading platforms...</p>
-      //       :
-      //         <form className="filter filter-platforms">
-      //           {this.state.platforms.platformsFiltered.map(platform => {
-      //             return (
-      //               <div className="field field-checkbox" key={platform._id}>
-      //                 <input type="checkbox" name="platform" id={platform._id}/>
-      //                 <label htmlFor={platform._id} className="checkbox-label">{platform.name}</label>
-      //               </div>
-      //             )
-      //           })}
-      //       </form>
-      //     }
-      // </section>
-    // )
-
-    return (
-      <section>
-        <h2>Platforms</h2>
-          {this.state.platforms.isLoadingPlatforms
-            ?
-              <p>Loading platforms...</p>
-            :
-            <PlatformsTags platforms={this.state.platforms.platforms} type="checkbox" />
-          }
-      </section>
-    )
+  
+  handleGenreFilterChange = (genresSelected) => {
+    this.props.onGenreFilterChange(genresSelected)
+  }
+  
+  handlePlatformFilterChange = (platformFilter) => {
+    this.props.onPlatformFilterChange(platformFilter)
   }
 
+  handleFormSubmit(e) {
+    e.preventDefault()
+  
+    this.props.onFilterApply();
+  }
+  
   renderGames() {
     return (
       <section>
@@ -132,8 +130,8 @@ export default class Games extends Component {
         <ul className="games-list">
           {this.state.games.games.length > 0
             ? 
-              this.state.games.games.map(game => {
-                return <Link key={game.id} to={`/games/${game.id}`}>
+            this.state.games.games.map(game => {
+              return <Link key={game.id} to={`/games/${game.id}`}>
                   <li>{game.name}</li>
                 </Link>
               })
@@ -142,11 +140,11 @@ export default class Games extends Component {
         </ul>
         {this.state.games.isLoadingGames
           ?
-            <Link to={"#"}>
+          <Link to={"#"}>
               Loading...
             </Link>
           :
-            <Link to={"#"} onClick={() => this.loadNextGames()}>
+          <Link to={"#"} onClick={() => this.loadNextGames()}>
               Load more
             </Link>
         }

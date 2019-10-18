@@ -49,16 +49,24 @@ export default class GamesService {
     return allReleases;
   };
 
-  getGameData = async (gameID) => {
-    // console.log(gameID);
-    
+  getGameData = async (gameID) => {    
     let gameData = await this.service.get(`/${gameID}`)
     return gameData.data
+  }
+
+  getGamesPerGenre = async (genre) => {
+    let gamesPerGenre = await this.service.get(`/?genres=${genre}`)
+    return gamesPerGenre.data
   }
 
   getGamesPerPlatform = async (platforms) => {
     let gamesPerPlatform = await this.service.get(`/?platforms=${platforms}`)
     return gamesPerPlatform.data
+  }
+
+  getGamesPerPlatformAndGenre = async (limit, offset, platforms, genres) => {
+    let gamesPerPlatformAndGenre = await this.service.get(`/?platforms=${platforms}&genres=${genres}&offset=${offset}&limit=${limit}`)
+    return gamesPerPlatformAndGenre.data
   }
 
   gateRelatedGames = async (relatedGamesArray) => {
