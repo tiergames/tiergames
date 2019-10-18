@@ -18,7 +18,7 @@ export default class Saved extends Component {
   render() {
     return (
       <section className="saved">
-        <h2>Saved reviews</h2>
+        <h2 className="section-title">Saved reviews</h2>
         {this.renderSavedReviews()}
       </section>
     )

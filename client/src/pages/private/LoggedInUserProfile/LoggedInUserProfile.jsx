@@ -11,7 +11,7 @@ export default class LoggedInUserProfile extends Component {
     return (
       <div>
         
-        <h1>User profile</h1>
+        <h1 className="section-title">My profile</h1>
         {/* <Link to={"/logout"}>Logout</Link> */}
         <Link to={"/logout"} onClick={this.handleLogout}>Logout</Link>
         <p><strong>Username: </strong>{this.props.loggedInUser.username} </p>
@@ -31,7 +31,7 @@ export default class LoggedInUserProfile extends Component {
     return (
       this.props.loggedInUser.followers.length > 0
         ? 
-          <ul>
+          <ul className="users-list">
             {this.props.loggedInUser.followers.map(follower => {
               return (
                 <li><Link to={`/profile/${follower.username}`}>{follower.username}</Link></li>
@@ -46,7 +46,7 @@ export default class LoggedInUserProfile extends Component {
     return (
       this.props.loggedInUser.following.length > 0
         ? 
-          <ul>
+          <ul className="users-list">
             {this.props.loggedInUser.following.map(userFollowed => {
               return (
                 <li><Link to={`/profile/${userFollowed.username}`}>{userFollowed.username}</Link></li>

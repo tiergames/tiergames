@@ -96,7 +96,7 @@ export default class App extends Component {
     ]
     if (this.state.loggedInUser) {
       routes = [
-        { exact: true, path: "/", component: Home },
+        { exact: true, path: "/", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
         {
           exact: true,
           path: "/games",
@@ -160,14 +160,14 @@ export default class App extends Component {
     this.loadPlatforms();
     this.loadGenres();
     this.loadReviews();
-    // this.loadGames();
-    // this.loadBestRated();
-    // this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
-    // this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");
-    // this.loadReleases(3, "releases14Days", "asc", "isLoading14Days");
-    // this.loadReleases(4, "releases1Month", "asc", "isLoading1Month");
-    // this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
-    // this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
+    this.loadGames();
+    this.loadBestRated();
+    this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
+    this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");
+    this.loadReleases(3, "releases14Days", "asc", "isLoading14Days");
+    this.loadReleases(4, "releases1Month", "asc", "isLoading1Month");
+    this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
+    this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
 
     this.socket.on('new-follower', (data) => {
       if (data.followed._id === this.state.loggedInUser._id) {

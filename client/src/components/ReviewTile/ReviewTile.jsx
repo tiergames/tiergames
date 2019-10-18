@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import GamesService from '../../services/games.service'
 
 export default class ReviewTile extends Component {
@@ -13,17 +14,28 @@ export default class ReviewTile extends Component {
   
   render() {
     return (
-      <article className="review-title" style={{"backgroundImage": `url(http:${this.state.gameTile.coverUrl})`}}>
-        <div>
-          <p>{this.state.gameTile.totalRating}</p>
-          <h2>{this.state.gameTile.title}</h2>
-          {this.state.isLoadingGameTitle
-            ?
-              <p>Loading game title...</p>
-            :
-              <p>{this.state.gameTile.name}</p>
+      <article className="review-tile">
+        <div className="review-tile-game-cover">
+          {
+            this.state.isLoadingGameTitle
+              ? null
+              : <img src={`http:${this.state.gameTile.coverUrl}`} />
           }
-          <p>{this.state.gameTile.author.username}</p>
+        </div>
+        <div className="review-tile-content">
+          <div className="review-tile-rating">
+            <p>{this.state.gameTile.totalRating}</p>
+          </div>
+          <div className="review-title-resume">
+            <h2>{this.state.gameTile.title}</h2>
+            {this.state.isLoadingGameTitle
+              ?
+                <p>Loading game title...</p>
+              :
+                <p>{this.state.gameTile.name}</p>
+            }
+            <p>by <Link to={`/profile/${this.state.gameTile.author.username}`}>{this.state.gameTile.author.username}</Link></p>
+          </div>
         </div>
       </article>
     )

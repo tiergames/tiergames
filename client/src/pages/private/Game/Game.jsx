@@ -24,8 +24,8 @@ class Game extends Component {
       <section className="game">
         {
           this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
-            ? <button onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
-            : <button onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
+            ? <button className="button" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
+            : <button className="button" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
         }
         {
           this.state.isLoadingGame
@@ -105,7 +105,7 @@ class Game extends Component {
           </span>
         </div>
         <div>
-          <Link to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
+          <Link className="button chatRoom" to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
         </div>
       </div>
     )
@@ -114,7 +114,7 @@ class Game extends Component {
   renderSummary() {
     return (
       <section className="game-section">
-        <h3>Summary</h3>
+        <h3 className="section-title">Summary</h3>
         <div className="game-section-content">
           <p>{this.state.game.summary}</p>
         </div>
@@ -125,7 +125,7 @@ class Game extends Component {
   renderStoryLine() {
     return (
       <section className="game-section">
-        <h3>Story line</h3>
+        <h3 className="section-title">Story line</h3>
         <p>{this.state.game.storyline}</p>
       </section>
     )
@@ -142,7 +142,7 @@ class Game extends Component {
   renderGameModes() {
     return (
       <section className="game-section">
-          <h3>Modes</h3>
+          <h3 className="section-title">Modes</h3>
           <div className="game-section-content">
             <ul>
               {this.state.game.game_modes.map(gameMode => {
@@ -157,7 +157,7 @@ class Game extends Component {
   renderGameGenres() {
     return (
       <section className="game-section">
-          <h3>Genres</h3>
+          <h3 className="section-title">Genres</h3>
           <div className="game-section-content">
             <ul>
               {this.state.game.genres.map(genre => {
@@ -187,9 +187,9 @@ class Game extends Component {
   
   renderScreenshots() {
     return (
-      <section className="game-section">
-          <h3>Screenshots</h3>
-          <div className="game-section-content">
+      <section className="game-section ">
+          <h3 className="section-title">Screenshots</h3>
+          <div className="game-section-content scrollable-section">
             <ul>
               {this.state.game.screenshots.map(screenshot => {
                 return (
@@ -207,14 +207,14 @@ class Game extends Component {
   renderVideos() {
     return (
       <section className="game-section">
-        <h3>Videos</h3>
-        <div className="game-section-content">
+        <h3 className="section-title">Videos</h3>
+        <div className="game-section-content scrollable-section">
           <ul>
             {this.state.game.videos.map(video => {
               return (
                 <li key={video.id}>
                   <iframe
-                    width="560" height="315"
+                    
                     src={`https://www.youtube.com/embed/${video.video_id}`}
                     frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -232,7 +232,7 @@ class Game extends Component {
   renderReleaseDates() {
     return (
       <section className="game-section">
-        <h3>Release dates</h3>
+        <h3 className="section-title">Release dates</h3>
         <section className="game-subsection">
           <h4>First release date</h4>
           <p>
@@ -256,7 +256,7 @@ class Game extends Component {
   renderWebsites() {
     return (
       <section className="game-section">
-        <h3>Websites</h3>
+        <h3 className="section-title">Websites</h3>
         <div className="game-section-content">
           <ul>
             {this.state.game.websites.map(website => {
@@ -273,7 +273,7 @@ class Game extends Component {
   renderSimilarGames() {
     return (
       <section className="game-section">
-        <h3>Similar games</h3>
+        <h3 className="section-title">Similar games</h3>
         <div className="game-section-content">
           {this.state.game.similar_games.map(similarGame => {
             return (
@@ -295,15 +295,15 @@ class Game extends Component {
   }
 
   async loadGame(gameID, reRender) {
-    // this.setState({ ...this.state, isLoadingGame: true })
-    // let game = await this.gamesService.getGameData(gameID)
-    // if (reRender) {
-    //   setTimeout(() => {
-    //     this.setState({ isLoadingGame: false, game: game[0] })
-    //   }, 500)
-    // } else {
-    //   this.setState({ isLoadingGame: false, game: game[0] })
-    // }
+    this.setState({ ...this.state, isLoadingGame: true })
+    let game = await this.gamesService.getGameData(gameID)
+    if (reRender) {
+      setTimeout(() => {
+        this.setState({ isLoadingGame: false, game: game[0] })
+      }, 500)
+    } else {
+      this.setState({ isLoadingGame: false, game: game[0] })
+    }
   }
 
   async loadRelatedGames() {

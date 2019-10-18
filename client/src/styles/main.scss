@@ -53,7 +53,8 @@
   margin-bottom: 1rem;
 }
 
-.games-list {
+.games-list,
+.users-list {
   li {
     padding: 0.5rem;
     background-color: var(--primary-background-color);
@@ -165,6 +166,77 @@
 
 .chat-messages {
 
+}
+
+.review-tile {
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.review-tile-game-cover {
+  border: 1px solid transparent;
+  filter: grayscale(1);
+  opacity: 0.25;
+  height: 170px;
+  background-color: rgba(0, 0, 0, .4);
+}
+
+.review-tile:hover {
+  border-color: var(--primary);
+
+}
+
+.landing {
+  color: #FFFFFFAA;
+}
+
+.scrollable-section {
+  overflow: auto;
+
+  img, video, iframe {
+    width: 300px;
+  }
+}
+
+.scrollable-section ul {
+  display: flex;
+}
+
+.game-section-content {
+  line-height: 20px;
+  font-size: 13px;
+}
+
+.game-section {
+  color: #FFFFFFaa;
+  padding: 1rem 0;
+}
+
+.review-tile-content {
+  display: flex;
+  color: #FFFFFF;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 1rem;
+}
+
+.review-tile-rating {
+  margin-right: 1rem;
+}
+
+.review-title-resume {
+  z-index: 100;
+
+  h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #FFFFFFaa;
+  }
 }
 
 @import "themes/dark";

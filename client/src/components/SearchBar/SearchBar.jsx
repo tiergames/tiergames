@@ -31,7 +31,6 @@ export default class SearchBar extends Component {
   renderSearchResults() {
     return (
       <div className="search-results">
-        <h2 className="section-title">Results</h2>
         {this.renderGamesResults()}
         {this.renderReviewsResults()}
         {this.renderUsersResults()}
@@ -56,7 +55,7 @@ export default class SearchBar extends Component {
   renderGamesResults() {
     return (
       <section className="results">
-        <h3>Games</h3>
+        <h3 className="section-title">Games</h3>
         {
           this.props.games.isSearchingGames
             ? <p>Searching games...</p>
@@ -73,7 +72,7 @@ export default class SearchBar extends Component {
   renderReviewsResults() {
     return (
       <section className="results">
-        <h3>Reviews</h3>
+        <h3 className="section-title">Reviews</h3>
         {
           this.props.reviews.isSearchingReviews
             ? <p>Searching reviews...</p>
@@ -90,7 +89,7 @@ export default class SearchBar extends Component {
   renderUsersResults() {
     return (
       <section className="results">
-        <h3>Users</h3>
+        <h3 className="section-title">Users</h3>
         {
           this.props.users.isSearchingUsers
             ? <p>Searching users...</p>
