@@ -1,0 +1,170 @@
+@import "base/reset";
+@import "base/fonts";
+@import "base/variables";
+@import "base/typography";
+@import "base/base";
+
+@import "utils/helpers";
+@import "utils/mixins";
+
+@import "atoms/button";
+@import "atoms/icon";
+@import "atoms/input";
+@import "atoms/label";
+
+@import "molecules/user-avatar";
+@import "molecules/navbar";
+
+@import "pages/home";
+
+.field-genre-checkbox,
+.field-platform-checkbox {
+
+  input {
+    display: none;
+
+    &:checked + label {
+      color: var(--on-primary);
+      background-color: var(--primary);
+    }
+  }
+
+  label {
+    padding: .25rem .5rem;
+    border: 1px solid var(--primary);
+    font-size: 9px;
+    color: var(--primary);
+    display: inline-block;
+    text-transform: uppercase;
+    margin: 4px;
+  }
+}
+
+.form-section {
+  margin-bottom: 1rem;
+}
+
+.form-section-content-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.games-form {
+  margin-bottom: 1rem;
+}
+
+.games-list {
+  li {
+    padding: 0.5rem;
+    background-color: var(--primary-background-color);
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+
+  a {
+    color: #FFFFFF;
+    font-size: 13px;
+  }
+}
+
+.search {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .10);
+
+  input[type="search"] {
+    border-bottom: none;
+    padding-left: 0.5rem;
+    width: 85%;
+  }
+
+  .close-search-results {
+    background-color: var(--primary);
+    color: #000;
+    position: fixed;
+    top: 0.4rem;
+    right: 0.5rem;
+    display: block;
+    padding: 0.25rem 1rem;
+    font-size: 9px;
+    text-transform: uppercase;
+  }
+}
+
+.search-results {
+  position: fixed;
+  top: 29px;
+  background-color: rgba(29,29,31,0.7);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: saturate(180%) blur(3px);
+  width: 100%;
+  height: calc(100vh - 29px);
+  padding: 1rem;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+
+  h2 {
+    color: var(--primary);
+  }
+
+  .results {
+    margin-bottom: 1rem;
+    color: #FFFFFFAA;
+    
+    h3 {
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+      border-bottom: 1px solid rgba(#FFFFFF, .25);
+      padding-bottom: 0.5rem;
+    }
+
+    a {
+      font-size: 13px;
+      color: #FFFFFFaa;
+
+      &:not(:last-child) {
+        margin-bottom: 0.5rem;
+        line-height: 16px;
+      }
+    }
+  }
+}
+
+.room {
+  
+}
+
+.chat {
+
+}
+
+.chat-users {
+  li {
+    border: 1px solid var(--primary);
+    margin-right: .5rem;
+    color: #FFFFFF;
+    font-size: 9px;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+.chat-messages {
+  
+}
+
+.chat-users-list {
+  display: flex;
+}
+
+.chat-messages {
+
+}
+
+@import "themes/dark";

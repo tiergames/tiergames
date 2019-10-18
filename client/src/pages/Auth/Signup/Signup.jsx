@@ -16,7 +16,7 @@ class Signup extends Component {
   
   render() {
     return (
-      <section className="signup">
+      <section className="home-form">
         <h2>Signup</h2>
         <div className="account-question">
           <p>Already have an account? <Link to={"/login"}>Login</Link></p>

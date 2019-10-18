@@ -65,11 +65,11 @@ export default class Games extends Component {
   renderFilters() {    
     return (
       <section>
-        <form className="form" onSubmit={e => this.handleFormSubmit(e)}>
+        <form className="form games-form" onSubmit={e => this.handleFormSubmit(e)}>
 
           <section className="form-section">
-            <h3>Genres</h3>
-            <div className="form-section-content">
+            <h2 className="section-title">Genres</h2>
+            <div className="form-section-content form-section-content-tags">
               {this.props.genres.isLoadingGenres
                 ?
                   <p>Loading genres...</p>
@@ -85,8 +85,8 @@ export default class Games extends Component {
           </section>
 
           <section className="form-section">
-            <h3>Platforms</h3>
-            <div className="form-section-content">
+            <h2 className="section-title">Platforms</h2>
+            <div className="form-section-content form-section-content-tags">
               {this.props.platforms.isLoadingPlatforms
                 ?
                   <p>Loading platforms...</p>
@@ -102,7 +102,7 @@ export default class Games extends Component {
           </section>
 
           <div className="form-actions">
-            <button type="submit">Apply filter</button>
+            <button type="submit" className="button">Apply filter</button>
           </div>
         </form>
       </section>
@@ -125,29 +125,28 @@ export default class Games extends Component {
   
   renderGames() {
     return (
-      <section>
-        <h2>Games</h2>
+      <section className="games-results">
+        <h2 className="section-title">Games</h2>
         <ul className="games-list">
           {this.state.games.games.length > 0
             ? 
             this.state.games.games.map(game => {
-              return <Link key={game.id} to={`/games/${game.id}`}>
-                  <li>{game.name}</li>
-                </Link>
+              return <li key={game.id}><Link to={`/games/${game.id}`}>{game.name}</Link></li>
+                
               })
             : null
           }
         </ul>
-        {this.state.games.isLoadingGames
+        {/* {this.state.games.isLoadingGames
           ?
-          <Link to={"#"}>
+          <Link className="button" to={"#"}>
               Loading...
             </Link>
           :
-          <Link to={"#"} onClick={() => this.loadNextGames()}>
+          <Link className="button" to={"#"} onClick={() => this.loadNextGames()}>
               Load more
             </Link>
-        }
+        } */}
       </section>
     )
   }

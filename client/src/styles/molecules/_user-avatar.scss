@@ -1,0 +1,15 @@
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  background: #00ff68;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-radius: 50%; */
+
+  font-family: Lato-Black;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.8);
+  // letter-spacing: 2px;
+  line-height: 17px;
+}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 export default class SearchBar extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class SearchBar extends Component {
         <form className="search-bar" onSubmit={(e) => this.handleSearchSubmit(e)}>
           <div className="field search-field">
             <input type="search" autoComplete="off" onChange={(e) => this.props.updateSearchText(e.target.value)} name="search" id="search" placeholder="Search games, reviews, users..." onFocus={() => this.openSearchResults()} />
-            {this.state.hasFocus && <span onClick={(e) => this.closeSearchResults(e)}>Cancel</span>}
+            {this.state.hasFocus && <span className="close-search-results" onClick={(e) => this.closeSearchResults(e)}>Cancel</span>}
           </div>
         </form>
         {this.state.hasFocus && this.renderSearchResults()}
@@ -30,7 +31,7 @@ export default class SearchBar extends Component {
   renderSearchResults() {
     return (
       <div className="search-results">
-        <h2>Results</h2>
+        <h2 className="section-title">Results</h2>
         {this.renderGamesResults()}
         {this.renderReviewsResults()}
         {this.renderUsersResults()}
@@ -61,7 +62,7 @@ export default class SearchBar extends Component {
             ? <p>Searching games...</p>
             : this.props.games.gamesResults.length > 0
               ? this.props.games.gamesResults.map((gameResult, idx) => {
-                  return <p key={idx}>{gameResult.name}</p>
+                  return <Link key={idx} to={`/games/${gameResult.id}`}><p>{gameResult.name}</p></Link>
                 })
               : <p>No games</p>
         }
@@ -78,7 +79,7 @@ export default class SearchBar extends Component {
             ? <p>Searching reviews...</p>
             : this.props.reviews.reviewsResults.length > 0
               ? this.props.reviews.reviewsResults.map((reviewResult, idx) => {
-                return <p key={idx}>{reviewResult.title}</p>
+                return <p>{reviewResult.title}</p>
                 })
               : <p>No reviews</p>
         }

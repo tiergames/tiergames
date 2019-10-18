@@ -1,0 +1,48 @@
+:root {
+  --primary: #00FF68;
+  --on-primary: #000000;
+  --primary-text-color: #FFFFFF;
+  --primary-background-color: rgba(0, 0, 0, .10);
+  --secondary-background-color: linear-gradient(269deg, rgba(29,30,48,0.99) 2%, #17141D 98%);
+  --secondary-text-color: rgba(0, 0, 0, .60);
+  --body-background: linear-gradient(180deg, rgba(29,30,48,0.99) 4%, #17141D 100%);
+  --input-border-color: #FFFFFF;
+  --navbar-background: #000000;
+  --main-menu-link-color: rgba(255, 255, 255, .5);
+  --placeholder-color: rgba(255, 255, 255, .5);
+}
+
+body {
+  background-image: var(--body-background);
+}
+
+input {
+  background-color: transparent;
+  color: #FFFFFF;
+  border-bottom-color: var(--input-border-color);
+}
+
+input::placeholder {
+  color: var(--placeholder-color);
+}
+
+input:focus {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+a {
+  color: var(--primary);
+}
+
+.navbar {
+  background-color: var(--navbar-background);
+}
+
+.main-menu-link {
+  color: var(--main-menu-link-color);
+}
+
+.main-menu-link svg {
+  stroke: var(--main-menu-link-color);
+}

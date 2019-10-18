@@ -1,0 +1,24 @@
+* {
+  font-family: $main-font;
+}
+
+.game-title,
+.review-title {
+  font-family: $game-title-font;
+  font-weight: 500;
+}
+
+p,
+a,
+button,
+label,
+input {
+  font-weight: 400;
+}
+
+.section-title {
+  color: #FFFFFF;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}

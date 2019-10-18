@@ -15,27 +15,26 @@ class Login extends Component {
 
   render() {
     return (
-      <section className="login">
-        <h2>Login</h2>
+      <section className="home">
         <div className="account-question">
           <p>Don't you have an account? <Link to={"/signup"}>Join us</Link></p>
-
+        </div>
+        <div className="social-login">
           {/* TODO: Check routes */}
           <a href={`${process.env.REACT_APP_SERVER_BASE_URL}/api/auth/facebook`}>Login with Facebook</a>
           <a href={`${process.env.REACT_APP_SERVER_BASE_URL}/api/auth/google`}>Login With Google</a>
-
         </div>
-        <form onSubmit={e => this.handleFormSubmit(e)}>
+        <form onSubmit={e => this.handleFormSubmit(e)} className="home-form">
           <div className="field">
-            <input type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)} id="login-username" className="input"/>
-            <label htmlFor="login-username" className="label">Username</label>
+            <input placeholder="Username" type="text" name="username" value={this.state.username} onChange={e => this.handleChange(e)} id="login-username" className="input"/>
+            {/* <label htmlFor="login-username" className="label">Username</label> */}
           </div>
           <div className="field">
-            <input type="password" name="password" value={this.state.password} onChange={e => this.handleChange(e)} id="login-password" className="input"/>
-            <label htmlFor="login-password" className="label">Password</label>
+            <input placeholder="password" type="password" name="password" value={this.state.password} onChange={e => this.handleChange(e)} id="login-password" className="input"/>
+            {/* <label htmlFor="login-password" className="label">Password</label> */}
           </div>
           <div className="form-actions">
-            <input type="submit" value="Login"/>
+            <input type="submit" value="Login to your account"/>
           </div>
         </form>
 
