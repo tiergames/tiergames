@@ -36,7 +36,7 @@ controller.games = async (req, res, next) => {
         'user-key': process.env.IGDB_API_KEY
       },
       data: `
-        fields name, cover, genres, popularity, first_release_date, rating;
+        fields name, cover.url, genres, popularity, first_release_date, rating;
         limit ${req.query.limit};
         offset ${req.query.offset};
         ${totalFilter.length > 0 ? `where ${totalFilter.join(" & ")};` : ''}

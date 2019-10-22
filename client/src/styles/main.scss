@@ -14,6 +14,7 @@
 
 @import "molecules/user-avatar";
 @import "molecules/navbar";
+@import "molecules/tile";
 
 @import "pages/home";
 
@@ -246,6 +247,17 @@
   p {
     color: #FFFFFFaa;
   }
+}
+
+.home-section {
+  margin-left: 8px;
+  margin: .5rem 0 .5rem .5rem;
+}
+
+.tile-list {
+  display: flex;
+  overflow: auto;
+  padding-right: 0.5rem;
 }
 
 @import "themes/dark";

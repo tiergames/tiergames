@@ -96,7 +96,7 @@ export default class App extends Component {
     ]
     if (this.state.loggedInUser) {
       routes = [
-        { exact: true, path: "/", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
+        { exact: true, path: "/", component: () => (<Home releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
         {
           exact: true,
           path: "/games",

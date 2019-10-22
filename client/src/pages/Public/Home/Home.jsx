@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import GamesService from '../../../services/games.service';
+import Tile from '../../../components/Tile/Tile';
 
 export default class Home extends Component {
   constructor(props) {
@@ -26,11 +27,11 @@ export default class Home extends Component {
 
   render7DaysAgo() {
     return (
-      <section>
+      <section className="home-section">
         <h2 className="section-title">Recently released</h2>
 
         {
-          <ul>
+          <ul className="tile-list">
             {this.props.releases.releases7DaysAgo.isLoading7DaysAgo ? (
               <p>Loading...</p>
             ) : this.props.releases.releases7DaysAgo.releases7DaysAgo.length >
@@ -38,11 +39,7 @@ export default class Home extends Component {
               this.props.releases.releases7DaysAgo.releases7DaysAgo.map(
                 release => {
                   return (
-                    <li key={release.id}>
-                      {`${release.name} (${new Date(
-                        release.first_release_date * 1000
-                      ).toDateString()})`}
-                    </li>
+                    <Tile key={release.id} type="game" tileInfo={release} />
                   );
                 }
               )
@@ -57,20 +54,16 @@ export default class Home extends Component {
 
   render7Days() {
     return (
-      <section>
+      <section className="home-section">
         <h2 className="section-title">Next 7 days</h2>
         {
-          <ul>
+          <ul className="tile-list">
             {this.props.releases.releases7Days.isLoading7Days ? (
               <p>Loading...</p>
             ) : this.props.releases.releases7Days.releases7Days.length > 0 ? (
               this.props.releases.releases7Days.releases7Days.map(release => {
                 return (
-                  <li key={release.id}>
-                    {`${release.name} (${new Date(
-                      release.first_release_date * 1000
-                    ).toDateString()})`}
-                  </li>
+                  <Tile key={release.id} type="game" tileInfo={release} />
                 );
               })
             ) : (
@@ -84,20 +77,16 @@ export default class Home extends Component {
 
   render14Days() {
     return (
-      <section>
+      <section className="home-section">
         <h2 className="section-title">Next 14 days</h2>
         {
-          <ul>
+          <ul className="tile-list">
             {this.props.releases.releases14Days.isLoading14Days ? (
               <p>Loading...</p>
             ) : this.props.releases.releases14Days.releases14Days.length > 0 ? (
               this.props.releases.releases14Days.releases14Days.map(release => {
                 return (
-                  <li key={release.id}>
-                    {`${release.name} (${new Date(
-                      release.first_release_date * 1000
-                    ).toDateString()})`}
-                  </li>
+                  <Tile key={release.id} type="game" tileInfo={release} />
                 );
               })
             ) : (
@@ -111,20 +100,16 @@ export default class Home extends Component {
 
   render1Month() {
     return (
-      <section>
+      <section className="home-section">
         <h2 className="section-title">Next 30 days</h2>
         {
-          <ul>
+          <ul className="tile-list">
             {this.props.releases.releases1Month.isLoading1Month ? (
               <p>Loading...</p>
             ) : this.props.releases.releases1Month.releases1Month.length > 0 ? (
               this.props.releases.releases1Month.releases1Month.map(release => {
                 return (
-                  <li key={release.id}>
-                    {`${release.name} (${new Date(
-                      release.first_release_date * 1000
-                    ).toDateString()})`}
-                  </li>
+                  <Tile key={release.id} type="game" tileInfo={release} />
                 );
               })
             ) : (
@@ -138,21 +123,17 @@ export default class Home extends Component {
 
   render6Months() {
     return (
-      <section>
+      <section className="home-section">
         <h2 className="section-title">Next 6 months</h2>
         {
-          <ul>
+          <ul className="tile-list">
             {this.props.releases.releases6Months.isLoading6Months ? (
               <p>Loading...</p>
             ) : this.props.releases.releases6Months.releases6Months.length >
               0 ? (
-              this.props.releases.releases6Months.releases6Months.map(game => {
+              this.props.releases.releases6Months.releases6Months.map(release => {
                 return (
-                  <li key={game.id}>
-                    {`${game.name} (${new Date(
-                      game.first_release_date * 1000
-                    ).toDateString()})`}
-                  </li>
+                  <Tile key={release.id} type="game" tileInfo={release} />
                 );
               })
             ) : (
@@ -166,20 +147,16 @@ export default class Home extends Component {
 
   render1Year() {
     return (
-      <section>
+      <section className="home-section">
         <h2 className="section-title">Next year</h2>
         {
-          <ul>
+          <ul className="tile-list">
             {this.props.releases.releases1Year.isLoading1Year ? (
               <p>Loading...</p>
             ) : this.props.releases.releases1Year.releases1Year.length > 0 ? (
               this.props.releases.releases1Year.releases1Year.map(release => {
                 return (
-                  <li key={release.id}>
-                    {`${release.name} (${new Date(
-                      release.first_release_date * 1000
-                    ).toDateString()})`}
-                  </li>
+                  <Tile key={release.id} type="game" tileInfo={release} />
                 );
               })
             ) : (
