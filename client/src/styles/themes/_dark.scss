@@ -10,6 +10,7 @@
   --navbar-background: #000000;
   --main-menu-link-color: rgba(255, 255, 255, .5);
   --placeholder-color: rgba(255, 255, 255, .5);
+  --search-box-background: #1c1e2d;
 }
 
 body {
@@ -43,6 +44,18 @@ a {
   color: var(--main-menu-link-color);
 }
 
+.main-menu-link-active {
+  color: var(--primary);
+}
+
 .main-menu-link svg {
   stroke: var(--main-menu-link-color);
+}
+
+.main-menu-link-active svg {
+  stroke: var(--primary);
+}
+
+.search {
+  background-color: var(--search-box-background);
 }

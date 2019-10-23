@@ -77,20 +77,22 @@
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, .10);
+  z-index: 100;
 
   input[type="search"] {
     border-bottom: none;
-    padding-left: 0.5rem;
+    padding: 1rem;
     width: 85%;
+    text-transform: uppercase;
+    font-weight: 700;
   }
 
   .close-search-results {
     background-color: var(--primary);
     color: #000;
     position: fixed;
-    top: 0.4rem;
-    right: 0.5rem;
+    top: 0.9rem;
+    right: 1rem;
     display: block;
     padding: 0.25rem 1rem;
     font-size: 9px;
@@ -100,10 +102,10 @@
 
 .search-results {
   position: fixed;
-  top: 29px;
+  top: 45px;
   background-color: rgba(29,29,31,0.7);
   background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: saturate(180%) blur(3px);
+  backdrop-filter: saturate(200%) blur(16px);
   width: 100%;
   height: calc(100vh - 29px);
   padding: 1rem;

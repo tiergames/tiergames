@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
+import {Link, NavLink} from 'react-router-dom'
 import AuthService from './../../services/auth.service'
 
 import { ReactComponent as Rocket } from './../../assets/icons/rocket.svg'
@@ -26,17 +26,17 @@ export default class Navbar extends Component {
               </>
             :
             <>
-                <li className="main-menu-item"><Link className="main-menu-link" to={"/"}><Home />Home</Link></li>
-                <li className="main-menu-item"><Link className="main-menu-link" to={"/games"}><Rocket />Games</Link></li>
-                <li className="main-menu-item"><Link className="main-menu-link" to={"/reviews"}><Reviews />Reviews</Link></li>
-                <li className="main-menu-item"><Link className="main-menu-link" to={"/saved"}><Saved />Saved</Link></li>
-                <li className="main-menu-item"><Link className="main-menu-link" to={"/profile"}><User />Profile</Link></li>
-                {/* <li className="main-menu-item"><Link className="main-menu-link" to={"/games/coming-soon"}>Coming Soon</Link></li> */}
-                {/* <li className="main-menu-item"><Link className="main-menu-link" to={"/games/best-rated"}>Best rated</Link></li> */}
-                {/* <li className="main-menu-item"><Link className="main-menu-link" to={"/games/best-rated"}>Best rated</Link></li> */}
-                {/* <li className="main-menu-item"><Link className="main-menu-link" to={"/genres"}>Genres</Link></li> */}
-                {/* <li className="main-menu-item"><Link className="main-menu-link" to={"/platforms"}>Platforms</Link></li> */}
-                {/* <li className="main-menu-item"><Link className="main-menu-link" to={"/logout"} onClick={this.handleLogout}>Logout</Link></li> */}
+                <li className="main-menu-item"><NavLink exact activeClassName="main-menu-link-active" className="main-menu-link" to={"/"}><Home />Home</NavLink></li>
+                <li className="main-menu-item"><NavLink exact activeClassName="main-menu-link-active" className="main-menu-link" to={"/games"}><Rocket />Games</NavLink></li>
+                <li className="main-menu-item"><NavLink exact activeClassName="main-menu-link-active" className="main-menu-link" to={"/reviews"}><Reviews />Reviews</NavLink></li>
+                <li className="main-menu-item"><NavLink exact activeClassName="main-menu-link-active" className="main-menu-link" to={"/saved"}><Saved />Saved</NavLink></li>
+                <li className="main-menu-item"><NavLink exact activeClassName="main-menu-link-active" className="main-menu-link" to={"/profile"}><User />Profile</NavLink></li>
+                {/* <li className="main-menu-item"><NavLink className="main-menu-link" to={"/games/coming-soon"}>Coming Soon</NavLink></li> */}
+                {/* <li className="main-menu-item"><NavLink className="main-menu-link" to={"/games/best-rated"}>Best rated</NavLink></li> */}
+                {/* <li className="main-menu-item"><NavLink className="main-menu-link" to={"/games/best-rated"}>Best rated</NavLink></li> */}
+                {/* <li className="main-menu-item"><NavLink className="main-menu-link" to={"/genres"}>Genres</NavLink></li> */}
+                {/* <li className="main-menu-item"><NavLink className="main-menu-link" to={"/platforms"}>Platforms</NavLink></li> */}
+                {/* <li className="main-menu-item"><NavLink className="main-menu-link" to={"/logout"} onClick={this.handleLogout}>Logout</></li> */}
               </>
           }
         </ul>
