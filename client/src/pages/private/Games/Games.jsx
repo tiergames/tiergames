@@ -8,6 +8,7 @@ import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
 import GenresTags from './../../../components/GenresTags/GenresTags'
 import Platform from '../Platforms/Platforms'
 import queryString from 'query-string'
+import GameTileInfo from '../../../components/GameTileInfo/GameTileInfo'
 
 export default class Games extends Component {
   constructor(props) {
@@ -128,10 +129,13 @@ export default class Games extends Component {
       <section className="games-results">
         <h2 className="section-title">Games</h2>
         <ul className="games-list">
-          {this.state.games.games.length > 0
+          {this.state.games.releases7Days.length > 0
             ? 
-            this.state.games.games.map(game => {
-              return <li key={game.id}><Link to={`/games/${game.id}`}>{game.name}</Link></li>
+              this.state.games.releases7Days.map(game => {
+                // return <li key={game.id}><Link to={`/games/${game.id}`}>{game.name}</Link></li>
+                return (
+                  <GameTileInfo key={game.id} game={game} />
+                )
                 
               })
             : null

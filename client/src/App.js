@@ -104,7 +104,7 @@ export default class App extends Component {
             <Games
               genres={this.state.genres}
               platforms={this.state.platforms}
-              games={this.state.games}
+              games={this.state.releases.releases7Days}
               onPlatformFilterChange={(platformsFilter) => this.handlePlatformFilterChange(platformsFilter)}
               onGenreFilterChange={(genresFilter) => this.handleGenreFilterChange(genresFilter)}
               onFilterApply={() => this.applyGameFilter()} 
