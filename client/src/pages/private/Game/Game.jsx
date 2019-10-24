@@ -23,11 +23,6 @@ class Game extends Component {
     return (
       <section className="game">
         {
-          this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
-            ? <button className="button" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
-            : <button className="button" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
-        }
-        {
           this.state.isLoadingGame
             ? <p>Loading game info...</p>
             : this.renderGame()
@@ -74,17 +69,30 @@ class Game extends Component {
   renderHeader() {
     return (
       <header className="game-header">
-        <div className="game-header-image">
-          {
-            this.state.game.cover
-              ? <img src={`http:${this.state.game.cover.url.replace('t_thumb', 't_cover_small_2x')}`} alt={this.state.game.name}/>
-              : null
-          }
-        </div>
-        <div className="game-header-info">
-          <h2 className="game-title">{this.state.game.name}</h2>
-          <div className="game-platforms">
-            {this.state.game.platforms ? this.renderPlatforms() : null}
+        <div className="hero">
+          <div className="hero-media">
+            {
+              this.state.game.screenshots
+                ? <img src={`http:${this.state.game.screenshots[0].url.replace('t_thumb', 't_screenshot_huge')}`} alt={this.state.game.name}/>
+                : this.state.game.cover
+                  ? <img src={`http:${this.state.game.cover.url.replace('t_thumb', 't_cover_small_2x')}`} alt={this.state.game.name}/>
+                  : null
+            }
+          </div>
+          <div className="hero-wraper">
+            <div className="game-header-image">
+              {
+                this.state.game.cover
+                  ? <img src={`http:${this.state.game.cover.url.replace('t_thumb', 't_cover_small_2x')}`} alt={this.state.game.name}/>
+                  : null
+              }
+            </div>
+            <div className="game-header-info">
+              <h2 className="game-title">{this.state.game.name}</h2>
+              <div className="game-platforms">
+                {this.state.game.platforms ? this.renderPlatforms() : null}
+              </div>
+            </div>
           </div>
         </div>
       </header>
@@ -103,6 +111,11 @@ class Game extends Component {
               : "-"
             }
           </span>
+          {
+            this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
+              ? <button className="button" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
+              : <button className="button" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
+          }
         </div>
         <div>
           <Link className="button chatRoom" to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>

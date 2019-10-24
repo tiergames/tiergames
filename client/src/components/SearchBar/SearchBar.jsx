@@ -15,7 +15,7 @@ export default class SearchBar extends Component {
         <form className="search-bar" onSubmit={(e) => this.handleSearchSubmit(e)}>
           <div className="field search-field">
             <input type="search" autoComplete="off" onChange={(e) => this.props.updateSearchText(e.target.value)} name="search" id="search" placeholder="Search games, reviews, users..." onFocus={() => this.openSearchResults()} />
-            {this.state.hasFocus && <span className="close-search-results" onClick={(e) => this.closeSearchResults(e)}>Cancel</span>}
+            {this.state.hasFocus && <span className="close-search-results" onClick={(e) => this.closeSearchResults(e)}>Close</span>}
           </div>
         </form>
         {this.state.hasFocus && this.renderSearchResults()}
