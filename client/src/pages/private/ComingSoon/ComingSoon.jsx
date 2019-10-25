@@ -5,11 +5,6 @@ import GamesService from "./../../../services/games.service";
 export default class ComingSoon extends Component {
   constructor(props) {
     super(props);
-    this.service = new GamesService();
-
-    this.state = {
-      releases: props.releases
-    };
   }
 
   render() {

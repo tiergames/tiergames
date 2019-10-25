@@ -272,6 +272,16 @@ controller.getWebsites = async (req, res, next) => {
 controller.getVideos = async (req, res, next) => {
   try {
     let videosIDs = req.params.videosID.replace("[", "(").replace("]", ")").replace("%20", "")
+
+    // TODO: Implementar caché contra base de datos 
+    // ~ Consultar videos contra base de datos mongo
+    // ~ Comprobar fecha de validez de videos. 
+    //  - Si ha caducado(ej: 24 horas han pasado) o no existe
+    //    * hacer llamada a IGDB
+    //    * guardar resultados con fecha en base de datos
+    //  - Si NO ha caducado
+    //    * Devolver resultados de base de datos
+
     let videos = await axios({
       url: videosURL,
       method: 'POST',

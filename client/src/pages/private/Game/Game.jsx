@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import Moment from 'react-moment'
 import GamesService from './../../../services/games.service'
-import {animateScroll as scroll} from 'react-scroll'
 
 class Game extends Component {
   constructor(props) {
@@ -12,14 +11,11 @@ class Game extends Component {
     this.state = {
       gameID: props.match.params.gameID,
       game: {},
-      isLoadingGame: true
+      isLoadingGame: true,
     }
-
-    console.log("THEH STATETETETETE", this.state)
   }
   
   render() {    
-    console.log("TESTING", this.props.loggedInUser.savedGames.indexOf(+this.state.gameID))
     return (
       <section className="game">
         {
@@ -38,14 +34,7 @@ class Game extends Component {
   componentWillReceiveProps(nextProps, state) {
     if (nextProps.match.params.gameID !== state.gameID) {      
       this.loadGame(nextProps.match.params.gameID, true)
-      // scroll.scrollToTop({
-      //   duration: 750
-      // })
     }
-  }
-
-  renderTemplate() {
-
   }
 
   renderGame() {
@@ -308,7 +297,7 @@ class Game extends Component {
   }
 
   async loadGame(gameID, reRender) {
-    this.setState({ ...this.state, isLoadingGame: true })
+    this.setState({ isLoadingGame: true })
     let game = await this.gamesService.getGameData(gameID)
     if (reRender) {
       setTimeout(() => {

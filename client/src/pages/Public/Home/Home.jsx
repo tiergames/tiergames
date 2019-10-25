@@ -1,15 +1,9 @@
 import React, { Component } from 'react'
-import GamesService from '../../../services/games.service';
 import Tile from '../../../components/Tile/Tile';
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.service = new GamesService();
-
-    this.state = {
-      releases: props.releases
-    };
   }
 
   render() {
@@ -29,7 +23,6 @@ export default class Home extends Component {
     return (
       <section className="home-section">
         <h2 className="section-title">Recently released</h2>
-
         {
           <ul className="tile-list">
             {this.props.releases.releases7DaysAgo.isLoading7DaysAgo ? (

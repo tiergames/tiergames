@@ -10,8 +10,6 @@ export default class CreateReview extends Component {
     this.reviewsService = new ReviewsService()
     this.gamesService = new GamesService()
 
-    const queryParams = queryString.parse(window.location.search);
-    
     this.state = {
       title: '',
       platform: '',
@@ -25,7 +23,7 @@ export default class CreateReview extends Component {
       cons: '',
       gameName: '',
       isLoadingGameName: true,
-      gameID: queryParams.game ? queryParams.game : ''
+      gameID: props.match.params.gameID
     }
   }
   
@@ -176,8 +174,9 @@ export default class CreateReview extends Component {
     if (this.state.gameID !== '') {
       // let gameName = await 
       let gameName = await this.gamesService.getGameName(this.state.gameID)
+      console.log(gameName);
+      
       this.setState({
-        ...this.state,
         gameName: gameName.name,
         isLoadingGameName: false
       })

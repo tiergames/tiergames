@@ -26,7 +26,6 @@ export default class Games extends Component {
         offset: 0,
         currentPage: 0,
       },
-      games: props.games
     }
   }
   
@@ -39,8 +38,6 @@ export default class Games extends Component {
     )
   }
 
-  componentDidMount() {}
-
   async loadNextGames() {
     this.setState({
       isLoadingGames: true
@@ -50,7 +47,7 @@ export default class Games extends Component {
     let nextOffset = this.state.pagination.limit * nextPage
     
     let nextNewGames = await this.gamesService.getGames(this.state.pagination.limit, nextOffset)
-    let newGames = [...this.state.games]
+    let newGames = [...this.props.games]
     let newPagination = {...this.state.pagination}
     newPagination.offset = nextOffset
     newPagination.currentPage = nextPage
@@ -63,7 +60,7 @@ export default class Games extends Component {
     })
   }
 
-  renderFilters() {    
+  renderFilters() { 
     return (
       <section>
         <form className="form games-form" onSubmit={e => this.handleFormSubmit(e)}>
@@ -84,7 +81,6 @@ export default class Games extends Component {
               }
             </div>
           </section>
-
           <section className="form-section">
             <h2 className="section-title">Platforms</h2>
             <div className="form-section-content form-section-content-tags">
@@ -101,7 +97,6 @@ export default class Games extends Component {
               }
             </div>
           </section>
-
           <div className="form-actions">
             <button type="submit" className="button">Apply filter</button>
           </div>
@@ -120,7 +115,6 @@ export default class Games extends Component {
 
   handleFormSubmit(e) {
     e.preventDefault()
-  
     this.props.onFilterApply();
   }
   
@@ -129,28 +123,14 @@ export default class Games extends Component {
       <section className="games-results">
         <h2 className="section-title">Games</h2>
         <ul className="games-list">
-          {this.state.games.releases7Days.length > 0
+          {this.props.games.games.length > 0
             ? 
-              this.state.games.releases7Days.map(game => {
-                // return <li key={game.id}><Link to={`/games/${game.id}`}>{game.name}</Link></li>
-                return (
-                  <GameTileInfo key={game.id} game={game} />
-                )
-                
-              })
+              this.props.games.games.map(game => (
+                <GameTileInfo key={game.id} game={game} />
+              ))
             : null
           }
         </ul>
-        {/* {this.state.games.isLoadingGames
-          ?
-          <Link className="button" to={"#"}>
-              Loading...
-            </Link>
-          :
-          <Link className="button" to={"#"} onClick={() => this.loadNextGames()}>
-              Load more
-            </Link>
-        } */}
       </section>
     )
   }

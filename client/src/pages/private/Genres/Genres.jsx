@@ -1,15 +1,9 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
-import GenresService from './../../../services/genres.service'
 
 export default class Genres extends Component {
-  constructor() {
-    super()
-    this.service = new GenresService()
-    this.state = {
-      isLoadingGenres: true,
-      genres: []
-    }
+  constructor(props) {
+    super(props);
   }
   
   render() {
@@ -17,15 +11,14 @@ export default class Genres extends Component {
       <section className="genres-section">
         <h1>Genres</h1>
         <ul className="genres-list">
-          {this.state.genres.length > 0
+          {this.props.genres.genres.length > 0
             ?
-              this.state.genres.map(genre => {
+              this.props.genres.genres.map(genre => {
                 return <li key={genre.id}>{genre.name}</li>
               })
             : null
           }
-
-          {this.state.isLoadingGenres
+          {this.props.genres.isLoadingGenres
             ?
               <p to={"#"}>Loading...</p>
             : null
@@ -33,14 +26,5 @@ export default class Genres extends Component {
         </ul>
       </section>
     )
-  }
-
-  async componentDidMount() {
-    let allGenres = await this.service.getAllGenres()
-    this.setState({
-      ...this.state,
-      genres: allGenres.data,
-      isLoadingGenres: false
-    })
-  }
+  } 
 }

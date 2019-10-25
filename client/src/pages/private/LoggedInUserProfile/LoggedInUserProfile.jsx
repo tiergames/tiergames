@@ -3,14 +3,12 @@ import { Link } from 'react-router-dom'
 
 export default class LoggedInUserProfile extends Component {
   constructor(props) {
-    super()
+    super(props)
   }
 
   render() {
-    
     return (
       <div>
-        
         <h1 className="section-title">My profile</h1>
         {/* <Link to={"/logout"}>Logout</Link> */}
         <Link to={"/logout"} onClick={this.handleLogout}>Logout</Link>

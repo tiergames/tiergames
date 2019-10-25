@@ -8,10 +8,6 @@ export default class Reviews extends Component {
   constructor(props) {
     super(props)
     this.reviewsService = new ReviewsService()
-    this.state = {
-      reviews: props.reviews,
-      platforms: props.platforms
-    }
   }
 
   render() {
@@ -23,26 +19,12 @@ export default class Reviews extends Component {
     );
   }
 
-  componentDidMount() {
-    // this.loadReviews(0, 10)
-  }  
-
-  async loadReviews(offset, limit) {
-    let reviews = await this.reviewsService.getReviews(offset, limit);
-    this.setState({
-      ...this.state,
-      reviews: reviews,
-      isLoadingReviews: false
-    });
-  }
-
   renderNewReviewLink() {
     return <Link to={"/reviews/create"}>Create review</Link>
   }
 
   renderReviews() {
-
-    const { platforms: {platforms} } = this.state;
+    const { platforms: {platforms} } = this.props;
 
     return (
       <section>
@@ -52,9 +34,9 @@ export default class Reviews extends Component {
         {/* <PlatformsTags platforms={platforms} type="radio" /> */}
 
         <ul>
-          {this.state.reviews.reviewsFiltered.length > 0
+          {this.props.reviews.reviewsFiltered.length > 0
             ?
-              this.state.reviews.reviewsFiltered.map(review => {
+              this.props.reviews.reviewsFiltered.map(review => {
                 return (
                   <Link key={review._id} to={`/reviews/${review._id}`}>
                     <ReviewTile gameTile={review} />
@@ -63,7 +45,7 @@ export default class Reviews extends Component {
               })
             : null}
         </ul>
-        {this.state.reviews.isLoadingReviews
+        {this.props.reviews.isLoadingReviews
           ?
             <p>Loading...</p>
           :

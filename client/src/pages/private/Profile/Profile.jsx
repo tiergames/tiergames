@@ -15,7 +15,7 @@ export default class Profile extends Component {
       userProfile: {},
       isLoadingUserProfile: true,
       userReviews: [],
-      isLoadingUserReviews: true
+      isLoadingUserReviews: true,
     }
   }
 
@@ -100,14 +100,13 @@ export default class Profile extends Component {
     if (unfollowRequest.unfollowRequest) {
       let newUserProfile = {...this.state.userProfile}
       newUserProfile.followers = unfollowRequest.unfollowed.followers
-      this.setState({ ...this.state, userProfile: newUserProfile })
+      this.setState({ userProfile: newUserProfile })
     }
   }
 
   async loadUserProfile(username) {
     let userProfile = await this.profileService.getProfile(username)
     this.setState({
-      ...this.state,
       userProfile: userProfile.userProfile,
       isLoadingUserProfile: false
     })
@@ -116,6 +115,6 @@ export default class Profile extends Component {
 
   async loadUserReviews() {
     let userReviews = await this.reviewsService.getReviewsPerUser(this.state.userProfile._id)
-    this.setState({ ...this.state, userReviews: userReviews, isLoadingUserReviews: false })
+    this.setState({ userReviews: userReviews, isLoadingUserReviews: false })
   }
 }

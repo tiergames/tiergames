@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Link } from 'react-router-dom'
 import AuthService from "./services/auth.service";
 import io from 'socket.io-client'
@@ -57,8 +57,8 @@ export default class App extends Component {
 
     this.state = {
       loggedInUser: null,
-      platforms: { isLoadingPlatforms: true, platforms: [], platformsFiltered: [], currentPlatform: null },
-      genres: { isLoadingGenres: true, genres: [], genresFiltered: [], currentGenre: null },
+      platforms: { isLoadingPlatforms: true, platforms: [], platformsFiltered: [], currentPlatform: [] },
+      genres: { isLoadingGenres: true, genres: [], currentGenre: [] },
       games: { isLoadingGames: true, games: [], gamesFiltered: [], currentGame: null },
       bestRated: { isLoadingBestRated: true, bestRated: [] },
       releases: {
@@ -85,48 +85,44 @@ export default class App extends Component {
   render() {
     let routes = []
     routes = [
-      { exact: true, path: "/login", component: () => <Login setUser={this.setUser} /> },
-      { exact: true, path: "/signup", component: () => <Signup setUser={this.setUser} /> },
+      { exact: true, path: "/login", render: () => (<Login setUser={this.setUser} />) },
+      { exact: true, path: "/logout", render: ({history }) => this.logout(history) },
+      { exact: true, path: "/signup", render: () => (<Signup setUser={this.setUser} />) },
       { exact: true, path: "/forgot-password", component: ForgotPassword },
       { exact: true, path: "/reset-password/:resetPasswordToken", component: ResetPassword },
       { exact: true, path: "/update-password/:resetPasswordToken", component: ResetPassword },
       { exact: true, path: "/confirm/:confirmationToken", component: AccountConfirm },
-      // TODO: 404
-      // { path: '*', component: Error404 }
+      { exact: true, auth: true, path: "/", render: () => (<Home releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>)},
+      {
+        exact: true,
+        auth: true,
+        path: "/games",
+        render: () => (
+          <Games
+            genres={this.state.genres}
+            platforms={this.state.platforms}
+            games={this.state.games}
+            onPlatformFilterChange={(platformsFilter) => this.handlePlatformFilterChange(platformsFilter)}
+            onGenreFilterChange={(genresFilter) => this.handleGenreFilterChange(genresFilter)}
+            onFilterApply={() => this.applyGameFilter()} 
+            loggedInUser={this.state.loggedInUser}
+          />
+        )
+      },
+      { exact: true, auth: true, path: "/profile", render: () => (<LoggedInUserProfile loggedInUser={this.state.loggedInUser} logout={this.logout} />) },
+      { exact: true, auth: true, path: "/profile/:username", render: (props) => (<Profile {...props} loggedInUser={this.state.loggedInUser} />) },
+      { exact: true, auth: true, path: "/genres", render: () => (<Genres genres={this.state.genres} />) },
+      { exact: true, auth: true, path: "/games/best-rated", render: () => <BestRated bestRated={this.state.bestRated} /> },
+      { exact: true, auth: true, path: "/games/coming-soon", render: () => (<ComingSoon releases={this.state.releases} />) },
+      { exact: true, auth: true, path: "/games/:gameID", render: () => (<Game handleUnfollowRequest={(gameID) => this.handleUnfollowRequest(gameID)} handleFollowRequest={(gameID) => this.handleFollowRequest(gameID)} loggedInUser={this.state.loggedInUser} />) },
+      { exact: true, auth: true, path: "/reviews", render: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} />)},
+      { exact: true, auth: true, path: "/reviews/create/:gameID", render: props => (<CreateReview {...props} loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />)},
+      { exact: true, auth: true, path: "/reviews/:reviewID", render: props => (<Review {...props} loggedInUserName={this.state.loggedInUser.username} loggedInUserID={this.state.loggedInUser._id} loggedInUser={this.state.loggedInUser} />)},
+      { exact: true, auth: true, path: "/saved", render: () => (<Saved loggedInUser={this.state.loggedInUser} />)},
+      { exact: true, auth: true, path: "/platforms", render: () => (<Platforms platforms={this.state.platforms} />) },
+      { exact: true, auth: true, path: "/room", render: (props) => (<Room {...props} loggedInUser={this.state.loggedInUser} />) },
+      { path: '*', component: Error404 }
     ]
-    if (this.state.loggedInUser) {
-      routes = [
-        { exact: true, path: "/", component: () => (<Home releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
-        {
-          exact: true,
-          path: "/games",
-          component: () => (
-            <Games
-              genres={this.state.genres}
-              platforms={this.state.platforms}
-              games={this.state.releases.releases7Days}
-              onPlatformFilterChange={(platformsFilter) => this.handlePlatformFilterChange(platformsFilter)}
-              onGenreFilterChange={(genresFilter) => this.handleGenreFilterChange(genresFilter)}
-              onFilterApply={() => this.applyGameFilter()} 
-              loggedInUser={this.state.loggedInUser}
-            />
-          ) },
-        { exact: true, path: "/profile", component: () => <LoggedInUserProfile loggedInUser={this.state.loggedInUser} logout={this.logout} /> },
-        { exact: true, path: "/profile/:username", render: (props) => <Profile {...props} loggedInUser={this.state.loggedInUser} /> },
-        { exact: true, path: "/genres", component: () => (<Genres genres={this.state.genres} loggedInUser={this.state.loggedInUser}/>) },
-        { exact: true, path: "/games/best-rated", component: () => <BestRated bestRated={this.state.bestRated} loggedInUser={this.state.loggedInUser} /> },
-        { exact: true, path: "/games/coming-soon", component: () => (<ComingSoon releases={this.state.releases} loggedInUser={this.state.loggedInUser}/>) },
-        { exact: true, path: "/games/:gameID", render: (props) => (<Game handleUnfollowRequest={(gameID) => this.handleUnfollowRequest(gameID)} handleFollowRequest={(gameID) => this.handleFollowRequest(gameID)} loggedInUser={this.state.loggedInUser} />) },
-        { exact: true, path: "/reviews", component: () => (<Reviews reviews={this.state.reviews} handleLoadMore={() => this.loadReviews()} platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />)},
-        { exact: true, path: "/reviews/create", component: () => (<CreateReview loggedInUser={this.state.loggedInUser} platforms={this.state.platforms.platforms} />)},
-        { exact: true, path: "/reviews/:reviewID", component: props => (<Review {...props} loggedInUserName={this.state.loggedInUser.username} loggedInUserID={this.state.loggedInUser._id} loggedInUser={this.state.loggedInUser} />)},
-        { exact: true, path: "/saved", component: props => (<Saved loggedInUser={this.state.loggedInUser} />)},
-        { exact: true, path: "/platforms", component: () => (<Platforms platforms={this.state.platforms} loggedInUser={this.state.loggedInUser} />) },
-        { exact: true, path: "/room", render: (props) => (<Room {...props} loggedInUser={this.state.loggedInUser} />) },
-        // TODO: 404
-        // { path: '*', component: Error404 }
-      ];
-    }
     
     return (
       <div>
@@ -148,9 +144,10 @@ export default class App extends Component {
       />
         }
         <Switch>
-          {routes.map(route => (
-            <Route key={route.path} {...route} />
-          ))}
+          {routes.map(route => route.auth && !this.state.loggedInUser 
+            ? (<Redirect to="/login" /> )
+            : (<Route key={route.path} {...route} />)
+          )}
         </Switch>
       </div>
     );
@@ -192,6 +189,8 @@ export default class App extends Component {
 
   handleGenreFilterChange(genresSelected) {
     const { genres } = this.state
+    console.log(genresSelected);
+    
     this.setState({
       genres: {
         ...genres, 
@@ -206,7 +205,7 @@ export default class App extends Component {
     
     const gamesFiltered = await this.gamesService.getGamesPerPlatformAndGenre(10, 0, currentPlatform, currentGenre)    
     const { games } = this.state;
-
+    
     this.setState({ 
       games: {
         ...games,
@@ -215,6 +214,7 @@ export default class App extends Component {
     });
     
   }
+  
   async handleFollowRequest(gameID) {
     let followRequest = await this.gamesService.follow(gameID, this.state.loggedInUser._id)
     if (followRequest.gameFollowRequestDone) {
@@ -235,7 +235,6 @@ export default class App extends Component {
     }
   }
 
-
   handleFollow(followers) {
     let newLoggedInUser = {...this.state.loggedInUser}
     newLoggedInUser.followers = followers
@@ -253,12 +252,14 @@ export default class App extends Component {
   }
 
   async loadGenres() {
-    let genres = await this.genresService.getAllGenres();
-    let newGenres = { ...this.state.genres };
-    newGenres.isLoadingGenres = false;
-    newGenres.genres = genres.data;
-    newGenres.genresFiltered = genres.data;
-    this.setState({ ...this.state, genres: newGenres });
+    const genres = await this.genresService.getAllGenres();
+    this.setState({
+      genres: {
+        ...this.state.genres,
+        isLoadingGenres: false, 
+        genres: genres.data
+      } 
+    });
   }
 
   async loadReviews() {
@@ -380,9 +381,15 @@ export default class App extends Component {
   };
 
   // TODO: 404 Page not found showed on /logout. Investigate "withRouter"
-  logout = () => {
-    this.authService.logout().then(() => {
-      this.setState({ loggedInUser: null });
-    });
+  logout = (history) => {
+    this.authService.logout()
+      .then(() => {
+        this.setState(
+          { loggedInUser: null },
+          () => {
+            setTimeout(() => history.push({ pathname: '/login' }), 1000)
+          });
+      });
+      return <div>Bye bye!!</div>
   };
 }
