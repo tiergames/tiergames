@@ -295,6 +295,11 @@
   z-index: 1;
 }
 
+.hero-wrapper {
+  display: flex;
+  margin: 0 1rem;
+}
+
 .hero-media {
   position: absolute;
   width: 100%;
@@ -332,8 +337,31 @@
   opacity: .25;
 }
 
+.game-actions {
+  background-color: rgba(0, 0, 0, .1);
+  padding-bottom: 1rem;
+}
+
+.game-actions-status {
+  font-family: "Barlow Condensed", sans-serif;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 24px;
+}
+
+.game-actions > div:first-child {
+  padding: 8px 16px;
+  color: #ffffff;
+  margin: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .game-header-image img {
-  width: 88px;
+  width: 80px;
+  height: 112px;
+  margin-right: 16px;
 }
 
 // filter: grayscale(.5) saturate(0);

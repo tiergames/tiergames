@@ -68,7 +68,7 @@ class Game extends Component {
                   : null
             }
           </div>
-          <div className="hero-wraper">
+          <div className="hero-wrapper">
             <div className="game-header-image">
               {
                 this.state.game.cover
@@ -100,13 +100,13 @@ class Game extends Component {
               : "-"
             }
           </span>
+        </div>
+        <div>
           {
             this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
               ? <button className="button" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
               : <button className="button" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
           }
-        </div>
-        <div>
           <Link className="button chatRoom" to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
         </div>
       </div>
