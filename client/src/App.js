@@ -56,6 +56,7 @@ export default class App extends Component {
     this.socket = io(`${process.env.REACT_APP_SERVER_BASE_URL}`)
 
     this.state = {
+      loading: true,
       loggedInUser: null,
       platforms: { isLoadingPlatforms: true, platforms: [], platformsFiltered: [], currentPlatform: [] },
       genres: { isLoadingGenres: true, genres: [], currentGenre: [] },
@@ -79,7 +80,6 @@ export default class App extends Component {
       },
       newFollower: null
     };
-    this.fetchUser();
   }
 
   render() {
@@ -143,28 +143,45 @@ export default class App extends Component {
         isSearching={this.state.search.isSearching}
       />
         }
-        <Switch>
-          {routes.map(route => route.auth && !this.state.loggedInUser 
-            ? (<Redirect to="/login" /> )
-            : (<Route key={route.path} {...route} />)
-          )}
-        </Switch>
+        { this.state.loading === true && (<div>Loading</div>)}
+        { this.state.loading === false && 
+          (<Switch>
+            {routes.map(route => {
+              if (!this.state.loggedInUser && route.auth) {
+                return (<Redirect key={Date.now()} to="/login" /> )
+              }
+              return (<Route key={route.path} {...route} />)
+            })}
+          </Switch>)
+        }
       </div>
     );
   }
 
   componentDidMount() {
-    this.loadPlatforms();
-    this.loadGenres();
-    this.loadReviews();
-    this.loadGames();
-    this.loadBestRated();
-    this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo");
-    this.loadReleases(2, "releases7Days", "asc", "isLoading7Days");
-    this.loadReleases(3, "releases14Days", "asc", "isLoading14Days");
-    this.loadReleases(4, "releases1Month", "asc", "isLoading1Month");
-    this.loadReleases(5, "releases6Months", "asc", "isLoading6Months");
-    this.loadReleases(6, "releases1Year", "asc", "isLoading1Year");
+    const promises = [
+      this.fetchUser(),
+      this.loadPlatforms(),
+      this.loadGenres(),
+      this.loadReviews(),
+      this.loadGames(),
+      this.loadBestRated(),
+      this.loadReleases(1, "releases7DaysAgo", "desc", "isLoading7DaysAgo"),
+      this.loadReleases(2, "releases7Days", "asc", "isLoading7Days"),
+      this.loadReleases(3, "releases14Days", "asc", "isLoading14Days"),
+      this.loadReleases(4, "releases1Month", "asc", "isLoading1Month"),
+      this.loadReleases(5, "releases6Months", "asc", "isLoading6Months"),
+      this.loadReleases(6, "releases1Year", "asc", "isLoading1Year"),
+    ];
+
+    Promise.all(promises)
+    .then(() => {
+      this.setState({ loading: false });
+    }).catch(err => {
+      // TODO: Redirect a error?
+      console.error(err)
+    });
+    
 
     this.socket.on('new-follower', (data) => {
       if (data.followed._id === this.state.loggedInUser._id) {
@@ -360,24 +377,15 @@ export default class App extends Component {
     return this.authService
       .loggedin()
       .then(response => {
-        this.setState({
-          ...this.state,
-          loggedInUser: response
-        });
+        this.setState({ loggedInUser: response });
       })
-      .catch(error => {
-        this.setState({
-          ...this.state,
-          loggedInUser: false
-        });
+      .catch(() => {
+        this.setState({ loggedInUser: false });
       });
   }
 
   setUser = userObj => {
-    this.setState({
-      ...this.state,
-      loggedInUser: userObj
-    });
+    this.setState({ loggedInUser: userObj });
   };
 
   // TODO: 404 Page not found showed on /logout. Investigate "withRouter"
@@ -387,7 +395,7 @@ export default class App extends Component {
         this.setState(
           { loggedInUser: null },
           () => {
-            setTimeout(() => history.push({ pathname: '/login' }), 1000)
+            setTimeout(() => history.push({ pathname: '/login' }), 1500)
           });
       });
       return <div>Bye bye!!</div>

@@ -10,8 +10,7 @@ export default class LoggedInUserProfile extends Component {
     return (
       <div>
         <h1 className="section-title">My profile</h1>
-        {/* <Link to={"/logout"}>Logout</Link> */}
-        <Link to={"/logout"} onClick={this.handleLogout}>Logout</Link>
+        <Link to={"/logout"}>Logout</Link>
         <p><strong>Username: </strong>{this.props.loggedInUser.username} </p>
         <section className="followers">
           <h2>Followers ({this.props.loggedInUser.followers.length})</h2>
@@ -53,9 +52,5 @@ export default class LoggedInUserProfile extends Component {
           </ul>
         : <p>You don't follow anybody yet.</p>
     )
-  }
-
-  handleLogout = (e) => {
-    this.props.logout()
   }
 }
