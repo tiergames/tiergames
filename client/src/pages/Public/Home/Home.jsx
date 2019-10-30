@@ -2,9 +2,6 @@ import React, { Component } from 'react'
 import Tile from '../../../components/Tile/Tile';
 
 export default class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReviewsService from '../../../../services/reviews.service'
-import queryString from 'query-string'
 import GamesService from '../../../../services/games.service'
 
 export default class CreateReview extends Component {

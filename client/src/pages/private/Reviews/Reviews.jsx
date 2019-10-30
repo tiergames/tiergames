@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import ReviewsService from './../../../services/reviews.service'
 import ReviewTile from '../../../components/ReviewTile/ReviewTile'
-import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
+// import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
 
 export default class Reviews extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ export default class Reviews extends Component {
   }
 
   renderReviews() {
-    const { platforms: {platforms} } = this.props;
+    // const { platforms: {platforms} } = this.props;
 
     return (
       <section>

@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import GenreTag from "../GenreTag/GenreTag"
 
 export default class GenresTags extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   handleChange(e) {
     let newGenresSelected = [...this.props.selectedGenres]

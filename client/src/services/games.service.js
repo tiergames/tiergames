@@ -48,6 +48,7 @@ export default class GamesService {
       case 4: fromDays = 14;  toDays = 30;  break; // next 30 days (month)
       case 5: fromDays = 30;  toDays = 180; break; // next 6 months
       case 6: fromDays = 180; toDays = 365; break; // next 1 year
+      default: fromDays = -7;  toDays = 0;   break;
     }
 
     from = Math.round(new Date().setDate(new Date().getDate() + fromDays) / 1000);

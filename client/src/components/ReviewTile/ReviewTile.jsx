@@ -19,7 +19,7 @@ export default class ReviewTile extends Component {
           {
             this.state.isLoadingGameTitle
               ? null
-              : <img src={`http:${this.state.gameTile.coverUrl}`} />
+              : <img src={`http:${this.state.gameTile.coverUrl}`} alt={this.state.gameTile.title} />
           }
         </div>
         <div className="review-tile-content">
@@ -34,6 +34,7 @@ export default class ReviewTile extends Component {
               :
                 <p>{this.state.gameTile.name}</p>
             }
+            {/* // TODO: remove/move this Link to avoid "validateDOMNesting" */}
             <p>by <Link to={`/profile/${this.state.gameTile.author.username}`}>{this.state.gameTile.author.username}</Link></p>
           </div>
         </div>

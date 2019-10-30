@@ -80,7 +80,7 @@ export default class ResetPassword extends Component {
   async checkPasswordToken() {
     try {
       const { resetPasswordToken } = this.props.match.params;
-      const checkToken = await this.service.resetPassword(resetPasswordToken);
+      await this.service.resetPassword(resetPasswordToken);
 
       this.setState({ isMatch: true, error: false });
 
@@ -100,7 +100,7 @@ export default class ResetPassword extends Component {
     const { password } = this.state;
 
     try {
-      const response = await this.service.updatePassword(
+        await this.service.updatePassword(
         password,
         resetPasswordToken
       );

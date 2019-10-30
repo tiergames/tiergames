@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import GamesService from "./../../../services/games.service";
 
 export default class ComingSoon extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (

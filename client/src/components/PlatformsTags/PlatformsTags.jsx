@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import PlatformTag from './../../components/PlatformTag/PlatformTag'
 
 export default class PlatformsTags extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   handleChange(e) {
     let newPlatformsSelected = [...this.props.selectedPlatforms]

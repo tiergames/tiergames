@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
-import axios from 'axios'
 import GameService from './../../../services/games.service'
 import GenresService from './../../../services/genres.service'
 import PlatformsService from './../../../services/platforms.service'
 import PlatformsTags from './../../../components/PlatformsTags/PlatformsTags'
 import GenresTags from './../../../components/GenresTags/GenresTags'
-import Platform from '../Platforms/Platforms'
 import queryString from 'query-string'
 import GameTileInfo from '../../../components/GameTileInfo/GameTileInfo'
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Link, NavLink} from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import AuthService from './../../services/auth.service'
 
 import { ReactComponent as Rocket } from './../../assets/icons/rocket.svg'
@@ -44,7 +44,7 @@ export default class Navbar extends Component {
     )
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       ...this.state,
       loggedInUser: nextProps["userInSession"] });

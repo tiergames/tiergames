@@ -206,7 +206,6 @@ export default class App extends Component {
 
   handleGenreFilterChange(genresSelected) {
     const { genres } = this.state
-    console.log(genresSelected);
     
     this.setState({
       genres: {

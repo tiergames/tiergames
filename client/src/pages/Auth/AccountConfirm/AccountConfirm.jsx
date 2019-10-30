@@ -34,7 +34,7 @@ export default class AccountConfirm extends Component {
   async updateAccountStatus() {
     try {
       const { confirmationToken } = this.props.match.params;
-      const checktoken = await this.service.confirmAccount(confirmationToken);
+      await this.service.confirmAccount(confirmationToken);
 
       this.setState({ isActive: true });
     } catch (err) {

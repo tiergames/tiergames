@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import AuthService from "./../../../services/auth.service";
+import { ReactComponent as DirectionRight } from "./../../../assets/icons/direction-right.svg";
 
 export default class ForgotPassword extends Component {
   constructor() {
@@ -29,17 +30,19 @@ export default class ForgotPassword extends Component {
       .then(() => {
         this.setState({
           email: "",
-          submitted: true,
+          submitted: true
         });
-
       })
       .catch(err => {
         const { status, data } = err.response;
-        
-        if (status === 404 && data.status === 'FORGOT-PASSWORD_USER_NOT_FOUND') {
+
+        if (
+          status === 404 &&
+          data.status === "FORGOT-PASSWORD_USER_NOT_FOUND"
+        ) {
           this.setState({ email: "", submitted: true });
         }
-        
+
         console.error(err.message);
       });
   }
@@ -47,28 +50,42 @@ export default class ForgotPassword extends Component {
   render() {
     return (
       <section className="forgot-password">
-        <h2>Forgot your password?</h2>
+        <h2 className="section-title">Forgot your password?</h2>
 
         {!this.state.submitted && (
           <>
-            <p>
-              Please write down below the e-mail address you registered with
-              Tier
-            </p>
-            <form onSubmit={e => this.handleFormSubmit(e)}>
+            <div className="account-question">
+              <p>
+                E-mail address you registered with
+                Tier
+              </p>
+            </div>
+
+            <form
+              className="home-form"
+              onSubmit={e => this.handleFormSubmit(e)}
+            >
               <div className="field">
                 <input
                   type="text"
                   name="email"
                   id="email"
+                  placeholder="Email"
                   value={this.state.email}
                   onChange={e => this.handleChange(e)}
                   className="input"
                 />
               </div>
 
-              <div className="form-actions">
+              {/* <div className="form-actions">
                 <input type="submit" value="Confirm" />
+              </div> */}
+
+              <div className="form-actions">
+                <button type="submit">
+                  <DirectionRight />
+                  Confirm
+                </button>
               </div>
             </form>
           </>

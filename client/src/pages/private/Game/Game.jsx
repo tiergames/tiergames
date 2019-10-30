@@ -31,7 +31,7 @@ class Game extends Component {
     this.loadGame(this.state.gameID);
   }
 
-  componentWillReceiveProps(nextProps, state) {
+  UNSAFE_componentWillReceiveProps(nextProps, state) {
     if (nextProps.match.params.gameID !== this.state.gameID) {
       this.loadGame(nextProps.match.params.gameID, true);
     }
@@ -241,9 +241,12 @@ class Game extends Component {
               return (
                 <li key={video.id}>
                   <iframe
+                    title={video.id}
                     src={`https://www.youtube.com/embed/${video.video_id}`}
                     frameBorder="0"
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     allowFullScreen
                   ></iframe>
                   <p>{video.name}</p>
@@ -295,7 +298,7 @@ class Game extends Component {
             {this.state.game.websites.map(website => {
               return (
                 <li key={website.id}>
-                  <a href={`${website.url}`} target="_blank">
+                  <a href={`${website.url}`} target="_blank" rel="noopener noreferrer">
                     {website.url}
                   </a>
                 </li>
@@ -315,8 +318,8 @@ class Game extends Component {
           <ul className="similar-games">
             {this.state.game.similar_games.map(similarGame => {
               return (
-                <li>
-                  <Link to={`/games/${similarGame.id}`} key={similarGame.id}>
+                <li key={similarGame.id}>
+                  <Link to={`/games/${similarGame.id}`}>
                     {similarGame.cover ? (
                       <img
                         src={`http:${similarGame.cover.url.replace(
