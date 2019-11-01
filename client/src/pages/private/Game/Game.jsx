@@ -56,7 +56,7 @@ class Game extends Component {
   }
 
   renderHeader() {
-    // const randomScreenshot = this.state.game.screenshots.length !== 0 ? Math.ceil(Math.random() * this.state.game.screenshots.length) : 0
+    // const randomScreenshot = this.state.game.screenshots.length > 0 ? Math.round(Math.random() * this.state.game.screenshots.length) : 0
     // console.log("randomScreenshot", randomScreenshot);
 
     return (
@@ -64,7 +64,7 @@ class Game extends Component {
         <div className="hero">
           <div className="hero-media">
             {this.state.game.screenshots ? (
-              <img
+              <img className="animated fadeIn"
                 src={`http:${this.state.game.screenshots[0].url.replace(
                   "t_thumb",
                   "t_screenshot_huge"
@@ -72,7 +72,7 @@ class Game extends Component {
                 alt={this.state.game.name}
               />
             ) : this.state.game.cover ? (
-              <img
+              <img className="animated fadeIn"
                 src={`http:${this.state.game.cover.url.replace(
                   "t_thumb",
                   "t_cover_small_2x"

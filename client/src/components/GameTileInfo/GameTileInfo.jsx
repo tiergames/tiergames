@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { ReactComponent as DirectionRight } from './../../../src/assets/icons/direction-right.svg'
 
 export default class GameTileInfo extends Component {
   constructor(props) {
@@ -38,6 +39,8 @@ export default class GameTileInfo extends Component {
             </ul>
           </div>
         </Link>
+
+        <DirectionRight />
       </li>
     )
   }

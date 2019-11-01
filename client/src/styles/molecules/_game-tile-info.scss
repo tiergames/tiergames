@@ -1,0 +1,50 @@
+.game-tile-info {
+  position: relative;
+
+  svg {
+    height: 16px;
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+  }
+}
+
+.game-tile-info > a {
+  display: flex;
+
+  li {
+    position: relative !important;
+  }
+}
+
+.game-tile-info img {
+  width: 48px;
+  height: 64px;
+}
+
+.game-tile-info-content {
+  padding-left: 0.5rem;
+}
+
+.game-tile-info-platforms {
+}
+
+.game-tile-info-platforms > li {
+  font-size: 11px;
+  line-height: 16px;
+  display: inline-block;
+  padding: 0;
+}
+
+.game-tile-info-platforms > li:not(:last-child)::after {
+  content: ", ";
+  padding-right: 0.25rem;
+}
+
+.game-tile-info-game-name {
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+}

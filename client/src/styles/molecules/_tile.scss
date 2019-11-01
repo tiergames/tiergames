@@ -17,6 +17,12 @@
     #17141d 100%
   );
   background: rgba(0, 0, 0, 0.25);
+  border: 2px solid;
+  border-color: transparent;
+
+  &:hover {
+    border-color: var(--primary);
+  }
 }
 
 .tile-game-title {
@@ -35,5 +41,5 @@
 
 .tile-game-cover {
   height: 100%;
-  width: 88px;
+  // width: 88px;
 }

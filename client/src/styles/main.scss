@@ -15,8 +15,11 @@
 @import "molecules/user-avatar";
 @import "molecules/navbar";
 @import "molecules/tile";
+@import "molecules/game-tile-info";
 
 @import "pages/home";
+@import "pages/games";
+@import "pages/profile";
 
 .field-genre-checkbox,
 .field-platform-checkbox {
@@ -36,7 +39,7 @@
     color: var(--primary);
     display: inline-block;
     text-transform: uppercase;
-    margin: 4px;
+    margin: 0 8px 8px 0;
   }
 }
 
@@ -55,7 +58,7 @@
 
 .games-list,
 .users-list {
-  li {
+  > li {
     padding: 0.5rem;
     background-color: var(--primary-background-color);
     margin-bottom: 0.5rem;
@@ -253,6 +256,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
+
+  li {
+    line-height: 20px;
+    font-size: 13px;
+    color: #ffffffaa;
+  }
 }
 
 .similar-games {
@@ -276,8 +285,13 @@
   }
 
   img {
-    // width: 100%;
+    position: relative;
     width: calc(100% - 8px);
+    min-width: 88px;
+    // height: 128px;
+    margin-right: 0.5rem;
+    background-image: linear-gradient(180deg, rgba(29, 30, 48, 0.99) 0%, #17141d 100%);
+    background: rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -286,6 +300,10 @@
   color: rgba(255, 255, 255, 0.8);
   margin: 8px 0;
   /* text-transform: uppercase; */
+}
+
+.inner-title + ul li {
+  text-align: right;
 }
 
 .review-tile-content {
@@ -324,6 +342,7 @@
   display: flex;
   overflow: auto;
   padding-right: 0.5rem;
+  height: 100%;
 }
 
 .hero {

@@ -20,9 +20,99 @@ img, video {
 input {
   border: none;
   border-bottom: 1px solid;
+  appearance: none;
   padding: $padding-block-vertical-small;
 }
 
 input:focus {
   outline: none;
 }
+
+/* width */
+::-webkit-scrollbar {
+  // width: 10px;
+  width: 0px;
+}
+​
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+​
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+​
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ANIMATIONS */
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.fast {
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.heroIn {
+  animation-name: heroIn;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+.floating {
+  animation-name: floating;
+}
+
+@keyframes heroIn {
+  0% {
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes floating {
+  0% {
+    transform: translateY(-24px);
+}
+
+  100% {
+      transform: translateY(0px);
+  }
+}
+
+
+/* end ANIMATIONS */

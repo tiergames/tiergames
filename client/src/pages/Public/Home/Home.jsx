@@ -18,7 +18,7 @@ export default class Home extends Component {
 
   render7DaysAgo() {
     return (
-      <section className="home-section">
+      <section className="home-section animated fadeIn">
         <h2 className="section-title">Recently released</h2>
         {
           <ul className="tile-list">
@@ -44,7 +44,7 @@ export default class Home extends Component {
 
   render7Days() {
     return (
-      <section className="home-section">
+      <section className="home-section animated fadeIn">
         <h2 className="section-title">Next 7 days</h2>
         {
           <ul className="tile-list">
@@ -67,7 +67,7 @@ export default class Home extends Component {
 
   render14Days() {
     return (
-      <section className="home-section">
+      <section className="home-section animated fadeIn">
         <h2 className="section-title">Next 14 days</h2>
         {
           <ul className="tile-list">
@@ -90,7 +90,7 @@ export default class Home extends Component {
 
   render1Month() {
     return (
-      <section className="home-section">
+      <section className="home-section animated fadeIn">
         <h2 className="section-title">Next 30 days</h2>
         {
           <ul className="tile-list">
@@ -113,7 +113,7 @@ export default class Home extends Component {
 
   render6Months() {
     return (
-      <section className="home-section">
+      <section className="home-section animated fadeIn">
         <h2 className="section-title">Next 6 months</h2>
         {
           <ul className="tile-list">
@@ -137,7 +137,7 @@ export default class Home extends Component {
 
   render1Year() {
     return (
-      <section className="home-section">
+      <section className="home-section animated fadeIn">
         <h2 className="section-title">Next year</h2>
         {
           <ul className="tile-list">

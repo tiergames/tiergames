@@ -1,10 +1,27 @@
+.form-actions {
+  margin: 1rem 0;
+}
+
 .button {
   background: rgba(255,255,255,0.10);
   border: 1px solid #FFFFFF;
-  padding: .25rem 1rem;
+  padding: .5rem 1rem;
   text-align: center;
   color: #FFFFFF;
   font-size: 13px;
   line-height: 16px;
   display: inline-block;
+  outline: none;
+}
+
+.button:hover, .button:focus {
+  background: rgba(0, 0, 0, .1);
+}
+
+.full {
+  width: 100%;
+}
+
+.half {
+  width: 50%;
 }
