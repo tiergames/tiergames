@@ -20,6 +20,7 @@
 @import "pages/home";
 @import "pages/games";
 @import "pages/profile";
+@import "pages/room";
 
 .field-genre-checkbox,
 .field-platform-checkbox {
@@ -158,22 +159,7 @@
 .chat {
 }
 
-.chat-users {
-  li {
-    border: 1px solid var(--primary);
-    margin-right: 0.5rem;
-    color: #ffffff;
-    font-size: 9px;
-    text-transform: uppercase;
-    padding: 0.25rem 0.5rem;
-  }
-}
-
 .chat-messages {
-}
-
-.chat-users-list {
-  display: flex;
 }
 
 .chat-messages {

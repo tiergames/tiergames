@@ -10,58 +10,100 @@ export default class Room extends Component {
     this.state = {
       message: '',
       currentOnlineUsers: [],
-      messages: []
+      messages: [],
+      showChat: true
     }
   }
   
   render() {
     return (
       <section className="room">
-        <h1>Room</h1>
-        <div className="chat">
-          <div className="chat-users">
-            {
-              this.state.currentOnlineUsers.length > 0
-                ?
-                  <ul className="chat-users-list">
-                    {this.state.currentOnlineUsers.map(onlineUser => {
-                      return (
-                        <li key={onlineUser.username}>{onlineUser.username}</li>
-                      )
-                    })}
-                  </ul>
-                : null
-            }
-          </div>
-          {
-            this.state.messages.length > 0
-              ?
-                <ul className="chat-messages">
-                  {this.state.messages.map((message, idx) => {
-                    return (
-                      <li key={idx}>{message.content}</li>
-                    )
-                  })}
-                </ul>
-              : null
-          }
-        </div>
-        <form onSubmit={(e) => this.handleFormSubmit(e)}>
+        {this.renderRoomTabs()}
+        {this.state.showChat && this.renderChat()}
+        {!this.state.showChat && this.renderConnectedUsers()}
+      </section>
+    )
+  }
+
+  renderRoomTabs() {
+    return (
+      <div className="room-tabs">
+        <button data-tab-button="chat" className="active" onClick={(e) => {this.setState({showChat: true}); this.setActiveTabButton(e); }}>Chat</button>
+        <button data-tab-button="users" onClick={(e) => {this.setState({showChat: false}); this.setActiveTabButton(e); }}>Users</button>
+      </div>
+    )
+  }
+
+  renderChat() {
+    return (
+      <div className="chat">
+        {
+          this.state.messages.length > 0
+            ?
+              <ul className="chat-messages">
+                {this.state.messages.map((message, idx) => {
+                  return (
+                    <li key={idx} className={`message ${message.username === this.props.loggedInUser.username ? 'me' : ''}`}>
+                      <span className="message-username-letter">{message.username.charAt(0)}</span>
+                      <span className="message-content">
+                        <span className="message-username">
+                          {message.username === this.props.loggedInUser.username ? 'me' : message.username}
+                        </span>
+                        {message.content}
+                      </span>
+                    </li>
+                  )
+                })}
+              </ul>
+            : null
+        }
+        <form className="chat-form" onSubmit={(e) => this.handleFormSubmit(e)}>
           <div className="field">
-            <input type="text" name="message" id="message" onChange={(e) => this.handleInputChange(e)} value={this.state.message} placeholder="Type here your message"/>
+            <input type="text" className="chat-form-message" name="message" id="message" onChange={(e) => this.handleInputChange(e)} value={this.state.message} placeholder="Type here your message"/>
           </div>
           <div className="form-actions">
             <input type="submit" value="Send message"/>
           </div>
         </form>
-      </section>
+      </div>
     )
+  }
+
+  renderConnectedUsers() {
+    return (
+      <div className="chat-users">
+        {
+          this.state.currentOnlineUsers.length > 0
+            ?
+              <ul className="chat-users-list">
+                {this.state.currentOnlineUsers.map(onlineUser => {
+                  return (
+                    <li key={onlineUser.username}>
+                      <span className="chat-user-letter">{onlineUser.username.charAt(0)}</span>
+                      <span className="chat-user-username">{onlineUser.username}</span>
+                    </li>
+                  )
+                })}
+              </ul>
+            : null
+        }
+      </div>
+    )
+  }
+
+  setActiveTabButton(e) {
+    const buttonClicked = e.target
+
+    if (e.target.dataset.tabButton === "chat") buttonClicked.nextSibling.classList = ''
+    else buttonClicked.previousSibling.classList = ''
+    
+    buttonClicked.classList = 'active'
   }
 
   handleFormSubmit(e) {
     e.preventDefault()
     // Sent a message to the others users in the room
-    this.socket.emit('user-send-message-room', { content: this.state.message, room: this.queryParams.room })
+    this.socket.emit('user-send-message-room', { content: this.state.message, username: this.props.loggedInUser.username, room: this.queryParams.room })
     this.setState({ ...this.state, message: '' })
   }
 
@@ -102,6 +144,11 @@ export default class Room extends Component {
       this.setState({ ...this.state, currentOnlineUsers: data.currentOnlineUsers })
     })
   }
+
+  componentDidUpdate = () => {
+    if (document.querySelector('.chat-messages'))
+      document.querySelector('.chat-messages').scrollTop = document.querySelector('.chat-messages').scrollHeight
+  };
 
   componentWillUnmount() {
     // Stop listening for events
