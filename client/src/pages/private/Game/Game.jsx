@@ -116,14 +116,15 @@ class Game extends Component {
               : "-"}
           </span>
         </div>
-        {/* <div>
+        <div>
           {
             this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
               ? <button className="button" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
               : <button className="button" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
           }
           <Link className="button chatRoom" to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
-        </div> */}
+          <Link className="button" to={`/reviews/create/${this.state.game.id}`}>Create review</Link>
+        </div>
       </div>
     );
   }
