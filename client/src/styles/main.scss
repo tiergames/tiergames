@@ -431,6 +431,23 @@
   text-transform: uppercase;
 }
 
+.rating-star {
+  color: var(--primary);
+}
+
+.rating-star.rating-star-half {
+  position: relative;
+}
+
+.rating-star.rating-star-half::after {
+  content: "";
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 50%;
+  background-color: #1e1e2e;
+}
+
 // filter: grayscale(.5) saturate(0);
 // background-image: linear-gradient(to bottom, transparent, #1f2132);
 

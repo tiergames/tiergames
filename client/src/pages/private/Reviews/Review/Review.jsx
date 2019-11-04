@@ -100,32 +100,28 @@ export default class Review extends Component {
                 : <button onClick={() => this.handleFollowReview()}>Follow</button>
             }
             <div className="rating">
-              <span>{this.state.review.totalRating}</span>
+              <span>{this.renderRatingWithStars(this.state.review.totalRating)}{this.checkHalfStar(this.state.review.totalRating)}</span>
             </div>
           </div>
         </section>
-        <section>
-          <h2>{this.state.review.title}</h2>
+        <section class="game-section">
+          <h2 className="section-title">{this.state.review.title}</h2>
           <p>{this.state.review.review}</p>
-          <section>
-            <h3>History</h3>
+          <section class="game-section">
+            <h3 className="section-title section-title-rating">History <span className="rating-stars">{this.renderRatingWithStars(this.state.review.history.rating)}</span></h3>
             <p>{this.state.review.history.content}</p>
-            <span className="category-rating">{this.state.review.history.rating}</span>
           </section>
-          <section>
-            <h3>Gameplay</h3>
+          <section class="game-section">
+            <h3 className="section-title section-title-rating">Gameplay <span className="rating-stars">{this.renderRatingWithStars(this.state.review.gameplay.rating)}</span></h3>
             <p>{this.state.review.gameplay.content}</p>
-            <span className="category-rating">{this.state.review.gameplay.rating}</span>
           </section>
-          <section>
-            <h3>Graphics</h3>
+          <section class="game-section">
+            <h3 className="section-title section-title-rating">Graphics <span className="rating-stars">{this.renderRatingWithStars(this.state.review.graphics.rating)}</span></h3>
             <p>{this.state.review.graphics.content}</p>
-            <span className="category-rating">{this.state.review.graphics.rating}</span>
           </section>
-          <section>
-            <h3>Sound</h3>
+          <section class="game-section">
+            <h3 className="section-title section-title-rating">Sound <span className="rating-stars">{this.renderRatingWithStars(this.state.review.sound.rating)}</span></h3>
             <p>{this.state.review.sound.content}</p>
-            <span className="category-rating">{this.state.review.sound.rating}</span>
           </section>
         </section>
         <section className="comments">
@@ -133,6 +129,20 @@ export default class Review extends Component {
           {this.renderComments()}
         </section>
       </>
+    )
+  }
+
+  renderRatingWithStars(rating) {
+    return (
+      Array(Math.floor(rating)).fill(null).map(ratingStar => <span className="rating-star">★</span>)
+    )
+  }
+
+  checkHalfStar(rating) {
+    return (
+      rating - Math.floor(rating) >= .5
+      ? <span className="rating-star rating-star-half">★</span>
+      : null
     )
   }
 
