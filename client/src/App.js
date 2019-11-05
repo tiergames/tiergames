@@ -397,6 +397,5 @@ export default class App extends Component {
             setTimeout(() => history.push({ pathname: '/login' }), 1500)
           });
       });
-      return <div>Bye bye!!</div>
   };
 }
