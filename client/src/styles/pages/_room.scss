@@ -78,7 +78,7 @@
   font-weight: 700;
   border: none;
   padding: .25rem 0;
-  border-bottom: 2px solid rgba(255, 255, 255, .2);
+  border-bottom: 1px solid rgba(255, 255, 255, .2);
   appearance: none;
   background-color: transparent;
 
@@ -97,6 +97,7 @@
 
 .chat-form-message {
   width: 100%;
+  margin: 1rem 0;
 }
 
 .chat-form .form-actions {
