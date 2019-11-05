@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { ReactComponent as Tier } from "../../../assets/tier_icon.svg"
+import { ReactComponent as Check } from "../../../assets/check.svg"
 import Moment from "react-moment";
 import GamesService from "./../../../services/games.service";
 
@@ -16,10 +18,12 @@ class Game extends Component {
   }
 
   render() {
+
     return (
       <section className="game">
         {this.state.isLoadingGame ? (
-          <p>Loading game info...</p>
+          // <p>Loading game info...</p>
+          <Tier />
         ) : (
           this.renderGame()
         )}
@@ -109,21 +113,16 @@ class Game extends Component {
     return (
       <div className="game-actions">
         <div>
-          <span className="game-actions-status">Following</span>
+          {
+            this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
+              ? <button className="game-actions-status" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Following <Check /></button>
+              : <button className="game-actions-status" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Start Following</button>
+          }
           <span className="game-actions-rating">
             {this.state.game.total_rating
               ? (this.state.game.total_rating / 10).toFixed(1)
               : "-"}
           </span>
-        </div>
-        <div>
-          {
-            this.props.loggedInUser.savedGames.indexOf(+this.state.gameID) < 0
-              ? <button className="button" onClick={() => this.props.handleFollowRequest(this.state.gameID)}>Follow</button>
-              : <button className="button" onClick={() => this.props.handleUnfollowRequest(this.state.gameID)}>Unfollow</button>
-          }
-          <Link className="button chatRoom" to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
-          <Link className="button" to={`/reviews/create/${this.state.game.id}`}>Create review</Link>
         </div>
       </div>
     );
@@ -132,6 +131,13 @@ class Game extends Component {
   renderSummary() {
     return (
       <section className="game-section">
+        
+        {/* // TODO: Move from here in the future */}
+        <div className="game-options-actions">
+          <Link className="btn-special chatRoom" to={`/room?room=${this.state.game.slug}`}>Game chat room</Link>
+          <Link className="btn-special" to={`/reviews/create/${this.state.game.id}`}>Create review</Link>
+        </div>
+
         <h3 className="section-title">Summary</h3>
         <div className="game-section-content">
           <p>{this.state.game.summary}</p>

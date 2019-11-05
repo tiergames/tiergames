@@ -1,0 +1,5 @@
+<svg id="check" viewBox="0 0 14 8">
+  <g fill="none" fill-rule="evenodd" stroke="#FFF" stroke-linecap="round">
+    <path d="M1 4l4 4M5 8l8-8"/>
+  </g>
+</svg>
